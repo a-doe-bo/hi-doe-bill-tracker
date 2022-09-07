@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Collapse, Table } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 import BillItem from './BillItem';
 
 const BillTable = ({ billData, tableHeaders }) => (

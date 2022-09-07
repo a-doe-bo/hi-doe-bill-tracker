@@ -28,7 +28,7 @@ const ListBill = () => {
     const { value } = e.target;
     setSearchInput(value);
   };
-  const table_headers = ['', 'Favorite', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
+  const table_headers = ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
   const BillData = stuffs.map((stuff, index) => ({
     _id: stuff._id,
     bill_name: `Bill ${index}`,

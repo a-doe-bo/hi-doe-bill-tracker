@@ -5,7 +5,6 @@ import { BookmarkPlusFill, CaretDownFill, CaretRightFill } from 'react-bootstrap
 import { Button, Collapse, Table } from 'react-bootstrap';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 
-/** Renders a single row in the List Stuff table. See pages/ListStuff.jsx. */
 const BillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearing, _id } }) => {
   const [toggle, setToggle] = useState(true);
   const [collapsableTable, setCollapsableTable] = useState(false);
@@ -24,7 +23,7 @@ const BillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearin
               </Button>
             )}
         </td>
-        <td>
+        <td className="text-center">
           <BookmarkPlusFill onClick={() => { setToggle(!toggle); }} size={50} fill={toggle ? '#c4c4c4' : '#E7D27C'} />
         </td>
         <td>{bill_number}</td>
@@ -35,9 +34,8 @@ const BillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearin
           <Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/edit/${_id}`}>View Bill</Link>
         </td>
       </tr>
-      {/* Collapsable Table */}
       <tr>
-        <td style={{ padding: 0 }}>
+        <td style={{ padding: 0 }} colSpan={7}>
           <Collapse in={collapsableTable}>
             <div id="collapse-table">
               <Table>
