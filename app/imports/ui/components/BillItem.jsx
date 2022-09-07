@@ -8,30 +8,31 @@ import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 const BillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearing, _id } }) => {
   const [toggle, setToggle] = useState(true);
   const [collapsableTable, setCollapsableTable] = useState(false);
+  const handleToggle = (state, setState) => () => { setState(!state); };
   return (
     <>
       <tr>
         <td>
           {collapsableTable ? (
-            <Button onClick={() => { setCollapsableTable(!collapsableTable); }} aria-expanded={collapsableTable} aria-controls="collapse-table">
+            <Button onClick={handleToggle(collapsableTable, setCollapsableTable)} aria-expanded={collapsableTable} aria-controls="collapse-table">
               <CaretDownFill size={40} />
             </Button>
           )
             : (
-              <Button onClick={() => { setCollapsableTable(!collapsableTable); }} aria-expanded={collapsableTable} aria-controls="collapse-table">
+              <Button onClick={handleToggle(collapsableTable, setCollapsableTable)} aria-expanded={collapsableTable} aria-controls="collapse-table">
                 <CaretRightFill size={40} />
               </Button>
             )}
         </td>
         <td className="text-center">
-          <BookmarkPlusFill onClick={() => { setToggle(!toggle); }} size={50} fill={toggle ? '#c4c4c4' : '#E7D27C'} />
+          <BookmarkPlusFill onClick={handleToggle(toggle, setToggle)} size={50} fill={toggle ? '#c4c4c4' : '#E7D27C'} />
         </td>
         <td>{bill_number}</td>
         <td>{bill_name}</td>
         <td>{bill_status}</td>
         <td>{bill_hearing}</td>
         <td>
-          <Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/edit/${_id}`}>View Bill</Link>
+          <Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/bill/${_id}`}>View Bill</Link>
         </td>
       </tr>
       <tr>
