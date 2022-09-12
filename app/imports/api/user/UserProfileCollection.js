@@ -3,7 +3,6 @@ import { Meteor } from 'meteor/meteor';
 import BaseProfileCollection from './BaseProfileCollection';
 import { ROLE } from '../role/Role';
 import { Users } from './UserCollection';
-import { stuffPublications } from '../stuff/StuffCollection';
 
 export const userPublications = {
   users: 'Users',
