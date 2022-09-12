@@ -29,11 +29,12 @@ const UserProfileData = ({ userProfile: { email, firstName, lastName, role, empl
       <td>{lastName}</td>
       <td>{role}</td>
       <td>{employeeID}</td>
-      <td className="text-center"><Button
-        variant="danger"
-        onClick={() => { handleRemove(); }}
-      >Remove
-      </Button>
+      <td className="text-center">
+        <Button
+          variant="danger"
+          onClick={() => { handleRemove(); }}
+        >Remove
+        </Button>
       </td>
     </tr>
   );

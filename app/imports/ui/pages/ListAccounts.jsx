@@ -16,7 +16,6 @@ const ListStuffAdmin = () => {
       ready: rdy,
     };
   }, []);
-  console.log(userProfiles);
   return (ready ? (
     <Container id={PAGE_IDS.LIST_STUFF_ADMIN} className="py-3">
       <Row className="justify-content-center">
@@ -30,7 +29,8 @@ const ListStuffAdmin = () => {
                 <th>Last Name</th>
                 <th>Role</th>
                 <th>Employee ID</th>
-                <th></th>
+                {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                <th />
               </tr>
             </thead>
             <tbody>

@@ -6,7 +6,6 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Footer from '../components/Footer';
 import Landing from '../pages/Landing';
 import ListBill from '../pages/ListBill';
-import ListStuffAdmin from '../pages/ListStuffAdmin';
 import AddStuff from '../pages/AddStuff';
 import AddAdmin from '../pages/AddAdmin';
 import EditStuff from '../pages/EditStuff';
@@ -18,7 +17,7 @@ import SignIn from '../pages/SignIn';
 import NotAuthorized from '../pages/NotAuthorized';
 import { ROLE } from '../../api/role/Role';
 import BillDetails from '../pages/BillDetails';
-import ListAccounts from "../pages/ListAccounts";
+import ListAccounts from '../pages/ListAccounts';
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
 const App = () => (
