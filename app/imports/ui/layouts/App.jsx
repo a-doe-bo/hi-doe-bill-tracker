@@ -8,6 +8,7 @@ import Landing from '../pages/Landing';
 import ListBill from '../pages/ListBill';
 import ListStuffAdmin from '../pages/ListStuffAdmin';
 import AddStuff from '../pages/AddStuff';
+import AddAdmin from '../pages/AddAdmin';
 import EditStuff from '../pages/EditStuff';
 import NotFound from '../pages/NotFound';
 import SignUp from '../pages/SignUp';
@@ -17,6 +18,7 @@ import SignIn from '../pages/SignIn';
 import NotAuthorized from '../pages/NotAuthorized';
 import { ROLE } from '../../api/role/Role';
 import BillDetails from '../pages/BillDetails';
+import ListAccounts from "../pages/ListAccounts";
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
 const App = () => (
@@ -33,7 +35,8 @@ const App = () => (
         <Route path="/add" element={<ProtectedRoute><AddStuff /></ProtectedRoute>} />
         <Route path="/edit/:_id" element={<ProtectedRoute><EditStuff /></ProtectedRoute>} />
         <Route path="/bill/:_id" element={<ProtectedRoute><BillDetails /></ProtectedRoute>} />
-        <Route path="/admin" element={<AdminProtectedRoute><ListStuffAdmin /></AdminProtectedRoute>} />
+        <Route path="/createAccount" element={<AdminProtectedRoute><AddAdmin /></AdminProtectedRoute>} />
+        <Route path="/admin" element={<AdminProtectedRoute><ListAccounts /></AdminProtectedRoute>} />
         <Route path="/notauthorized" element={<NotAuthorized />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

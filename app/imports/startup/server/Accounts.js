@@ -5,12 +5,12 @@ import { UserProfiles } from '../../api/user/UserProfileCollection';
 
 /* eslint-disable no-console */
 
-function createUser(email, role, firstName, lastName, password) {
+function createUser(email, role, firstName, lastName, password, employeeID) {
   console.log(`  Creating user ${email} with role ${role}.`);
   if (role === ROLE.ADMIN) {
     AdminProfiles.define({ email, firstName, lastName, password });
   } else { // everyone else is just a user.
-    UserProfiles.define({ email, firstName, lastName, password });
+    UserProfiles.define({ email, firstName, lastName, password, role, employeeID });
   }
 }
 
