@@ -28,6 +28,7 @@ class UserProfileCollection extends BaseProfileCollection {
     if (!user) {
       const userID = Users.define({ username, role, password });
       const profileID = this._collection.insert({ email, firstName, lastName, userID, role, employeeID });
+      console.log(profileID);
       // this._collection.update(profileID, { $set: { userID } });
       return profileID;
     }

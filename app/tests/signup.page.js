@@ -17,6 +17,8 @@ class SignUpPage {
   async signupUser(username, password) {
     await t.typeText(`#${COMPONENT_IDS.SIGN_UP_FORM_FIRST_NAME}`, 'Jane');
     await t.typeText(`#${COMPONENT_IDS.SIGN_UP_FORM_LAST_NAME}`, 'Doe');
+    await t.typeText(`#${COMPONENT_IDS.SIGN_UP_EMPLOYEE_ID}`, '123456');
+    await t.typeText(`#${COMPONENT_IDS.SIGN_UP_FORM_ROLE}`, 'SECRETARY');
     await t.typeText(`#${COMPONENT_IDS.SIGN_UP_FORM_EMAIL}`, username);
     await t.typeText(`#${COMPONENT_IDS.SIGN_UP_FORM_PASSWORD}`, password);
     await t.click(`#${COMPONENT_IDS.SIGN_UP_FORM_SUBMIT} input.btn.btn-primary`);
