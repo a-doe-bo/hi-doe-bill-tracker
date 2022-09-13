@@ -14,44 +14,38 @@ import { useParams } from 'react-router';
 
 
 
+const formSchema = new SimpleSchema({
+    emailAddress: { 
+        type: String,
+        label: 'Email Address',
+    },
+    formMeasureTitle: {
+        type: String,
+        label: 'Measure Title',
+    },
+    formMeasureDate: {
+        type: 'Date',
+        label: 'Measure Date and Time'
+    },
+
+    formMeasureLocation: { 
+        type: String,
+        label: 'Measure Location',
+        allowedValues: ['Honolulu District Court', 'Kapolei Family Court'],
+        defaultValue: 'Honolulu District Court'
+    },
+});
+
+const bridge = new SimpleSchema2Bridge(formSchema);
+
 /* Renders a table containing all of the Stuff documents. Use <StuffItemAdmin> to render each row. */
 const EmailForm = () => {
-
-        const formSchema = new SimpleSchema({
-            emailAddress: { 
-                type: String,
-                label: 'Email Address',
-            },
-            formMeasureTitle: {
-                type: String,
-                label: 'Measure Title',
-            },
-            formMeasureDate: {
-                type: 'Date',
-                label: 'Measure Date and Time'
-            },
-
-            formMeasureLocation: { 
-                type: String,
-                label: 'Measure Location',
-                allowedValues: ['Honolulu District Court', 'Kapolei Family Court'],
-                defaultValue: 'Honolulu District Court'
-            },
-        });
-
-        // add handle changes function here
-
-
-        /*
-
-
-
-        */
-        const bridge = new SimpleSchema2Bridge(formSchema);
 
     /** The submit form for onSubmit type in react-bootstrap Form component */
     const submit = (data, formRef) => {
         const { toEmail, measureTitle, measureDate, measureLocation } = data;
+        const owner = Meteor.user().username;
+        const definitionData = { toEmail, measureTitle, measureDate, measureLocation, owner };
         Meteor.call('sendEmail', (err) => {
             if (err) {
                 alert('ERROR OCCURRED');

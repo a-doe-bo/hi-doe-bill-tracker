@@ -5,22 +5,21 @@ import '/imports/startup/server/Mongo';
 import '../imports/api/base/BaseCollection.methods';
 import '../imports/api/user/UserProfileCollection.methods';
 import { Meteor } from 'meteor/meteor';
-import { Email } from 'meteor/email';
 import nodemailer from 'nodemailer';
 
 const smtpconfig = {
-  host: 'smtp.sendgrid.net',
-  port: 465,
+  host: 'smtp.mailtrap.io',
+  port: 2525,
   auth: {
-    user: "apikey",
-    pass:  "4Z4_G5M-RsqgtTO7fNbfvA"
+    user: "f91e4031db2eda",
+    pass:  "eae77a1efc2109"
   }
 };
 
 const transporter = nodemailer.createTransport(smtpconfig);
 
 const hearingMailOptions = {
-    from: 'thanel@hawaii.edu', // will be user that is currently logged in
+    from: 'no334248@gmail.com', // will be user that is currently logged in
     to: 'lunathane28@gmail.com', // will be a json object of user(s)
     subject: 'Public Hearing Notice',
     text: "Hello", 
@@ -39,7 +38,7 @@ Meteor.methods({
             if (err) {
                 return console.log(err);
             }
-            console.log('email sent to ');
+            console.log('email sent to ' + recipient);
         });
     },
     verificationEmail() {
