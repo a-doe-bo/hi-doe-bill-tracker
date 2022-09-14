@@ -27,7 +27,15 @@ class UserProfileCollection extends BaseProfileCollection {
     const user = this.findOne({ email, firstName, lastName });
     if (!user) {
       const userID = Users.define({ username, role, password });
-      const profileID = this._collection.insert({ email, firstName, lastName, userID, role, employeeID });
+      const validRoles = [];
+      let profileID = '';
+      // eslint-disable-next-line guard-for-in
+      for (const roleKey in ROLE) {
+        validRoles.push(roleKey);
+      }
+      if (validRoles.includes(role)) {
+        profileID = this._collection.insert({ email, firstName, lastName, userID, role, employeeID });
+      }
       // this._collection.update(profileID, { $set: { userID } });
       return profileID;
     }

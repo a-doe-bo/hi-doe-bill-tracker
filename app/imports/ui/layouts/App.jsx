@@ -7,7 +7,7 @@ import Footer from '../components/Footer';
 import Landing from '../pages/Landing';
 import ListBill from '../pages/ListBill';
 import AddStuff from '../pages/AddStuff';
-import AddAdmin from '../pages/AddAdmin';
+import CreateUserAccount from '../pages/CreateUserAccount';
 import EditStuff from '../pages/EditStuff';
 import NotFound from '../pages/NotFound';
 import SignUp from '../pages/SignUp';
@@ -34,7 +34,7 @@ const App = () => (
         <Route path="/add" element={<ProtectedRoute><AddStuff /></ProtectedRoute>} />
         <Route path="/edit/:_id" element={<ProtectedRoute><EditStuff /></ProtectedRoute>} />
         <Route path="/bill/:_id" element={<ProtectedRoute><BillDetails /></ProtectedRoute>} />
-        <Route path="/createAccount" element={<AdminProtectedRoute><AddAdmin /></AdminProtectedRoute>} />
+        <Route path="/createAccount" element={<AdminProtectedRoute><CreateUserAccount /></AdminProtectedRoute>} />
         <Route path="/admin" element={<AdminProtectedRoute><ListAccounts /></AdminProtectedRoute>} />
         <Route path="/notauthorized" element={<NotAuthorized />} />
         <Route path="*" element={<NotFound />} />

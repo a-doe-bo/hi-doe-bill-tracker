@@ -10,7 +10,7 @@ import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import { UserProfiles } from '../../api/user/UserProfileCollection';
 import { defineMethod } from '../../api/base/BaseCollection.methods';
 
-const AddAdmin = () => {
+const CreateUserAccount = () => {
   const [error, setError] = useState('');
 
   const schema = new SimpleSchema({
@@ -23,7 +23,7 @@ const AddAdmin = () => {
   });
   const bridge = new SimpleSchema2Bridge(schema);
 
-  /* Handle AddAdmin submission. Create user account and a profile entry, then redirect to the home page. */
+  /* Handle CreateUserAccount submission. Create user account and a profile entry, then redirect to the home page. */
   const submit = (doc, formRef) => {
     const collectionName = UserProfiles.getCollectionName();
     const definitionData = doc;
@@ -53,7 +53,7 @@ const AddAdmin = () => {
                 <TextField id={COMPONENT_IDS.SIGN_UP_FORM_EMAIL} name="email" placeholder="E-mail address" />
                 <TextField id={COMPONENT_IDS.SIGN_UP_EMPLOYEE_ID} name="employeeID" placeholder="Employee ID" />
                 <TextField id={COMPONENT_IDS.SIGN_UP_FORM_PASSWORD} name="password" placeholder="Password" type="password" />
-                <SelectField name="role" placeholder="Choose a role" />
+                <SelectField id={COMPONENT_IDS.SIGN_UP_FORM_ROLE} name="role" placeholder="Choose a role" />
                 <ErrorsField />
                 <SubmitField id={COMPONENT_IDS.SIGN_UP_FORM_SUBMIT} />
               </Card.Body>
@@ -76,4 +76,4 @@ const AddAdmin = () => {
   );
 };
 
-export default AddAdmin;
+export default CreateUserAccount;

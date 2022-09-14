@@ -26,7 +26,7 @@ if (Meteor.isServer) {
           (firstName, lastName) => {
             const email = faker.internet.email();
             const employeeID = faker.random.alpha(6);
-            const role = faker.random.alpha();
+            const role = 'SECRETARY';
             const docID = UserProfiles.define({ email, firstName, lastName, employeeID, role });
             expect(UserProfiles.isDefined(docID)).to.be.true;
             UserProfiles.removeIt(docID);
@@ -43,7 +43,7 @@ if (Meteor.isServer) {
       const lastName = faker.name.lastName();
       const password = faker.internet.password();
       const employeeID = faker.random.alpha(6);
-      const role = faker.random.alpha();
+      const role = 'SECRETARY';
       const docID1 = UserProfiles.define({ email, firstName, lastName, password, role, employeeID });
       const docID2 = UserProfiles.define({ email, firstName, lastName, password, role, employeeID });
       expect(docID1).to.equal(docID2);
@@ -55,7 +55,7 @@ if (Meteor.isServer) {
       const lastName = faker.name.lastName();
       const password = faker.internet.password();
       const employeeID = faker.random.alpha(6);
-      const role = faker.random.alpha();
+      const role = 'SECRETARY';
       const docID = UserProfiles.define({ email, firstName, lastName, password, role, employeeID });
       fc.assert(
         fc.property(fc.lorem(1), fc.lorem(1), (fName, lName) => {
