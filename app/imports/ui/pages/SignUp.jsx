@@ -39,6 +39,13 @@ const SignUp = () => {
             setError(err.reason);
           } else {
             setError('');
+            Meteor.call('verificationEmail', (err, res) => {
+              if (err) {
+                console.log('err');
+              } else {
+                console.log('no err');
+              }
+            });
             setRedirectToRef(true);
           }
         });
