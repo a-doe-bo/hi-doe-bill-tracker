@@ -20,4 +20,5 @@ export const COMPONENT_IDS = {
   SIGN_UP_FORM_EMAIL: 'sign-up-form-email',
   SIGN_UP_FORM_PASSWORD: 'sign-up-form-password',
   SIGN_UP_FORM_SUBMIT: 'sign-up-form-submit',
+  NAVBAR_SAVED_BILLS: 'navbar-saved-bills',
 };
