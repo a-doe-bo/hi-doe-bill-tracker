@@ -52,7 +52,7 @@ BE IT ENACTED BY THE LEGISLATURE OF THE STATE OF HAWAII:
 `;
 
 /* Renders the EditStuff page for editing a single document. */
-const EditStuff = () => {
+const BillDetails = () => {
 
   // Get the documentID from the URL field. See imports/ui/layouts/App.jsx for the route containing :_id.
   const { _id } = useParams();
@@ -160,4 +160,4 @@ const EditStuff = () => {
   ) : <LoadingSpinner />;
 };
 
-export default EditStuff;
+export default BillDetails;

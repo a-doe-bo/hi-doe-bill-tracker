@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { BookmarkPlusFill, CaretDownFill, CaretRightFill } from 'react-bootstrap-icons';
 import { Button, Collapse, Table } from 'react-bootstrap';
+import { useLocation } from 'react-router';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 
 const BillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearing, _id } }) => {
+  const { pathname } = useLocation();
+  console.log(pathname);
   const [toggle, setToggle] = useState(true);
   const [collapsableTable, setCollapsableTable] = useState(false);
   const handleToggle = (state, setState) => () => { setState(!state); };
@@ -34,9 +37,14 @@ const BillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearin
         <td>
           <Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/bill/${_id}`}>View Bill</Link>
         </td>
+        {pathname === '/savedBills' && (
+          <td>
+            <Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/bill/${_id}`}>Assign</Link>
+          </td>
+        )}
       </tr>
       <tr>
-        <td style={{ padding: 0 }} colSpan={7}>
+        <td style={{ padding: 0 }} colSpan={10}>
           <Collapse in={collapsableTable}>
             <div id="collapse-table">
               <Table>

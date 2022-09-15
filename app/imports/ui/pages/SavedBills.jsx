@@ -28,6 +28,7 @@ const SavedBills = () => {
     const { value } = e.target;
     setSearchInput(value);
   };
+
   const table_headers = ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Assign to expert'];
   const BillData = stuffs.map((stuff, index) => ({
     _id: stuff._id,
