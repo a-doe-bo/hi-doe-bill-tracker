@@ -13,5 +13,6 @@ export const PAGE_IDS = {
   SIGN_OUT: 'sign-out',
   SIGN_UP: 'sign-up',
   SAVED_BILLS: 'saved-bills',
+  AWAITING_REVIEWS: 'awaiting-reviews',
 
 };
