@@ -71,7 +71,7 @@ const EditStuff = () => {
   }, [_id]);
 
   return ready ? (
-    <Container id={PAGE_IDS.EDIT_STUFF} className="py-3">
+    <Container id={PAGE_IDS.BILL_DETAILS} className="py-3">
       <Alert key="warning" variant="warning">
         A hearing has been schedueled for 01/01/2022 00:00:00 HST
       </Alert>

@@ -32,7 +32,7 @@ const BillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearin
         <td>{bill_status}</td>
         <td>{bill_hearing}</td>
         <td>
-          <Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/bill/${_id}`}>View Bill</Link>
+          <Link className={COMPONENT_IDS.VIEW_BILL} to={`/bill/${_id}`}>View Bill</Link>
         </td>
       </tr>
       <tr>
