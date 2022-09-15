@@ -20,6 +20,7 @@ import BillDetails from '../pages/BillDetails';
 import ListAccounts from '../pages/ListAccounts';
 import SavedBills from '../pages/SavedBills';
 import ListAwaitingReview from '../pages/ListAwaitingReview';
+import CreateComment from "../pages/CreateComment";
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
 const App = () => (
@@ -38,6 +39,7 @@ const App = () => (
         <Route path="/add" element={<ProtectedRoute><AddStuff /></ProtectedRoute>} />
         <Route path="/edit/:_id" element={<ProtectedRoute><EditStuff /></ProtectedRoute>} />
         <Route path="/bill/:_id" element={<ProtectedRoute><BillDetails /></ProtectedRoute>} />
+        <Route path="/createComment/:_id" element={<ProtectedRoute><CreateComment /></ProtectedRoute>} />
         <Route path="/createAccount" element={<AdminProtectedRoute><CreateUserAccount /></AdminProtectedRoute>} />
         <Route path="/admin" element={<AdminProtectedRoute><ListAccounts /></AdminProtectedRoute>} />
         <Route path="/notauthorized" element={<NotAuthorized />} />
