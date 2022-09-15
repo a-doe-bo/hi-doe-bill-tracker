@@ -9,7 +9,9 @@ import {
 } from './simple.page';
 import { landingPage } from './landing.page';
 import { signInPage } from './signin.page';
+/*
 import { signUpPage } from './signup.page';
+ */
 import { navBar } from './navbar.component';
 import { COMPONENT_IDS } from '../imports/ui/utilities/ComponentIDs';
 
@@ -18,7 +20,6 @@ import { COMPONENT_IDS } from '../imports/ui/utilities/ComponentIDs';
 /** Credentials for one of the sample users defined in settings.development.json. */
 const credentials = { username: 'john@foo.com', password: 'changeme' };
 const adminCredentials = { username: 'admin@foo.com', password: 'changeme' };
-const newCredentials = { username: 'jane@foo.com', password: 'changeme' };
 
 fixture('meteor-application-template-production localhost test with default db')
   .page('http://localhost:3000');
@@ -47,15 +48,6 @@ test('Test that user pages show up', async () => {
   const viewBill = await Selector(`.${COMPONENT_IDS.VIEW_BILL}`);
   await t.click(viewBill.nth(0));
   await billDetailsPage.isDisplayed();
-  await navBar.logout();
-  await signOutPage.isDisplayed();
-});
-
-test('Test that sign up and sign out work', async () => {
-  await navBar.gotoSignUpPage();
-  await signUpPage.isDisplayed();
-  await signUpPage.signupUser(newCredentials.username, newCredentials.password);
-  await navBar.isLoggedIn(newCredentials.username);
   await navBar.logout();
   await signOutPage.isDisplayed();
 });

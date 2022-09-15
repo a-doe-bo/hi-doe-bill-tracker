@@ -14,11 +14,6 @@ class NavBar {
 
   async gotoSignInPage() {
     await this.ensureLogout(t);
-    const visible = await Selector(`#${COMPONENT_IDS.NAVBAR_COLLAPSE}`).visible;
-    if (!visible) {
-      await t.click('button.navbar-toggler');
-    }
-    await t.click(`#${COMPONENT_IDS.NAVBAR_LOGIN_DROPDOWN}`);
     await t.click(`#${COMPONENT_IDS.NAVBAR_LOGIN_DROPDOWN_SIGN_IN}`);
   }
 
@@ -44,6 +39,7 @@ class NavBar {
   }
 
   /* Pull down login menu, go to sign up page. */
+  /*
   async gotoSignUpPage() {
     await this.ensureLogout(t);
     const visible = await Selector(`#${COMPONENT_IDS.NAVBAR_COLLAPSE}`).visible;
@@ -52,7 +48,7 @@ class NavBar {
     }
     await t.click(`#${COMPONENT_IDS.NAVBAR_LOGIN_DROPDOWN}`);
     await t.click(`#${COMPONENT_IDS.NAVBAR_LOGIN_DROPDOWN_SIGN_UP}`);
-  }
+  } */
 
   /* Go to the add stuff page. */
   async gotoAddStuffPage() {
