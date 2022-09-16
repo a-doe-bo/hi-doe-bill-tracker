@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Col, Row, Container } from 'react-bootstrap';
 import { AutoForm, DateField, ErrorsField, SelectField, SubmitField, TextField } from 'uniforms-bootstrap5';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
-import { swal } from 'sweetalert';
 import SimpleSchema from 'simpl-schema';
 import { PAGE_IDS } from '../utilities/PageIDs';
 
@@ -36,13 +35,15 @@ const EmailForm = () => {
 
   /** The submit form for onSubmit type in react-bootstrap Form component */
   const submit = (data, formRef) => {
-    const { toEmail, measureTitle, measureDate, measureLocation } = data;
-    const owner = Meteor.user().username;
-    const definitionData = { toEmail, measureTitle, measureDate, measureLocation, owner };
+    // const { toEmail, measureTitle, measureDate, measureLocation } = data;
+    // const owner = Meteor.user().username;
+    // const definitionData = { toEmail, measureTitle, measureDate, measureLocation, owner };
     Meteor.call('sendEmail', (err) => {
       if (err) {
+        // eslint-disable-next-line no-alert
         alert('ERROR OCCURRED');
       }
+      // eslint-disable-next-line no-alert
       alert('Email Sent Successfully'); // use react alert later on
       formRef.reset();
     });

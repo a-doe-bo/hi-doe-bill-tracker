@@ -6,7 +6,6 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Footer from '../components/Footer';
 import Landing from '../pages/Landing';
 import ListBill from '../pages/ListBill';
-import AddStuff from '../pages/AddStuff';
 import CreateUserAccount from '../pages/CreateUserAccount';
 import EditStuff from '../pages/EditStuff';
 import NotFound from '../pages/NotFound';

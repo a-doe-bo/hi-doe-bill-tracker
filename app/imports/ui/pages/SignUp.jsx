@@ -39,10 +39,12 @@ const SignUp = () => {
             setError(err.reason);
           } else {
             setError('');
-            Meteor.call('verificationEmail', (err, res) => {
-              if (err) {
+            Meteor.call('verificationEmail', (verificationError) => {
+              if (verificationError) {
+                // eslint-disable-next-line no-console
                 console.log('err');
               } else {
+                // eslint-disable-next-line no-console
                 console.log('no err');
               }
             });
