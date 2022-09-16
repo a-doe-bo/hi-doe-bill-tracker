@@ -4,12 +4,13 @@ import { Link } from 'react-router-dom';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 
 /** Renders a single row in the List Stuff table. See pages/ListStuff.jsx. */
-const AwaitingReviewsItem = ({ awaitingReviews: { bill_name, bill_number, drafter_name, drafter_submitted_date, _id }, createComment, editComment }) => (
+const AwaitingReviewsItem = ({ awaitingReviews: { bill_name, bill_number, drafter_name, drafter_submitted_date, office, _id }, createComment, editComment }) => (
   <tr>
     <td>{drafter_name}</td>
     <td>{drafter_submitted_date}</td>
     <td>{bill_name}</td>
     <td>{bill_number}</td>
+    <td>{office}</td>
     <td>
       <Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/bill/${_id}`}>View Bill</Link>
     </td>
@@ -37,6 +38,7 @@ AwaitingReviewsItem.propTypes = {
     bill_id: PropTypes.string,
     drafter_name: PropTypes.string,
     drafter_submitted_date: PropTypes.string,
+    office: PropTypes.string,
     comments_on_bill: PropTypes.string,
     submitted_review: PropTypes.bool,
     _id: PropTypes.string,
