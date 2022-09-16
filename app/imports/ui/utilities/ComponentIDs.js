@@ -1,8 +1,8 @@
 export const COMPONENT_IDS = {
-  LIST_STUFF_EDIT: 'list-stuff-edit',
+  VIEW_BILL: 'view-bill',
   NAVBAR_ADD_STUFF: 'navbar-add-stuff',
   NAVBAR_EMAIL_FORM: 'email-form',
-  NAVBAR_LIST_STUFF: 'navbar-list-stuff',
+  NAVBAR_LIST_BILLS: 'navbar-list-bills',
   NAVBAR_LIST_STUFF_ADMIN: 'navbar-list-stuff-admin',
   NAVBAR_CURRENT_USER: 'navbar-current-user',
   NAVBAR_LANDING_PAGE: 'navbar-landing-page',
@@ -23,5 +23,6 @@ export const COMPONENT_IDS = {
   SIGN_UP_FORM_PASSWORD: 'sign-up-form-password',
   SIGN_UP_FORM_ROLE: 'sign-up-form-role',
   SIGN_UP_FORM_SUBMIT: 'sign-up-form-submit',
-  NAVBAR_SAVED_BILLS: 'navbar-saved-bills',
+  NAVBAR_SAVED_BILLS: 'navbar-saved-bills', NAVBAR_LIST_STUFF: undefined,
+
 };
