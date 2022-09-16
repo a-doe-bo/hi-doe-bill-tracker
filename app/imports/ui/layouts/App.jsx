@@ -29,7 +29,6 @@ const App = () => (
       <Routes>
         <Route exact path="/" element={<Landing />} />
         <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
         <Route path="/signout" element={<SignOut />} />
         <Route path="/home" element={<ProtectedRoute><Landing /></ProtectedRoute>} />
         <Route path="/list" element={<ProtectedRoute><ListBill /></ProtectedRoute>} />

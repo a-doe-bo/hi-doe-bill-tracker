@@ -2,6 +2,7 @@
   "defaultAccounts": [
     { "email": "admin@foo.com", "password": "changeme", "role": "ADMIN", "firstName": "Admin", "lastName": "MATRP", "employeeID": "123556"
     },
+    { "email": "john@foo.com", "password": "changeme", "role": "SECRETARY" , "firstName": "John", "lastName": "Doe", "employeeID": "123456" },
     { "email": "secretary@foo.com", "password": "changeme", "role": "SECRETARY" , "firstName": "John", "lastName": "Doe", "employeeID": "123456" },
     { "email": "writer@foo.com", "password": "changeme", "role": "WRITER" , "firstName": "John", "lastName": "Doe", "employeeID": "123456" },
     { "email": "officeapprover@foo.com", "password": "changeme", "role": "OFFICE APPROVER" , "firstName": "John", "lastName": "Doe", "employeeID": "123456" },
@@ -10,6 +11,9 @@
   ],
 
   "defaultData": [
+    { "name": "Basket", "quantity": 3, "owner": "john@foo.com", "condition": "excellent" },
+    { "name": "Basket", "quantity": 3, "owner": "john@foo.com", "condition": "excellent" },
+    { "name": "Basket", "quantity": 3, "owner": "john@foo.com", "condition": "excellent" },
     { "name": "Basket", "quantity": 3, "owner": "secretary@foo.com", "condition": "excellent" },
     { "name": "Bicycle", "quantity": 2, "owner": "secretary@foo.com", "condition": "poor" },
     { "name": "Bicycle", "quantity": 2, "owner": "writer@foo.com", "condition": "poor" },

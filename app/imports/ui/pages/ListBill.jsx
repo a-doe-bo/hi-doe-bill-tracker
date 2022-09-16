@@ -37,7 +37,7 @@ const ListBill = () => {
     bill_number: index,
   }));
   return (ready ? (
-    <Container id={PAGE_IDS.LIST_STUFF} className="py-3">
+    <Container id={PAGE_IDS.LIST_BILLS} className="py-3">
       <Row className="justify-content-center">
         <Col md={7}>
           <InputGroup className="mb-3">
