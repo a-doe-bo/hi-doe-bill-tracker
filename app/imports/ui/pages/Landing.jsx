@@ -27,7 +27,6 @@ const Landing = () => (
           {/* eslint-disable-next-line jsx-a11y/no-redundant-roles */}
           <a href="http://localhost:3000/signin"><button type="button" className="btn btn-outline-primary" href="http://localhost:3000/signin" role="button">Sign in here</button></a>
           <br />
-          <a href="http://localhost:3000/signup">New? Signup Here</a>
         </Col>
 
       </Row>
