@@ -13,13 +13,13 @@ const AwaitingReviewsItem = ({ awaitingReviews: { bill_name, bill_number, drafte
     <td>
       <Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/bill/${_id}`}>View Bill</Link>
     </td>
-    TODO: Add link to App.jsx and Navbar.jsx
+    {/* TODO: Add link to App.jsx and Navbar.jsx */}
     {createComment && (
       <td>
         <Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/createComment/${_id}`}>Create Comment</Link>
       </td>
     )}
-    TODO: Add link to App.jsx and Navbar.jsx
+    {/* TODO: Add link to App.jsx and Navbar.jsx */}
     {editComment && (
       <td>
         <Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/editComment/${_id}`}>Edit Comment</Link>

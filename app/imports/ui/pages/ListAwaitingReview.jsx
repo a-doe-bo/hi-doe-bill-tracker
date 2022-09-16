@@ -4,8 +4,7 @@ import { useTracker } from 'meteor/react-meteor-data';
 import { Stuffs } from '../../api/stuff/StuffCollection';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
-import StuffItem from '../components/StuffItem';
-import AwaitingReviewsItem from "../components/AwaitingReviewsItem";
+import AwaitingReviewsItem from '../components/AwaitingReviewsItem';
 
 /* Renders a table containing all of the Stuff documents. Use <BillItem> to render each row. */
 const ListAwaitingReviews = () => {
