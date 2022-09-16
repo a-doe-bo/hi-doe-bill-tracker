@@ -7,7 +7,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
 
 /* Renders a table containing all of the Stuff documents. Use <BillItem> to render each row. */
-const ListBill = () => {
+const SavedBills = () => {
   // useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
   const { ready, stuffs } = useTracker(() => {
     // Note that this subscription will get cleaned up
@@ -28,7 +28,7 @@ const ListBill = () => {
     const { value } = e.target;
     setSearchInput(value);
   };
-  const table_headers = ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
+  const table_headers = ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Assign to expert'];
   const BillData = stuffs.map((stuff, index) => ({
     _id: stuff._id,
     bill_name: `Bill ${index}`,
@@ -37,7 +37,7 @@ const ListBill = () => {
     bill_number: index,
   }));
   return (ready ? (
-    <Container id={PAGE_IDS.LIST_BILLS} className="py-3">
+    <Container id={PAGE_IDS.SAVED_BILLS} className="py-3">
       <Row className="justify-content-center">
         <Col md={7}>
           <InputGroup className="mb-3">
@@ -81,4 +81,4 @@ const ListBill = () => {
   ) : <LoadingSpinner message="Loading Stuff" />);
 };
 
-export default ListBill;
+export default SavedBills;

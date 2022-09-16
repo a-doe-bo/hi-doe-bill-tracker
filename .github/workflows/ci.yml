@@ -1,4 +1,4 @@
-name: ci-meteor-application-template-production
+name: hi-doe-bill-tracker
 
 on:
   push:

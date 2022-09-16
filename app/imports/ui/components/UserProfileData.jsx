@@ -12,7 +12,7 @@ const UserProfileData = ({ userProfile: { email, firstName, lastName, role, empl
     const instance = _id;
     swal({
       title: 'Are you sure?',
-      text: 'Once deleted, you will not be able to recover this user account!',
+      text: 'Once deleted, this action cannot be undone',
       icon: 'warning',
       buttons: true,
       dangerMode: true,
@@ -22,6 +22,7 @@ const UserProfileData = ({ userProfile: { email, firstName, lastName, role, empl
       }
     });
   };
+  /* Returns a table with user information */
   return (
     <tr>
       <td>{email}</td>

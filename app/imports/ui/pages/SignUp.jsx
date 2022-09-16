@@ -39,6 +39,13 @@ const SignUp = () => {
             setError(err.reason);
           } else {
             setError('');
+            Meteor.call('verificationEmail', (err, res) => {
+              if (err) {
+                console.log('err');
+              } else {
+                console.log('no err');
+              }
+            });
             setRedirectToRef(true);
           }
         });
@@ -62,9 +69,9 @@ const SignUp = () => {
                 <TextField id={COMPONENT_IDS.SIGN_UP_FORM_FIRST_NAME} name="firstName" placeholder="First name" />
                 <TextField id={COMPONENT_IDS.SIGN_UP_FORM_LAST_NAME} name="lastName" placeholder="Last name" />
                 <TextField id={COMPONENT_IDS.SIGN_UP_FORM_EMAIL} name="email" placeholder="E-mail address" />
-                <TextField id={COMPONENT_IDS.SIGN_UP_FORM_EMAIL} name="employeeID" placeholder="Employee ID" />
+                <TextField id={COMPONENT_IDS.SIGN_UP_EMPLOYEE_ID} name="employeeID" placeholder="Employee ID" />
                 <TextField id={COMPONENT_IDS.SIGN_UP_FORM_PASSWORD} name="password" placeholder="Password" type="password" />
-                <SelectField name="role" placeholder="Choose a role" />
+                <SelectField id={COMPONENT_IDS.SIGN_UP_FORM_ROLE} name="role" placeholder="Choose a role" />
                 <ErrorsField />
                 <SubmitField id={COMPONENT_IDS.SIGN_UP_FORM_SUBMIT} />
               </Card.Body>
