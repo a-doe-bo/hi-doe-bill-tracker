@@ -2,7 +2,8 @@
   "defaultAccounts": [
     { "email": "admin@foo.com", "password": "changeme", "role": "ADMIN", "firstName": "Admin", "lastName": "MATRP", "employeeID": "123556"
     },
-    { "email": "john@foo.com", "password": "changeme", "role": "SECRETARY" , "firstName": "John", "lastName": "Doe", "employeeID": "123456" }
+    { "email": "john@foo.com", "password": "changeme", "role": "SECRETARY" , "firstName": "John", "lastName": "Doe", "employeeID": "123456" },
+    { "email": "writer@foo.com", "password": "changeme", "role": "WRITER" , "firstName": "TESTIMONY ", "lastName": "WRITER", "employeeID": "456780" }
   ],
 
   "defaultData": [
