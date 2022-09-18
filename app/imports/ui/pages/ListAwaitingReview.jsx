@@ -84,7 +84,9 @@ const ListAwaitingReviews = () => {
                     <th>Office</th>
                     <th>View Bill</th>
                     <th>Create Comment On Testimony</th>
+                    {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                     <th />
+                    {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                     <th />
                   </tr>
                 </thead>
