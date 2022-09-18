@@ -28,14 +28,12 @@ class UserProfileCollection extends BaseProfileCollection {
     if (!user) {
       const userID = Users.define({ username, role, password });
       const validRoles = [];
-      Object.keys(ROLE).map((userRole) => validRoles.push(userRole));
+      Object.values(ROLE).map((userRole) => validRoles.push(userRole));
       if (validRoles.includes(role)) {
         return this._collection.insert({ email, firstName, lastName, userID, role, employeeID });
       }
     }
     return user._id;
-    // }
-    // return undefined;
   }
 
   /**
