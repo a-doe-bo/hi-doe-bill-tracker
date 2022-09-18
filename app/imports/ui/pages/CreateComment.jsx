@@ -48,6 +48,7 @@ const CreateComment = () => {
                     label={`${index + 1}. ${line}`}
                     name={`line-${index}`}
                     type="checkbox"
+                    key={index}
                     onClick={(event) => { handleLineChange(event, index); }}
                   />
                 ))}

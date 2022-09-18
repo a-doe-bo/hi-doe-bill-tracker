@@ -6,17 +6,10 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import AwaitingReviewsItem from '../components/AwaitingReviewsItem';
 
-/* Renders a table containing all of the Stuff documents. Use <BillItem> to render each row. */
 const ListAwaitingReviews = () => {
-  // useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
   const { ready, stuffs } = useTracker(() => {
-    // Note that this subscription will get cleaned up
-    // when your component is unmounted or deps change.
-    // Get access to Stuff documents.
     const subscription = Stuffs.subscribeStuff();
-    // Determine if the subscription is ready
     const rdy = subscription.ready();
-    // Get the Stuff documents
     const stuffItems = Stuffs.find({}, { sort: { name: 1 } }).fetch();
     return {
       stuffs: stuffItems,
@@ -55,7 +48,7 @@ const ListAwaitingReviews = () => {
     submitted_review: false,
   }));
   return (ready ? (
-    <Container id={PAGE_IDS.AWAITING_REVIEWS} className="py-3" style={{ minWidth: "1500px" }}>
+    <Container id={PAGE_IDS.AWAITING_REVIEWS} className="py-3" style={{ minWidth: '1500px' }}>
       <Row className="justify-content-center">
         <Col md={7}>
           <Col className="text-center mb-3">
@@ -91,10 +84,12 @@ const ListAwaitingReviews = () => {
                     <th>Office</th>
                     <th>View Bill</th>
                     <th>Create Comment On Testimony</th>
+                    <th />
+                    <th />
                   </tr>
                 </thead>
                 <tbody>
-                  {DraftsAwaitingReviews.map((awaitingReviews) => <AwaitingReviewsItem key={awaitingReviews._id} awaitingReviews={awaitingReviews} createComment />)}
+                  {DraftsAwaitingReviews.map((awaitingReviews) => <AwaitingReviewsItem key={awaitingReviews._id} awaitingReviews={awaitingReviews} createComment accept reject />)}
                 </tbody>
               </Table>
             </Tab>
@@ -121,7 +116,7 @@ const ListAwaitingReviews = () => {
             </Tab>
             <Tab eventKey="awaiting-response" title="Approved Testimonies">
               <Col className="text-center mb-3">
-                <h1>Approved Drafts</h1>
+                <h1>Approved Testimonies</h1>
               </Col>
               <Table striped bordered hover>
                 <thead>
