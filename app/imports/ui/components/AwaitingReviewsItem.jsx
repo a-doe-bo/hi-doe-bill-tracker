@@ -29,40 +29,40 @@ const AwaitingReviewsItem = ({ awaitingReviews: { bill_name, bill_number, drafte
       <td>{bill_number}</td>
       <td>{office}</td>
       <td>
-        <Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/bill/${_id}`}>View Bill</Link>
+        <Link className={COMPONENT_IDS.VIEW_BILL} to={`/bill/${_id}`}>View Bill</Link>
       </td>
       {/* TODO: Look into cleaning this up. */}
       {/* TODO: Add link to App.jsx and Navbar.jsx */}
       {createComment && (
         <td>
-          <Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/createComment/${_id}`}>Create Comment</Link>
+          <Link className={COMPONENT_IDS.CREATE_COMMENT} to={`/createComment/${_id}`}>Create Comment</Link>
         </td>
       )}
       {/* TODO: Add link to App.jsx and Navbar.jsx */}
       {editComment && (
         <td>
-          <Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/editComment/${_id}`}>Edit Comment</Link>
+          <Link className={COMPONENT_IDS.EDIT_COMMENT} to={`/editComment/${_id}`}>Edit Comment</Link>
         </td>
       )}
       {accept && (
         <td>
-          <Button className={COMPONENT_IDS.LIST_STUFF_EDIT} variant="success" onClick={handleAccept}>Accept</Button>
+          <Button className={COMPONENT_IDS.ACCEPT_DRAFT} variant="success" onClick={handleAccept}>Accept</Button>
         </td>
       )}
       {reject && (
         <td>
-          <Button className={COMPONENT_IDS.LIST_STUFF_EDIT} variant="danger" onClick={handleReject}>Reject</Button>
+          <Button className={COMPONENT_IDS.REJECT_DRAFT} variant="danger" onClick={handleReject}>Reject</Button>
         </td>
       )}
       {
         Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER]) && (
           <td>
-            <Button className={COMPONENT_IDS.LIST_STUFF_EDIT} variant="warning" onClick={handleSendToSecretary}>Send to secretary</Button>
+            <Button className={COMPONENT_IDS.SEND_TO_SECRETARY} variant="warning" onClick={handleSendToSecretary}>Send to secretary</Button>
           </td>
         )
       }
       <td>
-        <Button className={COMPONENT_IDS.LIST_STUFF_EDIT} variant="secondary" onClick={handleDownload}>Download</Button>
+        <Button className={COMPONENT_IDS.DOWNLOAD} variant="secondary" onClick={handleDownload}>Download</Button>
       </td>
     </tr>
   );

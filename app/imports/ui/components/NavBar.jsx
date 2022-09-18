@@ -34,16 +34,9 @@ const NavBar = () => {
                   <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_MANAGE_DROPDOWN_DATABASE} key="manage-database" as={NavLink} to="/manage-database"><CloudDownload /> Database</NavDropdown.Item>
                 </NavDropdown>]
             ) : ''}
-            {Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER]) ? (
-              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_STUFF_ADMIN} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewOfficeApprover">Awaiting Reviews</Nav.Link>]
+            {Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER]) || Roles.userIsInRole(Meteor.userId(), [ROLE.PIPE_APPROVER]) || Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER]) ? (
+              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_STUFF_ADMIN} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewOfficeApprover">Manage Reviews</Nav.Link>]
             ) : ''}
-            {Roles.userIsInRole(Meteor.userId(), [ROLE.PIPE_APPROVER]) ? (
-              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_STUFF_ADMIN} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewPIPEApprover">Awaiting Reviews</Nav.Link>]
-            ) : ''}
-            {Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER]) ? (
-              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_STUFF_ADMIN} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewFinalApprover">Awaiting Reviews</Nav.Link>]
-            ) : ''}
-
           </Nav>
           <Nav className="justify-content-end">
             {currentUser === '' ? (
