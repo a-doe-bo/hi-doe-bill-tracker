@@ -1,5 +1,7 @@
 export const COMPONENT_IDS = {
   VIEW_BILL: 'view-bill',
+  CREATE_DRAFT: 'create-draft',
+  UPLOAD_DRAFT: 'upload-draft',
   NAVBAR_ADD_STUFF: 'navbar-add-stuff',
   NAVBAR_EMAIL_FORM: 'email-form',
   NAVBAR_LIST_BILLS: 'navbar-list-bills',

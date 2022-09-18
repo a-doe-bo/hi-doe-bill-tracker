@@ -20,6 +20,7 @@ import BillDetails from '../pages/BillDetails';
 import ListAccounts from '../pages/ListAccounts';
 import SavedBills from '../pages/SavedBills';
 import ListAwaitingReview from '../pages/ListAwaitingReview';
+import AwaitingTestimonies from '../pages/AwaitingTestimonies';
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
 const App = () => (
@@ -34,6 +35,7 @@ const App = () => (
         <Route path="/list" element={<ProtectedRoute><ListBill /></ProtectedRoute>} />
         <Route path="/savedBills" element={<ProtectedRoute><SavedBills /></ProtectedRoute>} />
         <Route path="/listAwaitingReviews" element={<ProtectedRoute><ListAwaitingReview /></ProtectedRoute>} />
+        <Route path="/awaitingtestimonies" element={<ProtectedRoute><AwaitingTestimonies /></ProtectedRoute>} />
         {/* A protected route that shows the AwaitingTestimonies List/Table */}
         <Route path="/add" element={<ProtectedRoute><AddStuff /></ProtectedRoute>} />
         <Route path="/edit/:_id" element={<ProtectedRoute><EditStuff /></ProtectedRoute>} />
