@@ -24,7 +24,6 @@ const NavBar = () => {
         <Navbar.Collapse id={COMPONENT_IDS.NAVBAR_COLLAPSE}>
           <Nav className="me-auto justify-content-start">
             {currentUser ? ([
-              <Nav.Link id={COMPONENT_IDS.NAVBAR_ADD_STUFF} as={NavLink} to="/add" key="add">Add Stuff</Nav.Link>,
               <Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_BILLS} as={NavLink} to="/list" key="list">View Bills</Nav.Link>,
               <Nav.Link id={COMPONENT_IDS.NAVBAR_SAVED_BILLS} as={NavLink} to="/savedBills" key="savedBills">Saved Bills</Nav.Link>,
             ]) : ''}
@@ -35,9 +34,10 @@ const NavBar = () => {
                   <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_MANAGE_DROPDOWN_DATABASE} key="manage-database" as={NavLink} to="/manage-database"><CloudDownload /> Database</NavDropdown.Item>
                 </NavDropdown>]
             ) : ''}
-            {Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER]) ? (
-              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_STUFF_ADMIN} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewOfficeApprover">Awaiting Reviews</Nav.Link>]
+            {Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER]) || Roles.userIsInRole(Meteor.userId(), [ROLE.PIPE_APPROVER]) || Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER]) ? (
+              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_STUFF_ADMIN} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewOfficeApprover">Manage Reviews</Nav.Link>]
             ) : ''}
+<<<<<<< HEAD
             {Roles.userIsInRole(Meteor.userId(), [ROLE.PIPE_APPROVER]) ? (
               [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_STUFF_ADMIN} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewPIPEApprover">Awaiting Reviews</Nav.Link>]
             ) : ''}
@@ -47,6 +47,8 @@ const NavBar = () => {
             {Roles.userIsInRole(Meteor.userId(), [ROLE.WRITER]) ? (
               <Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_BILLS} as={NavLink} to="/awaitingtestimonies" key="awaitingWriterTestimony">Awaiting Testimony</Nav.Link>
             ) : ''}
+=======
+>>>>>>> main
           </Nav>
           <Nav className="justify-content-end">
             {currentUser === '' ? (

@@ -14,5 +14,6 @@ export const PAGE_IDS = {
   SIGN_UP: 'sign-up',
   SAVED_BILLS: 'saved-bills',
   AWAITING_REVIEWS: 'awaiting-reviews',
+  CREATE_COMMENTS: 'create-comments',
 
 };

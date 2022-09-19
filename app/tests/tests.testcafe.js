@@ -1,6 +1,5 @@
 import { Selector, t } from 'testcafe';
 import {
-  addStuffPage,
   listStuffAdminPage,
   /* manageDatabasePage, */
   signOutPage,
@@ -40,8 +39,6 @@ test('Test that user pages show up', async () => {
   await navBar.gotoSignInPage();
   await signInPage.signin(credentials.username, credentials.password);
   await navBar.isLoggedIn(credentials.username);
-  await navBar.gotoAddStuffPage();
-  await addStuffPage.isDisplayed();
   await navBar.gotoListBillsPage();
   await listBillsPage.isDisplayed();
   // want to see if we can get to the editStuffPage
@@ -56,8 +53,6 @@ test('Test that admin pages show up', async () => {
   await navBar.gotoSignInPage();
   await signInPage.signin(adminCredentials.username, adminCredentials.password);
   await navBar.isLoggedIn(adminCredentials.username);
-  await navBar.gotoAddStuffPage();
-  await addStuffPage.isDisplayed();
   await navBar.gotoListBillsPage();
   await listBillsPage.isDisplayed();
   // want to see if we can get to the editStuffPage
