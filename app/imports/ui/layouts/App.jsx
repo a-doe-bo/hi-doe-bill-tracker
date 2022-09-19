@@ -18,11 +18,7 @@ import BillDetails from '../pages/BillDetails';
 import ListAccounts from '../pages/ListAccounts';
 import SavedBills from '../pages/SavedBills';
 import ListAwaitingReview from '../pages/ListAwaitingReview';
-<<<<<<< HEAD
-import AwaitingTestimonies from '../pages/AwaitingTestimonies';
-=======
 import CreateComment from '../pages/CreateComment';
->>>>>>> main
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
 const App = () => (
@@ -37,12 +33,6 @@ const App = () => (
         <Route path="/list" element={<ProtectedRoute><ListBill /></ProtectedRoute>} />
         <Route path="/savedBills" element={<ProtectedRoute><SavedBills /></ProtectedRoute>} />
         <Route path="/listAwaitingReviews" element={<ProtectedRoute><ListAwaitingReview /></ProtectedRoute>} />
-<<<<<<< HEAD
-        <Route path="/awaitingtestimonies" element={<ProtectedRoute><AwaitingTestimonies /></ProtectedRoute>} />
-        {/* A protected route that shows the AwaitingTestimonies List/Table */}
-        <Route path="/add" element={<ProtectedRoute><AddStuff /></ProtectedRoute>} />
-=======
->>>>>>> main
         <Route path="/edit/:_id" element={<ProtectedRoute><EditStuff /></ProtectedRoute>} />
         <Route path="/bill/:_id" element={<ProtectedRoute><BillDetails /></ProtectedRoute>} />
         <Route path="/createComment/:_id" element={<ProtectedRoute><CreateComment /></ProtectedRoute>} />

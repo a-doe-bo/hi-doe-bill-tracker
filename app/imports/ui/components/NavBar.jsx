@@ -37,18 +37,12 @@ const NavBar = () => {
             {Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER]) || Roles.userIsInRole(Meteor.userId(), [ROLE.PIPE_APPROVER]) || Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER]) ? (
               [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_STUFF_ADMIN} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewOfficeApprover">Manage Reviews</Nav.Link>]
             ) : ''}
-<<<<<<< HEAD
             {Roles.userIsInRole(Meteor.userId(), [ROLE.PIPE_APPROVER]) ? (
               [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_STUFF_ADMIN} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewPIPEApprover">Awaiting Reviews</Nav.Link>]
             ) : ''}
             {Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER]) ? (
               [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_STUFF_ADMIN} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewFinalApprover">Awaiting Reviews</Nav.Link>]
             ) : ''}
-            {Roles.userIsInRole(Meteor.userId(), [ROLE.WRITER]) ? (
-              <Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_BILLS} as={NavLink} to="/awaitingtestimonies" key="awaitingWriterTestimony">Awaiting Testimony</Nav.Link>
-            ) : ''}
-=======
->>>>>>> main
           </Nav>
           <Nav className="justify-content-end">
             {currentUser === '' ? (

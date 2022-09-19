@@ -21,7 +21,7 @@ const AwaitingTestimoniesItem = ({awaitingTestimonies: { billName, billDueDate, 
 AwaitingTestimoniesItem.propTypes = {
   awaitingTestimonies: PropTypes.shape({
     billName: PropTypes.string,
-    billDueDate: PropTypes.any,
+    billDueDate: PropTypes.string,
     _id: PropTypes.string
   }).isRequired,
   // eslint-disable-next-line react/require-default-props

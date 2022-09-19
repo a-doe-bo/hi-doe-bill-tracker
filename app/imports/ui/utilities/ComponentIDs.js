@@ -1,16 +1,13 @@
 export const COMPONENT_IDS = {
   VIEW_BILL: 'view-bill',
-<<<<<<< HEAD
   CREATE_DRAFT: 'create-draft',
   UPLOAD_DRAFT: 'upload-draft',
-=======
   CREATE_COMMENT: 'create-comment',
   EDIT_COMMENT: 'edit-comment',
   ACCEPT_DRAFT: 'accept-draft',
   REJECT_DRAFT: 'reject-draft',
   SEND_TO_SECRETARY: 'send-to-secretary',
   DOWNLOAD: 'download',
->>>>>>> main
   NAVBAR_ADD_STUFF: 'navbar-add-stuff',
   NAVBAR_EMAIL_FORM: 'email-form',
   NAVBAR_LIST_BILLS: 'navbar-list-bills',
