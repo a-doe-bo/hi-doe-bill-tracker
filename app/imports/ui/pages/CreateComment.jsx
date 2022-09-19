@@ -21,6 +21,8 @@ const CreateComment = () => {
   });
   const bridge = new SimpleSchema2Bridge(schema);
 
+
+  // eslint-disable-next-line
   const submit = (doc, formRef) => {
     // TODO: submit should submit to collection with draft id information.
     console.log('submit');

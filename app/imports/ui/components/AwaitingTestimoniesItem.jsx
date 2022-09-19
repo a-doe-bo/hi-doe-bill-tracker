@@ -1,25 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
-import { Button } from 'react-bootstrap';
 
 const AwaitingTestimoniesItem = ({ awaitingTestimonies: { bill_name, bill_due_date, office, _id }, createDraft }) => {
   return (
-  <tr>
-    <td>{bill_name}</td>
-    <td>{bill_due_date}</td>
-    <td>{office}</td>
-    <td>
-      <Link className={COMPONENT_IDS.VIEW_BILL} to={`/bill/${_id}`}>View Bill</Link>
-    </td>
-    {createDraft && (
+    <tr>
+      <td>{bill_name}</td>
+      <td>{bill_due_date}</td>
+      <td>{office}</td>
+      <td>
+        <Link className={COMPONENT_IDS.VIEW_BILL} to={`/bill/${_id}`}>View Bill</Link>
+      </td>
+      {createDraft && (
       <td>
         <Link className={COMPONENT_IDS.CREATE_DRAFT} to={`/createDraft/${_id}`}>Create Draft</Link>
-        {/*<Button onClick={<Navigate to={`/createDraft/${_id}`} />}>Create Draft</Button>*/}
       </td>
-    )}
-  </tr>
+      )}
+    </tr>
   );
 };
 
@@ -30,7 +28,7 @@ AwaitingTestimoniesItem.propTypes = {
     bill_due_date: PropTypes.string,
     bill_id: PropTypes.string,
     office: PropTypes.string,
-    _id: PropTypes.string
+    _id: PropTypes.string,
   }).isRequired,
   // eslint-disable-next-line react/require-default-props
   createDraft: PropTypes.bool,

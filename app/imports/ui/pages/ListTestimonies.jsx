@@ -78,7 +78,7 @@ const ListTestimonies = () => {
                   </tr>
                 </thead>
                 <tbody>
-                {DraftsAwaitingTestimonies.map((awaitingTestimonies) => <AwaitingTestimoniesItem awaitingTestimonies={awaitingTestimonies} key={awaitingTestimonies._id} createDraft /> )}
+                  {DraftsAwaitingTestimonies.map((awaitingTestimonies) => <AwaitingTestimoniesItem awaitingTestimonies={awaitingTestimonies} key={awaitingTestimonies._id} createDraft />)}
                 </tbody>
               </Table>
             </Tab>
