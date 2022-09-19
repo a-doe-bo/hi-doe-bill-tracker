@@ -15,5 +15,5 @@ export const PAGE_IDS = {
   SAVED_BILLS: 'saved-bills',
   AWAITING_REVIEWS: 'awaiting-reviews',
   CREATE_COMMENTS: 'create-comments',
-
+  AWAITING_TESTIMONIES: 'awaiting-testimonies',
 };
