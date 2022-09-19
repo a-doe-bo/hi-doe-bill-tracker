@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 
+// eslint-disable-next-line arrow-body-style
 const AwaitingTestimoniesItem = ({ awaitingTestimonies: { bill_name, bill_due_date, office, _id }, createDraft }) => {
   return (
     <tr>
@@ -13,9 +14,9 @@ const AwaitingTestimoniesItem = ({ awaitingTestimonies: { bill_name, bill_due_da
         <Link className={COMPONENT_IDS.VIEW_BILL} to={`/bill/${_id}`}>View Bill</Link>
       </td>
       {createDraft && (
-      <td>
-        <Link className={COMPONENT_IDS.CREATE_DRAFT} to={`/createDraft/${_id}`}>Create Draft</Link>
-      </td>
+        <td>
+          <Link className={COMPONENT_IDS.CREATE_DRAFT} to={`/createDraft/${_id}`}>Create Draft</Link>
+        </td>
       )}
     </tr>
   );

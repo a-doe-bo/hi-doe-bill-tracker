@@ -9,6 +9,7 @@ import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 const CreateComment = () => {
   // TODO: Implement a userTracker for the bills component it should retrieve the bill info based on the _id
 
+  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState('');
   const [lineNumber, setLineNumber] = useState([]);
   const schema = new SimpleSchema({
@@ -20,7 +21,6 @@ const CreateComment = () => {
     line_number: String,
   });
   const bridge = new SimpleSchema2Bridge(schema);
-
 
   // eslint-disable-next-line
   const submit = (doc, formRef) => {
