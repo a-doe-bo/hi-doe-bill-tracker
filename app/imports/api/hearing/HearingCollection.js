@@ -2,8 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 import { _ } from 'meteor/underscore';
 import { Roles } from 'meteor/alanning:roles';
-import BaseCollection from '../../../../../legtracker-f22/app/imports/api/base/BaseCollection';
-import { ROLE } from '../../../../../legtracker-f22/app/imports/api/role/Role';
+import BaseCollection from '../base/BaseCollection';
+import { ROLE } from '../role/Role';
 import { isValidMeasureType } from '../legislature/measureTypes';
 
 export const hearingPublications = {

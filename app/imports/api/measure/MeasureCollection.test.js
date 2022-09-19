@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import faker from 'faker';
 import fc from 'fast-check';
 import { Measures } from './MeasureCollection';
-import { removeAllEntities } from '../../../../../legtracker-f22/app/imports/api/base/BaseUtilities';
+import { removeAllEntities } from '../base/BaseUtilities';
 import { getRandomMeasureType } from '../legislature/measureTypes';
 import { getRandomHouseCommittee } from '../legislature/committees';
 
