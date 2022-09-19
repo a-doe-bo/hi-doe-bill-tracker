@@ -31,6 +31,7 @@ export const COMPONENT_IDS = {
   SIGN_UP_FORM_PASSWORD: 'sign-up-form-password',
   SIGN_UP_FORM_ROLE: 'sign-up-form-role',
   SIGN_UP_FORM_SUBMIT: 'sign-up-form-submit',
+  NAVBAR_LIST_TESTIMONIES: 'navbar-list-testimonies',
   NAVBAR_SAVED_BILLS: 'navbar-saved-bills',
   NAVBAR_LIST_STUFF: undefined,
   CREATE_COMMENTS_FORM_COMMENT: 'create-comments-form-comment',
