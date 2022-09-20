@@ -5,18 +5,12 @@ import { Stuffs } from '../../api/stuff/StuffCollection';
 import BillTable from '../components/BillTable';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
+import Filter from '../components/Filter';
 
-/* Renders a table containing all of the Stuff documents. Use <BillItem> to render each row. */
 const ListBill = () => {
-  // useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
   const { ready, stuffs } = useTracker(() => {
-    // Note that this subscription will get cleaned up
-    // when your component is unmounted or deps change.
-    // Get access to Stuff documents.
     const subscription = Stuffs.subscribeStuff();
-    // Determine if the subscription is ready
     const rdy = subscription.ready();
-    // Get the Stuff documents
     const stuffItems = Stuffs.find({}, { sort: { name: 1 } }).fetch();
     return {
       stuffs: stuffItems,
@@ -38,8 +32,12 @@ const ListBill = () => {
   }));
   return (ready ? (
     <Container id={PAGE_IDS.LIST_BILLS} className="py-3">
-      <Row className="justify-content-center">
-        <Col md={7}>
+
+      <Row>
+        <Col md={3}>
+          <Filter />
+        </Col>
+        <Col md={8}>
           <InputGroup className="mb-3">
             {/* eslint-disable-next-line react/jsx-no-undef */}
             <Form.Control
