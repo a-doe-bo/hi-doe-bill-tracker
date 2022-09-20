@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Table } from 'react-bootstrap';
-import BillItem from './BillItem';
+import SavedBillItem from './SavedBillItem';
 
 const SavedBill = ({ billData, tableHeaders }) => (
   <Table striped bordered hover>
@@ -13,7 +13,7 @@ const SavedBill = ({ billData, tableHeaders }) => (
       </tr>
     </thead>
     <tbody>
-      {billData.map((data, index) => <BillItem key={index} billData={data} />)}
+      {billData.map((data, index) => <SavedBillItem key={index} billData={data} />)}
     </tbody>
   </Table>
 );

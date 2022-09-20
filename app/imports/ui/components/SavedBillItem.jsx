@@ -5,7 +5,7 @@ import { BookmarkPlusFill, CaretDownFill, CaretRightFill } from 'react-bootstrap
 import { Button, Collapse, Table } from 'react-bootstrap';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 
-const BillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearing, _id } }) => {
+const SavedBillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearing, _id } }) => {
   const [toggle, setToggle] = useState(true);
   const [collapsableTable, setCollapsableTable] = useState(false);
   const handleToggle = (state, setState) => () => { setState(!state); };
@@ -33,6 +33,9 @@ const BillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearin
         <td>{bill_hearing}</td>
         <td>
           <Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/bill/${_id}`}>View Bill</Link>
+        </td>
+        <td>
+          <button type="button" className="btn btn-outline-primary" onClick="location.href='#'">Assign to Expert</button>
         </td>
       </tr>
       <tr>
@@ -89,7 +92,7 @@ const BillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearin
   );
 };
 
-BillItem.propTypes = {
+SavedBillItem.propTypes = {
   billData: PropTypes.shape({
     _id: PropTypes.string,
     bill_name: PropTypes.string,
@@ -99,4 +102,4 @@ BillItem.propTypes = {
   }).isRequired,
 };
 
-export default BillItem;
+export default SavedBillItem;
