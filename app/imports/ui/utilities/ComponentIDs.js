@@ -37,5 +37,4 @@ export const COMPONENT_IDS = {
   CREATE_COMMENTS_FORM_COMMENT: 'create-comments-form-comment',
   CREATE_COMMENTS_LINE: 'create-comments-form-comment',
   CREATE_COMMENTS_SUBMIT: 'create-comments-submit',
-
 };
