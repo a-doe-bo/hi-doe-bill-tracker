@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Col, Container, InputGroup, Row, Form, Tabs, Tab } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Stuffs } from '../../api/stuff/StuffCollection';
-import BillTable from '../components/BillTable';
+import SavedBill from '../components/SavedBill';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
 
@@ -28,7 +28,7 @@ const SavedBills = () => {
     const { value } = e.target;
     setSearchInput(value);
   };
-  const table_headers = ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Assign to expert'];
+  const table_headers = ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
   const BillData = stuffs.map((stuff, index) => ({
     _id: stuff._id,
     bill_name: `Bill ${index}`,
@@ -60,19 +60,19 @@ const SavedBills = () => {
               <Col className="text-center">
                 <h2>Upcoming Bills</h2>
               </Col>
-              <BillTable billData={BillData} tableHeaders={table_headers} />
+              <SavedBill billData={BillData} tableHeaders={table_headers} />
             </Tab>
             <Tab eventKey="bills" title="Bills">
               <Col className="text-center">
                 <h2>Bills</h2>
               </Col>
-              <BillTable billData={BillData} tableHeaders={table_headers} />
+              <SavedBill billData={BillData} tableHeaders={table_headers} />
             </Tab>
             <Tab eventKey="dead-bills" title="Dead Bills">
               <Col className="text-center">
                 <h2>Dead Bills</h2>
               </Col>
-              <BillTable billData={BillData} tableHeaders={table_headers} />
+              <SavedBill billData={BillData} tableHeaders={table_headers} />
             </Tab>
           </Tabs>
         </Col>
