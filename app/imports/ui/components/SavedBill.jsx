@@ -13,11 +13,7 @@ const SavedBill = ({ billData, tableHeaders }) => (
       </tr>
     </thead>
     <tbody>
-      <td>
-        {billData.map((data, index) => <BillItem key={index} billData={data} />)}
-      </td>
-      <button type="button" className="btn btn-outline-primary" onClick="location.href='#'">Assign to Expert</button>
-      <td />
+      {billData.map((data, index) => <BillItem key={index} billData={data} />)}
     </tbody>
   </Table>
 );

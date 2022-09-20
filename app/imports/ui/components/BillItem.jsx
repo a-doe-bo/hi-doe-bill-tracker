@@ -34,6 +34,9 @@ const BillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearin
         <td>
           <Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/bill/${_id}`}>View Bill</Link>
         </td>
+        <td>
+          <button type="button" className="btn btn-outline-primary" onClick="location.href='#'">Assign to Expert</button>
+        </td>
       </tr>
       <tr>
         <td style={{ padding: 0 }} colSpan={7}>
