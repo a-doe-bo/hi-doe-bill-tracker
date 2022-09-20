@@ -32,7 +32,7 @@ const SavedBills = () => {
     setSearchInput(value);
   };
   const table_headers = Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY]) ?
-    ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Assign to expert'] :
+    ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Assign'] :
     ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
   const BillData = stuffs.map((stuff, index) => ({
     _id: stuff._id,
