@@ -13,6 +13,7 @@ export const PAGE_IDS = {
   SIGN_OUT: 'sign-out',
   SIGN_UP: 'sign-up',
   SAVED_BILLS: 'saved-bills',
-  USER_PAGE: 'user-page',
-
+  AWAITING_REVIEWS: 'awaiting-reviews',
+  CREATE_COMMENTS: 'create-comments',
+  AWAITING_TESTIMONIES: 'awaiting-testimonies',
 };

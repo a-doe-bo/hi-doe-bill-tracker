@@ -1,6 +1,5 @@
 import { Selector, t } from 'testcafe';
 import {
-  addStuffPage,
   listStuffAdminPage,
   /* manageDatabasePage, */
   signOutPage,
@@ -9,7 +8,9 @@ import {
 } from './simple.page';
 import { landingPage } from './landing.page';
 import { signInPage } from './signin.page';
+/*
 import { signUpPage } from './signup.page';
+ */
 import { navBar } from './navbar.component';
 import { COMPONENT_IDS } from '../imports/ui/utilities/ComponentIDs';
 
@@ -18,7 +19,6 @@ import { COMPONENT_IDS } from '../imports/ui/utilities/ComponentIDs';
 /** Credentials for one of the sample users defined in settings.development.json. */
 const credentials = { username: 'john@foo.com', password: 'changeme' };
 const adminCredentials = { username: 'admin@foo.com', password: 'changeme' };
-const newCredentials = { username: 'jane@foo.com', password: 'changeme' };
 
 fixture('meteor-application-template-production localhost test with default db')
   .page('http://localhost:3000');
@@ -39,8 +39,6 @@ test('Test that user pages show up', async () => {
   await navBar.gotoSignInPage();
   await signInPage.signin(credentials.username, credentials.password);
   await navBar.isLoggedIn(credentials.username);
-  await navBar.gotoAddStuffPage();
-  await addStuffPage.isDisplayed();
   await navBar.gotoListBillsPage();
   await listBillsPage.isDisplayed();
   // want to see if we can get to the editStuffPage
@@ -51,21 +49,10 @@ test('Test that user pages show up', async () => {
   await signOutPage.isDisplayed();
 });
 
-test('Test that sign up and sign out work', async () => {
-  await navBar.gotoSignUpPage();
-  await signUpPage.isDisplayed();
-  await signUpPage.signupUser(newCredentials.username, newCredentials.password);
-  await navBar.isLoggedIn(newCredentials.username);
-  await navBar.logout();
-  await signOutPage.isDisplayed();
-});
-
 test('Test that admin pages show up', async () => {
   await navBar.gotoSignInPage();
   await signInPage.signin(adminCredentials.username, adminCredentials.password);
   await navBar.isLoggedIn(adminCredentials.username);
-  await navBar.gotoAddStuffPage();
-  await addStuffPage.isDisplayed();
   await navBar.gotoListBillsPage();
   await listBillsPage.isDisplayed();
   // want to see if we can get to the editStuffPage
