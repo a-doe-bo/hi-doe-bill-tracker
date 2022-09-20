@@ -20,7 +20,7 @@ import SavedBills from '../pages/SavedBills';
 import ListAwaitingReview from '../pages/ListAwaitingReview';
 import CreateComment from '../pages/CreateComment';
 import ListTestimonies from '../pages/ListTestimonies';
-
+import UserPage from '../pages/UserPage';
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
 const App = () => (
@@ -31,6 +31,7 @@ const App = () => (
         <Route exact path="/" element={<Landing />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signout" element={<SignOut />} />
+        <Route path="/userPage" element={<UserPage />} />
         <Route path="/home" element={<ProtectedRoute><Landing /></ProtectedRoute>} />
         <Route path="/list" element={<ProtectedRoute><ListBill /></ProtectedRoute>} />
         <Route path="/saved-bills" element={<ProtectedRoute><SavedBills /></ProtectedRoute>} />
