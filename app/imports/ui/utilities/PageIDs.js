@@ -16,4 +16,5 @@ export const PAGE_IDS = {
   AWAITING_REVIEWS: 'awaiting-reviews',
   CREATE_COMMENTS: 'create-comments',
   AWAITING_TESTIMONIES: 'awaiting-testimonies',
+  USER_PROFILE: 'user-profile',
 };
