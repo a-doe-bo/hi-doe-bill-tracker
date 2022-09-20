@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
+import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { BookmarkPlusFill, CaretDownFill, CaretRightFill } from 'react-bootstrap-icons';
 import { Button, Collapse, Table } from 'react-bootstrap';
+import { useLocation } from 'react-router';
+import { ROLE } from '../../api/role/Role';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
+import { ROUTE_PATHS } from '../utilities/RoutePaths';
 
 const BillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearing, _id } }) => {
+  const { pathname } = useLocation();
   const [toggle, setToggle] = useState(true);
   const [collapsableTable, setCollapsableTable] = useState(false);
   const handleToggle = (state, setState) => () => { setState(!state); };
@@ -32,11 +38,16 @@ const BillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearin
         <td>{bill_status}</td>
         <td>{bill_hearing}</td>
         <td>
-          <Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/bill/${_id}`}>View Bill</Link>
+          <Link className={COMPONENT_IDS.VIEW_BILL} to={`/bill/${_id}`}>View Bill</Link>
         </td>
+        {(pathname === ROUTE_PATHS.SAVED_BILLS && Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY])) && (
+          <td>
+            <Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/bill/${_id}`}>Assign</Link>
+          </td>
+        )}
       </tr>
       <tr>
-        <td style={{ padding: 0 }} colSpan={7}>
+        <td style={{ padding: 0 }} colSpan={10}>
           <Collapse in={collapsableTable}>
             <div id="collapse-table">
               <Table>

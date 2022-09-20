@@ -1,8 +1,12 @@
 import SimpleSchema from 'simpl-schema';
+import { Meteor } from 'meteor/meteor';
 import BaseProfileCollection from './BaseProfileCollection';
 import { ROLE } from '../role/Role';
 import { Users } from './UserCollection';
 
+export const userPublications = {
+  users: 'Users',
+};
 class UserProfileCollection extends BaseProfileCollection {
   constructor() {
     super('UserProfile', new SimpleSchema({}));
@@ -14,21 +18,22 @@ class UserProfileCollection extends BaseProfileCollection {
    * @param password The password for this user.
    * @param firstName The first name.
    * @param lastName The last name.
+   * @param role The role of the user.
+   * @param employeeID The employeeID of the user.
    */
-  define({ email, firstName, lastName, password }) {
+  define({ email, firstName, lastName, password, role, employeeID }) {
     // if (Meteor.isServer) {
     const username = email;
     const user = this.findOne({ email, firstName, lastName });
     if (!user) {
-      const role = ROLE.USER;
       const userID = Users.define({ username, role, password });
-      const profileID = this._collection.insert({ email, firstName, lastName, userID, role });
-      // this._collection.update(profileID, { $set: { userID } });
-      return profileID;
+      const validRoles = [];
+      Object.values(ROLE).map((userRole) => validRoles.push(userRole));
+      if (validRoles.includes(role)) {
+        return this._collection.insert({ email, firstName, lastName, userID, role, employeeID });
+      }
     }
     return user._id;
-    // }
-    // return undefined;
   }
 
   /**
@@ -100,6 +105,30 @@ class UserProfileCollection extends BaseProfileCollection {
     const lastName = doc.lastName;
     return { email, firstName, lastName };
   }
+
+  /**
+   * Subscription method for stuff owned by the current user.
+   */
+  subscribeUser() {
+    if (Meteor.isClient) {
+      return Meteor.subscribe(userPublications.users);
+    }
+    return null;
+  }
+
+  /**
+   * Default publication method for entities.
+   * It publishes the entire collection for admin and just the stuff associated to an owner.
+   */
+  publish() {
+    if (Meteor.isServer) {
+      const instance = this;
+      Meteor.publish(userPublications.users, function publish() {
+        return instance._collection.find();
+      });
+    }
+  }
+
 }
 
 /**

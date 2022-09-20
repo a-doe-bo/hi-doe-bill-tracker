@@ -1,13 +1,28 @@
 {
   "defaultAccounts": [
-    { "email": "admin@foo.com", "password": "changeme", "role": "ADMIN", "firstName": "Admin", "lastName": "MATRP"
+    { "email": "admin@foo.com", "password": "changeme", "role": "ADMIN", "firstName": "Admin", "lastName": "MATRP", "employeeID": "123556"
     },
-    { "email": "john@foo.com", "password": "changeme", "role": "USER" , "firstName": "John", "lastName": "Doe" }
+    { "email": "john@foo.com", "password": "changeme", "role": "SECRETARY" , "firstName": "John", "lastName": "Doe", "employeeID": "123456" },
+    { "email": "secretary@foo.com", "password": "changeme", "role": "SECRETARY" , "firstName": "John", "lastName": "Doe", "employeeID": "123456" },
+    { "email": "writer@foo.com", "password": "changeme", "role": "WRITER" , "firstName": "John", "lastName": "Doe", "employeeID": "123456" },
+    { "email": "officeapprover@foo.com", "password": "changeme", "role": "OFFICE APPROVER" , "firstName": "John", "lastName": "Doe", "employeeID": "123456" },
+    { "email": "pipeapprover@foo.com", "password": "changeme", "role": "PIPE APPROVER" , "firstName": "John", "lastName": "Doe", "employeeID": "123456" },
+    { "email": "finalapprover@foo.com", "password": "changeme", "role": "FINAL APPROVER" , "firstName": "John", "lastName": "Doe", "employeeID": "123456" }
   ],
 
   "defaultData": [
     { "name": "Basket", "quantity": 3, "owner": "john@foo.com", "condition": "excellent" },
-    { "name": "Bicycle", "quantity": 2, "owner": "john@foo.com", "condition": "poor" },
+    { "name": "Basket", "quantity": 3, "owner": "john@foo.com", "condition": "excellent" },
+    { "name": "Basket", "quantity": 3, "owner": "john@foo.com", "condition": "excellent" },
+    { "name": "Basket", "quantity": 3, "owner": "secretary@foo.com", "condition": "excellent" },
+    { "name": "Bicycle", "quantity": 2, "owner": "secretary@foo.com", "condition": "poor" },
+    { "name": "Bicycle", "quantity": 2, "owner": "writer@foo.com", "condition": "poor" },
+    { "name": "Bicycle", "quantity": 2, "owner": "writer@foo.com", "condition": "poor" },
+    { "name": "Bicycle", "quantity": 2, "owner": "officeapprover@foo.com", "condition": "poor" },
+    { "name": "Bicycle", "quantity": 2, "owner": "officeapprover@foo.com", "condition": "poor" },
+    { "name": "Bicycle", "quantity": 2, "owner": "pipeapprover@foo.com", "condition": "poor" },
+    { "name": "Bicycle", "quantity": 2, "owner": "finalapprover@foo.com", "condition": "poor" },
+    { "name": "Bicycle", "quantity": 2, "owner": "finalapprover@foo.com", "condition": "poor" },
     { "name": "Banana", "quantity": 2, "owner": "admin@foo.com", "condition": "good" },
     { "name": "Boogie Board", "quantity": 2, "owner": "admin@foo.com", "condition": "excellent" }
   ],

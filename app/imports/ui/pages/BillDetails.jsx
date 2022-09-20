@@ -52,7 +52,7 @@ BE IT ENACTED BY THE LEGISLATURE OF THE STATE OF HAWAII:
 `;
 
 /* Renders the EditStuff page for editing a single document. */
-const EditStuff = () => {
+const BillDetails = () => {
 
   // Get the documentID from the URL field. See imports/ui/layouts/App.jsx for the route containing :_id.
   const { _id } = useParams();
@@ -71,7 +71,7 @@ const EditStuff = () => {
   }, [_id]);
 
   return ready ? (
-    <Container id={PAGE_IDS.EDIT_STUFF} className="py-3">
+    <Container id={PAGE_IDS.BILL_DETAILS} className="py-3">
       <Alert key="warning" variant="warning">
         A hearing has been schedueled for 01/01/2022 00:00:00 HST
       </Alert>
@@ -160,4 +160,4 @@ const EditStuff = () => {
   ) : <LoadingSpinner />;
 };
 
-export default EditStuff;
+export default BillDetails;

@@ -26,3 +26,16 @@ body {
   padding-top: 10px;
   padding-bottom: 20px;
 }
+
+.LandingHeader {
+  font-family: Palatino;
+}
+
+.landingContainer{
+  /*background-image: url("");
+  margin-left: 0px;
+  margin-right: 0px;*/
+  width: 100%;
+  background-color: #74e8a1;
+  background-size: cover;
+}

@@ -13,12 +13,19 @@ class SignUpPage {
     await t.expect(this.pageSelector.exists).ok();
   }
 
+  dropDownSelect = Selector(`#${COMPONENT_IDS.SIGN_UP_FORM_ROLE}`);
+
+  dropDownOption = this.dropDownSelect.find('option');
+
   /** Signs up a new user, then checks to see that they are logged in by checking the navbar. */
   async signupUser(username, password) {
     await t.typeText(`#${COMPONENT_IDS.SIGN_UP_FORM_FIRST_NAME}`, 'Jane');
     await t.typeText(`#${COMPONENT_IDS.SIGN_UP_FORM_LAST_NAME}`, 'Doe');
     await t.typeText(`#${COMPONENT_IDS.SIGN_UP_FORM_EMAIL}`, username);
+    await t.typeText(`#${COMPONENT_IDS.SIGN_UP_EMPLOYEE_ID}`, '123456');
     await t.typeText(`#${COMPONENT_IDS.SIGN_UP_FORM_PASSWORD}`, password);
+    await t.click(this.dropDownSelect)
+      .click(this.dropDownOption.withText('SECRETARY'));
     await t.click(`#${COMPONENT_IDS.SIGN_UP_FORM_SUBMIT} input.btn.btn-primary`);
   }
 }

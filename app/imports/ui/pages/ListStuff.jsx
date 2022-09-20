@@ -2,9 +2,9 @@ import React from 'react';
 import { Col, Container, Row, Table } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Stuffs } from '../../api/stuff/StuffCollection';
-import BillItem from '../components/BillItem';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
+import StuffItem from '../components/StuffItem';
 
 /* Renders a table containing all of the Stuff documents. Use <BillItem> to render each row. */
 const ListStuff = () => {
@@ -40,7 +40,7 @@ const ListStuff = () => {
               </tr>
             </thead>
             <tbody>
-              {stuffs.map((stuff) => <BillItem key={stuff._id} stuff={stuff} />)}
+              {stuffs.map((stuff) => <StuffItem key={stuff._id} stuff={stuff} />)}
             </tbody>
           </Table>
         </Col>

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Navigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Alert, Card, Col, Container, Row } from 'react-bootstrap';
-import { Meteor } from 'meteor/meteor';
+import swal from 'sweetalert';
 import SimpleSchema from 'simpl-schema';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import { AutoForm, ErrorsField, SelectField, SubmitField, TextField } from 'uniforms-bootstrap5';
@@ -11,9 +10,8 @@ import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import { UserProfiles } from '../../api/user/UserProfileCollection';
 import { defineMethod } from '../../api/base/BaseCollection.methods';
 
-const SignUp = () => {
+const CreateUserAccount = () => {
   const [error, setError] = useState('');
-  const [redirectToReferer, setRedirectToRef] = useState(false);
 
   const schema = new SimpleSchema({
     firstName: String,
@@ -25,39 +23,21 @@ const SignUp = () => {
   });
   const bridge = new SimpleSchema2Bridge(schema);
 
-  /* Handle SignUp submission. Create user account and a profile entry, then redirect to the home page. */
-  const submit = (doc) => {
+  /* Handle CreateUserAccount submission. Create user account and a profile entry, then redirect to the home page. */
+  const submit = (doc, formRef) => {
     const collectionName = UserProfiles.getCollectionName();
     const definitionData = doc;
     // create the new UserProfile
     defineMethod.callPromise({ collectionName, definitionData })
       .then(() => {
         // log the new user in.
-        const { email, password } = doc;
-        Meteor.loginWithPassword(email, password, (err) => {
-          if (err) {
-            setError(err.reason);
-          } else {
-            setError('');
-            Meteor.call('verificationEmail', (verificationError) => {
-              if (verificationError) {
-                // eslint-disable-next-line no-console
-                console.log('err');
-              } else {
-                // eslint-disable-next-line no-console
-                console.log('no err');
-              }
-            });
-            setRedirectToRef(true);
-          }
-        });
+        swal('Success', 'User account added', 'success');
+        formRef.reset();
       })
-      .catch((err) => setError(err.reason));
+      .catch((err) => setError(err));
   };
 
-  if (redirectToReferer) {
-    return <Navigate to="/add" />;
-  }
+  let fRef = null;
   return (
     <Container id={PAGE_IDS.SIGN_UP} className="py-3">
       <Row className="justify-content-center">
@@ -65,7 +45,7 @@ const SignUp = () => {
           <Col className="text-center">
             <h2>Register An Account</h2>
           </Col>
-          <AutoForm schema={bridge} onSubmit={data => submit(data)}>
+          <AutoForm ref={ref => { fRef = ref; }} schema={bridge} onSubmit={data => submit(data, fRef)}>
             <Card>
               <Card.Body>
                 <TextField id={COMPONENT_IDS.SIGN_UP_FORM_FIRST_NAME} name="firstName" placeholder="First name" />
@@ -96,4 +76,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default CreateUserAccount;
