@@ -6,7 +6,7 @@ import { PAGE_IDS } from '../utilities/PageIDs';
 const UserPage = () => {
 
   const user = {
-    name: 'Very Important Person',
+    name: 'John Foo',
     email: 'john@foo.com',
     title: 'DOE Public Affairs',
     img: '/images/butterfly.png',
