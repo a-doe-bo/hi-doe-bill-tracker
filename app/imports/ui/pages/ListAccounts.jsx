@@ -6,7 +6,7 @@ import { PAGE_IDS } from '../utilities/PageIDs';
 import { UserProfiles } from '../../api/user/UserProfileCollection';
 import UserProfileData from '../components/UserProfileData';
 
-const ListStuffAdmin = () => {
+const ListAccounts = () => {
   const { userProfiles, ready } = useTracker(() => {
     const subscription = UserProfiles.subscribeUser();
     const rdy = subscription.ready();
@@ -43,4 +43,4 @@ const ListStuffAdmin = () => {
   ) : <LoadingSpinner />);
 };
 
-export default ListStuffAdmin;
+export default ListAccounts;

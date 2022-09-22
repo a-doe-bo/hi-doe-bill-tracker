@@ -1,5 +1,17 @@
-import React, { useState } from 'react';
-import { Button, Col, Container, InputGroup, Row, Form, Tabs, Tab } from 'react-bootstrap';
+import React, { useState, useRef } from 'react';
+import {
+  Button,
+  Col,
+  Container,
+  InputGroup,
+  Row,
+  Form,
+  Tabs,
+  Tab,
+  ButtonGroup,
+  TabContainer,
+  Nav
+} from "react-bootstrap";
 import { useTracker } from 'meteor/react-meteor-data';
 import { Stuffs } from '../../api/stuff/StuffCollection';
 import BillTable from '../components/BillTable';
@@ -18,6 +30,8 @@ const ListBill = () => {
     };
   }, []);
   const [searchInput, setSearchInput] = useState('');
+  const [currentTab, setCurrentTab] = useState('Upcoming Bills');
+  const ref = useRef();
   const handleSearchInput = (e) => {
     const { value } = e.target;
     setSearchInput(value);
@@ -30,9 +44,16 @@ const ListBill = () => {
     bill_hearing: new Date().toLocaleString(),
     bill_number: index,
   }));
+  const handleCurrentTab = (tabName) => {
+    setCurrentTab(tabName);
+  };
+  const test = (e) => {
+    console.log(e);
+  };
+  console.log(currentTab);
+  const tabs = ['Upcoming Bills', 'Bills', 'Dead Bills'];
   return (ready ? (
     <Container id={PAGE_IDS.LIST_BILLS} className="py-3">
-
       <Row>
         <Col md={3}>
           <Filter />
@@ -50,28 +71,19 @@ const ListBill = () => {
             </Button>
           </InputGroup>
           <Tabs
-            defaultActiveKey="upcoming-hearings"
+            defaultActiveKey="Upcoming Bills"
             id="uncontrolled-tab-example"
             className="mb-3"
+            onSelect={(e) => (handleCurrentTab(e))}
           >
-            <Tab eventKey="upcoming-hearings" title="Upcoming Hearings">
-              <Col className="text-center">
-                <h2>Upcoming Bills</h2>
-              </Col>
-              <BillTable billData={BillData} tableHeaders={table_headers} />
-            </Tab>
-            <Tab eventKey="bills" title="Bills">
-              <Col className="text-center">
-                <h2>Bills</h2>
-              </Col>
-              <BillTable billData={BillData} tableHeaders={table_headers} />
-            </Tab>
-            <Tab eventKey="dead-bills" title="Dead Bills">
-              <Col className="text-center">
-                <h2>Dead Bills</h2>
-              </Col>
-              <BillTable billData={BillData} tableHeaders={table_headers} />
-            </Tab>
+            {tabs.map((tab, index) => (
+              <Tab eventKey={tab} title={tab} key={index}>
+                <Col className="text-center">
+                  <h2>{tab}</h2>
+                </Col>
+                <BillTable billData={BillData} tableHeaders={table_headers} />
+              </Tab>
+            ))}
           </Tabs>
         </Col>
       </Row>
