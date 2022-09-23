@@ -6,7 +6,7 @@ const FormCheck = ({ options, handleCheckedState }) => {
   const handleCheckChange = (e) => {
     const { value, checked } = e.target;
     handleCheckedState((prevState) => (
-      (checked && !prevState.includes(value)) ? [...prevState, value] : [...prevState].filter((stat, index) => (stat !== value))
+      (checked && !prevState.includes(value)) ? [...prevState, value] : [...prevState].filter((stat) => (stat !== value))
     ));
   };
 

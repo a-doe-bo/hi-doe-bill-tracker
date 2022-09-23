@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Accordion, Card, Form } from 'react-bootstrap';
+import { Accordion, Button, Card, Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import FormCheck from './FormCheck';
 
 const BillFilter = ({ handleDataFiltering, data, tab }) => {
   const statusOptions = ['Writing', 'Office Approver', 'PIPE Approver', 'Final Approver', 'Pending Process', 'Processed'];
-  const officeOptions = ['PIPE Approver', 'Final Approver', 'Pending Process', 'Processed'];
+  const officeOptions = ['office1', 'office2', 'office3', 'office4', 'office5'];
   const [statusCheckedState, setStatusCheckedState] = useState([]);
   const [officeCheckedState, setOfficeCheckedState] = useState([]);
   const [startDateIntroduced, setStartDateIntroduced] = useState('');
@@ -24,9 +24,32 @@ const BillFilter = ({ handleDataFiltering, data, tab }) => {
   };
 
   const filterData = () => {
-    const filteredData = [];
-    filteredData.push();
-    handleDataFiltering(filteredData);
+    let filteredData = [];
+    const dataCopy = data;
+    // Check the filter fields
+    // Filter the data based on the requirements
+    // Check the tab and add the handle
+    // if it's not there just return the og data.
+    switch (tab) {
+    case 'Bills':
+      // Filter the data based on the selected filter options
+      filteredData = dataCopy.filter((billDetails) => (billDetails === 2));
+      handleDataFiltering(() => ([...filteredData]));
+      break;
+    case 'Upcoming Bills':
+      // Filter the data based on the selected filter options
+      filteredData = dataCopy.filter((billDetails) => (billDetails !== 2));
+      handleDataFiltering(() => ([...filteredData]));
+      break;
+    case 'Dead Bills':
+      // Filter the data based on the selected filter options
+      filteredData = dataCopy.filter((billDetails) => (billDetails !== 2));
+      handleDataFiltering(() => ([...filteredData]));
+      break;
+    default:
+      handleDataFiltering(() => ([...data]));
+      break;
+    }
   };
 
   return (
@@ -72,12 +95,23 @@ const BillFilter = ({ handleDataFiltering, data, tab }) => {
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>
+      <Card>
+        <Button onClick={() => (filterData())}>Filter</Button>
+      </Card>
     </Card>
   );
 };
 
 BillFilter.propTypes = {
   handleDataFiltering: PropTypes.func.isRequired,
+  tab: PropTypes.string.isRequired,
+  data: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.string,
+    bill_name: PropTypes.string,
+    bill_status: PropTypes.string,
+    bill_hearing: PropTypes.string,
+    bill_number: PropTypes.number,
+  })).isRequired,
 };
 
 export default BillFilter;
