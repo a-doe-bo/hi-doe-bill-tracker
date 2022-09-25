@@ -39,3 +39,7 @@ body {
   background-color: #74e8a1;
   background-size: cover;
 }
+
+.user-profile-pic{
+  width: 24rem;
+}
