@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   Col,
@@ -32,6 +32,7 @@ const ListBill = () => {
     const { value } = e.target;
     setSearchInput(value);
   };
+  // TODO: Object with { header: '', component: ''}
   const table_headers = ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
   const BillData = stuffs.map((stuff, index) => ({
     _id: stuff._id,
@@ -39,18 +40,26 @@ const ListBill = () => {
     bill_status: `Status_${index}`,
     bill_hearing: new Date().toLocaleString(),
     bill_number: index,
+    bill_updated: 1663711472,
+    bill_committee: 'Agriculture & Environment',
+    measureType: 'HB',
+    office: 'office1',
   }));
-  const [data, setData] = useState(BillData);
+  const [data, setData] = useState([]);
+  // TODO: Remove this once we have our API set up and split the Bill data into (upcoming bills, dead bills, bills)
+  useEffect(() => {
+    setData(BillData);
+  }, [ready]);
   const handleCurrentTab = (tabName) => {
     setCurrentTab(tabName);
-    setData(BillData);
   };
-  console.log(data);
   const tabs = ['Upcoming Bills', 'Bills', 'Dead Bills'];
   return (ready ? (
     <Container id={PAGE_IDS.LIST_BILLS} className="py-3">
       <Row>
         <Col md={3}>
+          {/* TODO: Make current tab switch on tab (re-rendering issue when switching tabs) */}
+          {/* TODO: Pass in three sets of data to avoid re-render on tab switch */}
           <Filter tab={currentTab} data={data} handleDataFiltering={setData} />
         </Col>
         <Col md={8} className="mx-3">
