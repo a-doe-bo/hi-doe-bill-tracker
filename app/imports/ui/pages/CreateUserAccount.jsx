@@ -59,9 +59,6 @@ const CreateUserAccount = () => {
               </Card.Body>
             </Card>
           </AutoForm>
-          <Alert variant="secondary">
-            Already have an account? Login <Link to="/signin">here</Link>
-          </Alert>
           {error === '' ? (
             ''
           ) : (
