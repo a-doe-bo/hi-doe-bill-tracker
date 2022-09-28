@@ -12,6 +12,7 @@ const PaginationBar = ({ BillData: { numBills, billsPerPage } }) => {
   // CASE 1 : amount of Pages are smaller than the max
   if (numPages < maxPageOptions) {
     maxPage = numPages;
+    // eslint-disable-next-line brace-style
   }
   // CASE 2: amount of pages are equal to or overflow maxPageOptions, NORMAL CASE
   else {
@@ -19,23 +20,22 @@ const PaginationBar = ({ BillData: { numBills, billsPerPage } }) => {
   }
 
   // STEP 2: define max and min
-  minPage = currentPage - (maxPageOptions/2);
+  minPage = currentPage - (maxPageOptions / 2);
   if (minPage < 1) {
     minPage = 1;
   }
-  maxPage = currentPage + (maxPageOptions/2);
+  maxPage = currentPage + (maxPageOptions / 2);
   // Case 1: minPage is 1-4 so it reduces the total count by not contributing to maxPageOptions
   // Thus! we need to push it on the max side
-  if (maxPage - minPage !== 10){
+  if (maxPage - minPage !== 10) {
     maxPage += (10 - (maxPage - minPage));
   }
   // Case 2: maxPage is overlimit! push excess to min to equalize to 10 or maxPageOptions
-  if (maxPage > numPages){
-    if (numPages < maxPageOptions){
+  if (maxPage > numPages) {
+    if (numPages < maxPageOptions) {
       minPage = 1;
       maxPage = numPages;
-    }
-    else {
+    } else {
       minPage -= (maxPage - numPages);
       maxPage = numPages;
     }
@@ -61,8 +61,8 @@ const PaginationBar = ({ BillData: { numBills, billsPerPage } }) => {
 
 PaginationBar.propTypes = {
   BillData: PropTypes.shape({
-    numBills: PropTypes.number.isRequired,
-    billsPerPage: PropTypes.number.isRequired,
+    numBills: PropTypes.number,
+    billsPerPage: PropTypes.number,
   }).isRequired,
 };
 export default PaginationBar;
