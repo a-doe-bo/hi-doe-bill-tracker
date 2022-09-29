@@ -59,8 +59,8 @@ test('Test that admin pages show up', async () => {
   const viewBill = await Selector(`.${COMPONENT_IDS.VIEW_BILL}`);
   await t.click(viewBill().nth(0));
   await billDetailsPage.isDisplayed();
-  await navBar.gotoListStuffAdminPage();
-  await listStuffAdminPage.isDisplayed();
+  // await navBar.gotoListStuffAdminPage();
+  // await listStuffAdminPage.isDisplayed();
   // await navBar.gotoManageDatabasePage();
   // await manageDatabasePage.isDisplayed();
 });
