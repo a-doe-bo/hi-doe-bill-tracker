@@ -1,10 +1,10 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { Roles } from 'meteor/alanning:roles';
-import { Container, Navbar, Nav, NavDropdown, Image, Badge, Button } from 'react-bootstrap';
-import * as Icon from 'react-bootstrap-icons';
+import { Container, Navbar, Nav, NavDropdown, Image } from 'react-bootstrap';
+import { CloudDownload, Person, PersonPlus, PersonCheck, BoxArrowRight } from 'react-bootstrap-icons';
 import { ROLE } from '../../api/role/Role';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 
@@ -29,22 +29,28 @@ const NavBar = () => {
             ]) : ''}
             {Roles.userIsInRole(Meteor.userId(), [ROLE.ADMIN]) ? (
               [
-                <Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_STUFF_ADMIN} as={NavLink} to="/admin" key="admin">Manage User Accounts</Nav.Link>,
-                <Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_STUFF_ADMIN} as={NavLink} to="/createAccount" key="create-account">Create Accounts For Users</Nav.Link>,
-                <Nav.Link id={COMPONENT_IDS.NAVBAR_REQUEST_ACCOUNTS} as={NavLink} to="/requestedAccounts" key="requested-accounts">Requested User Accounts</Nav.Link>,
+                <NavDropdown id={COMPONENT_IDS.NAVBAR_MANAGE_DROPDOWN} title="Manage" key="manage-dropdown">
+                  <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_MANAGE_DROPDOWN_DATABASE} key="manage-database" as={NavLink} to="/manage-database"><CloudDownload /> Database</NavDropdown.Item>
+                  <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_MANAGE_DROPDOWN_ACCOUNTS} key="manage-accounts" as={NavLink} to="/admin"><Person /> User Accounts</NavDropdown.Item>
+                  <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_MANAGE_DROPDOWN_CREATE_ACCOUNT} key="manage-create-account" as={NavLink} to="/createAccount"><PersonPlus /> Create User Account</NavDropdown.Item>
+                  <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_MANAGE_DROPDOWN_REQUESTED_ACCOUNTS} key="manage-requested-accounts" as={NavLink} to="/requestedAccounts"><PersonCheck /> Requested Accounts</NavDropdown.Item>
+                </NavDropdown>,
               ]
             ) : ''}
             {Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER]) || Roles.userIsInRole(Meteor.userId(), [ROLE.PIPE_APPROVER]) || Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER]) ? (
-              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_STUFF_ADMIN} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewOfficeApprover">Manage Reviews</Nav.Link>]
+              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_AWAITING_REVIEWS} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewOfficeApprover">Manage Reviews</Nav.Link>]
             ) : ''}
             {Roles.userIsInRole(Meteor.userId(), [ROLE.PIPE_APPROVER]) ? (
-              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_STUFF_ADMIN} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewPIPEApprover">Awaiting Reviews</Nav.Link>]
+              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_AWAITING_REVIEWS} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewPIPEApprover">Awaiting Reviews</Nav.Link>]
             ) : ''}
             {Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER]) ? (
-              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_STUFF_ADMIN} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewFinalApprover">Awaiting Reviews</Nav.Link>]
+              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_AWAITING_REVIEWS} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewFinalApprover">Awaiting Reviews</Nav.Link>]
             ) : ''}
             {Roles.userIsInRole(Meteor.userId(), [ROLE.WRITER]) ? (
               [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_TESTIMONIES} as={NavLink} to="/listTestimonies" key="listWriterTestimonies">Testimonies</Nav.Link>]
+            ) : ''}
+            {Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY]) ? (
+              [<Nav.Link id={COMPONENT_IDS.NAVBAR_REQUEST_NEW_ACCOUNT} as={NavLink} to="/requestNewAccount" key="requestNewAccount">Request New Account</Nav.Link>]
             ) : ''}
           </Nav>
           <Nav className="justify-content-end">
@@ -52,8 +58,8 @@ const NavBar = () => {
               <Nav.Link id={COMPONENT_IDS.NAVBAR_LOGIN_DROPDOWN_SIGN_IN} as={NavLink} to="/signin">Login</Nav.Link>
             ) : (
               <NavDropdown id={COMPONENT_IDS.NAVBAR_CURRENT_USER} title={currentUser}>
-                <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_USER_PAGE} as={NavLink} to="/userPage"><Icon.BoxArrowRight /> Profile</NavDropdown.Item>
-                <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_SIGN_OUT} as={NavLink} to="/signout"><Icon.BoxArrowRight /> Sign out</NavDropdown.Item>
+                <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_USER_PAGE} as={NavLink} to="/userPage"><BoxArrowRight /> Profile</NavDropdown.Item>
+                <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_SIGN_OUT} as={NavLink} to="/signout"><BoxArrowRight /> Sign out</NavDropdown.Item>
               </NavDropdown>
             )}
           </Nav>

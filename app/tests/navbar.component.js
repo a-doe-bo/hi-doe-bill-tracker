@@ -38,18 +38,6 @@ class NavBar {
     await t.click(`#${COMPONENT_IDS.NAVBAR_SIGN_OUT}`);
   }
 
-  /* Pull down login menu, go to sign up page. */
-  /*
-  async gotoSignUpPage() {
-    await this.ensureLogout(t);
-    const visible = await Selector(`#${COMPONENT_IDS.NAVBAR_COLLAPSE}`).visible;
-    if (!visible) {
-      await t.click('button.navbar-toggler');
-    }
-    await t.click(`#${COMPONENT_IDS.NAVBAR_LOGIN_DROPDOWN}`);
-    await t.click(`#${COMPONENT_IDS.NAVBAR_LOGIN_DROPDOWN_SIGN_UP}`);
-  } */
-
   /* Go to the add stuff page. */
   // async gotoAddStuffPage() {
   //   const visible = await Selector(`#${COMPONENT_IDS.NAVBAR_COLLAPSE}`).visible;
@@ -71,14 +59,15 @@ class NavBar {
   }
 
   /* Go to the list stuff admin page. */
-  async gotoListStuffAdminPage() {
+  /* Replace this test with the new buttons (accounts, createAccount, requestedAccounts) */
+  /* async gotoListStuffAdminPage() {
     const visible = await Selector(`#${COMPONENT_IDS.NAVBAR_COLLAPSE}`).visible;
     if (!visible) {
       await t.click('button.navbar-toggler');
     }
     await t.expect(Selector(`#${COMPONENT_IDS.NAVBAR_CURRENT_USER}`).exists).ok();
     await t.click(`#${COMPONENT_IDS.NAVBAR_LIST_STUFF_ADMIN}`);
-  }
+  } */
 
   /* Go to the manage database page. Must be adimin. */
   async gotoManageDatabasePage() {
