@@ -7,6 +7,7 @@ export const COMPONENT_IDS = {
   ACCEPT_DRAFT: 'accept-draft',
   REJECT_DRAFT: 'reject-draft',
   SEND_TO_SECRETARY: 'send-to-secretary',
+  SEND_TO_EXPERT: 'send-to-expert',
   DOWNLOAD: 'download',
   NAVBAR_ADD_STUFF: 'navbar-add-stuff',
   NAVBAR_EMAIL_FORM: 'email-form',
