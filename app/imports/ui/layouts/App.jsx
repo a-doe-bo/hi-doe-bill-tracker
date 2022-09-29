@@ -23,6 +23,7 @@ import ListTestimonies from '../pages/ListTestimonies';
 import UserPage from '../pages/UserPage';
 import RequestedAccounts from '../pages/RequestedAccounts';
 import DraftTestimonies from '../pages/DraftTestimonies';
+import Pdf from '../pages/Pdf';
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
 const App = () => (
@@ -47,6 +48,7 @@ const App = () => (
         <Route path="/requestedAccounts" element={<AdminProtectedRoute><RequestedAccounts /></AdminProtectedRoute>} />
         <Route path="/admin" element={<AdminProtectedRoute><ListAccounts /></AdminProtectedRoute>} />
         <Route path="/notauthorized" element={<NotAuthorized />} />
+        <Route path="/pdf" element={<Pdf />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
