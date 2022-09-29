@@ -21,6 +21,7 @@ import ListAwaitingReview from '../pages/ListAwaitingReview';
 import CreateComment from '../pages/CreateComment';
 import ListTestimonies from '../pages/ListTestimonies';
 import UserPage from '../pages/UserPage';
+import DraftTestimonies from '../pages/DraftTestimonies';
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
 const App = () => (
@@ -37,6 +38,7 @@ const App = () => (
         <Route path="/saved-bills" element={<ProtectedRoute><SavedBills /></ProtectedRoute>} />
         <Route path="/listAwaitingReviews" element={<ProtectedRoute><ListAwaitingReview /></ProtectedRoute>} />
         <Route path="/listTestimonies" element={<ProtectedRoute> <ListTestimonies /> </ProtectedRoute>} />
+        <Route path="/draftTestimony" element={<ProtectedRoute><DraftTestimonies /></ProtectedRoute>} />
         <Route path="/edit/:_id" element={<ProtectedRoute><EditStuff /></ProtectedRoute>} />
         <Route path="/bill/:_id" element={<ProtectedRoute><BillDetails /></ProtectedRoute>} />
         <Route path="/createComment/:_id" element={<ProtectedRoute><CreateComment /></ProtectedRoute>} />
