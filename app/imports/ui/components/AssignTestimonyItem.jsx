@@ -7,10 +7,10 @@ import { Button } from 'react-bootstrap';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import { ROLE } from '../../api/role/Role';
 
-/** Renders a single row in the List Stuff table. See pages/ListStuff.jsx. */
+/** Creates a button that links to a form page with experts to assign testimonies to */
 const AssignTestimonyItem = ({ assignTestimony: { bill_name, bill_due_date, office, _id } }) => {
   const handleSendToExpert = () => {
-    console.log('Downloaded File');
+    console.log('Directed to Form with experts');
   };
   return (
     <tr>
