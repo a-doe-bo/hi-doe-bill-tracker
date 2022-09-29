@@ -1,5 +1,6 @@
 import React from 'react';
 import { Col, Container, Image, Row } from 'react-bootstrap';
+import { Bell, CheckAll, EnvelopeOpen, House } from 'react-bootstrap-icons';
 import { PAGE_IDS } from '../utilities/PageIDs';
 
 /* A simple static component to render some text for the landing page. */
@@ -8,25 +9,23 @@ const Landing = () => (
     <Container id={PAGE_IDS.LANDING} className="py-3">
       <Row className="align-middle text-center">
         <Col>
-          <Image src="/images/aDOEbo-logo.png" width="250px" />
+          <Image src="/images/logo-720x720.png" width="350px" marginBottom="50px" />
           <br />
           <br />
-          <p> DOE-Tracker is a student made web-application to assist the DOE in tracking important bills
+          <h5 style={{ color: '#140E03' }}> DOE-Tracker is a student made web-application to assist the DOE in tracking important bills
             through the legistlative process.
-          </p>
+          </h5>
         </Col>
 
-        <Col xs={8} className="d-flex flex-column justify-content-center">
-          <h1 className="landingHeader">Stay in the know with</h1>
-          <h1 className="landingHeader" style={{ color: '#3866f2' }}>DOE-Tracker!</h1>
+        <Col className="d-flex flex-column justify-content-center">
+          <h1 className="landingHeader" style={{ color: '#140E03' }}>Stay in the know with</h1>
+          <h1 className="landingHeader" style={{ color: '#ef2c2c', marginBottom: '50px' }}>DOE-Tracker!</h1>
           {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-          <br />
-          <br />
-          <br />
-          <br />
-          {/* eslint-disable-next-line jsx-a11y/no-redundant-roles */}
-          <a href="http://localhost:3000/signin"><button type="button" className="btn btn-outline-primary" href="http://localhost:3000/signin" role="button">Sign in here</button></a>
-          <br />
+          <h4 style={{ color: '#fab538' }}>Organize <House /> -
+            Notify <Bell /> -
+            Testify <EnvelopeOpen /> -
+            Approve <CheckAll />
+          </h4>
         </Col>
 
       </Row>
