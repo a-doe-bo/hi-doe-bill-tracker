@@ -15,7 +15,7 @@ import BillTable from '../components/BillTable';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import Filter from '../components/Filter';
-import measures from '../../../public/data/measures.json';
+import { Measures } from '../../api/measure/MeasureCollection';
 
 const ListBill = () => {
   const { ready } = useTracker(() => {
@@ -35,7 +35,7 @@ const ListBill = () => {
   };
   // TODO: Object with { header: '', component: ''}
   const table_headers = ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
-  const BillData = measures.map((stuff) => ({
+  const BillData = Measures.map((stuff) => ({
     _id: stuff._id,
     bill_name: stuff.measureTitle,
     bill_status: stuff.status,
