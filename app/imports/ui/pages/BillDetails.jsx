@@ -6,6 +6,8 @@ import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
 import { Stuffs } from '../../api/stuff/StuffCollection';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
+import PropTypes from 'prop-types';
+import BillItem from '../components/BillItem';
 
 const oldCode = `
 THE SENATE
@@ -52,10 +54,8 @@ BE IT ENACTED BY THE LEGISLATURE OF THE STATE OF HAWAII:
 `;
 
 /* Renders the EditStuff page for editing a single document. */
-const BillDetails = () => {
+const BillDetails = ({ billData: { bill_name, bill_status, bill_number, bill_hearing, report_title, bill_description, _id } }) => {
 
-  // Get the documentID from the URL field. See imports/ui/layouts/App.jsx for the route containing :_id.
-  const { _id } = useParams();
   // useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
   const { ready } = useTracker(() => {
     // Get access to Stuff documents.
@@ -91,7 +91,7 @@ const BillDetails = () => {
             Measure Title:
           </Col>
           <Col>
-            RELATING TO REGENERATIVE TOURISM
+            {bill_name}
           </Col>
         </Row>
         <Row className="pt-lg-0">
@@ -99,7 +99,7 @@ const BillDetails = () => {
             Report Title:
           </Col>
           <Col>
-            Objectives and Policies; Visitor Industry; State Tourism Functional Plan; Hawaii Tourism Authority; Office of Planning and Sustainability
+            {report_title}
           </Col>
         </Row>
         <Row className="pt-lg-0">
@@ -107,9 +107,7 @@ const BillDetails = () => {
             Description:
           </Col>
           <Col>
-            Incorporates a regenerative framework into the State Planning Act by expanding objectives and policies for the visitor industry.
-            Requires an update to the State Tourism Functional Plan to be submitted to the Legislature no later than 20 days prior to the convening
-            of the Regular Session of 2023. Effective 7/1/2050. (SD2)
+            {bill_description}
           </Col>
         </Row>
         <Row className="pt-lg-0">
@@ -117,7 +115,7 @@ const BillDetails = () => {
             Companion:
           </Col>
           <Col xs={2}>
-            HB1767
+            {bill_number}
           </Col>
         </Row>
         <Row className="pt-lg-0">
@@ -158,6 +156,18 @@ const BillDetails = () => {
       <ReactDiffViewer oldValue={oldCode} newValue={newCode} extraLinesSurroundingDiff={99999} compareMethod={DiffMethod.WORDS_WITH_SPACE} />
     </Container>
   ) : <LoadingSpinner />;
+};
+
+BillItem.propTypes = {
+  billData: PropTypes.shape({
+    _id: PropTypes.string,
+    bill_name: PropTypes.string,
+    bill_status: PropTypes.string,
+    bill_hearing: PropTypes.string,
+    bill_number: PropTypes.number,
+    report_title: PropTypes.string,
+    bill_description: PropTypes.string,
+  }).isRequired,
 };
 
 export default BillDetails;
