@@ -16,6 +16,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import Filter from '../components/Filter';
 
+
 const ListBill = () => {
   const { ready, stuffs } = useTracker(() => {
     const subscription = Stuffs.subscribeStuff();
@@ -34,7 +35,7 @@ const ListBill = () => {
   };
   // TODO: Object with { header: '', component: ''}
   const table_headers = ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
-  const BillData = stuffs.map((stuff, index) => ({
+  const BillData = measures.map((stuff, index) => ({
     _id: stuff._id,
     bill_name: `Bill ${index}`,
     bill_status: `Status_${index}`,
