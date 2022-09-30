@@ -15,9 +15,10 @@ import BillTable from '../components/BillTable';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import Filter from '../components/Filter';
+import measures from '../../../public/data/measures.json';
 
 const ListBill = () => {
-  const { ready, stuffs } = useTracker(() => {
+  const { ready } = useTracker(() => {
     const subscription = Stuffs.subscribeStuff();
     const rdy = subscription.ready();
     const stuffItems = Stuffs.find({}, { sort: { name: 1 } }).fetch();
@@ -34,15 +35,17 @@ const ListBill = () => {
   };
   // TODO: Object with { header: '', component: ''}
   const table_headers = ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
-  const BillData = stuffs.map((stuff, index) => ({
+  const BillData = measures.map((stuff) => ({
     _id: stuff._id,
-    bill_name: `Bill ${index}`,
-    bill_status: `Status_${index}`,
+    bill_name: stuff.measureTitle,
+    bill_status: stuff.status,
     bill_hearing: new Date().toLocaleString(),
-    bill_number: index,
-    bill_updated: 1663711472,
-    bill_committee: 'Agriculture & Environment',
-    measureType: 'HB',
+    bill_number: stuff.measureNumber,
+    bill_updated: stuff.lastUpdated,
+    bill_committee: stuff.currentReferral,
+    report_title: stuff.reportTitle,
+    measureType: stuff.measureType,
+    bill_description: stuff.measureType,
     office: 'office1',
   }));
   const [data, setData] = useState([]);
