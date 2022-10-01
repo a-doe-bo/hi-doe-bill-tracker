@@ -4,7 +4,7 @@ import { useTracker } from 'meteor/react-meteor-data';
 import { NavLink } from 'react-router-dom';
 import { Roles } from 'meteor/alanning:roles';
 import { Container, Navbar, Nav, NavDropdown, Image } from 'react-bootstrap';
-import { BoxArrowRight, CloudDownload } from 'react-bootstrap-icons';
+import { CloudDownload, Person, PersonPlus, PersonCheck, BoxArrowRight } from 'react-bootstrap-icons';
 import { ROLE } from '../../api/role/Role';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 
@@ -28,23 +28,30 @@ const NavBar = () => {
               <Nav.Link id={COMPONENT_IDS.NAVBAR_SAVED_BILLS} as={NavLink} to="/saved-bills" key="saved">Saved Bills</Nav.Link>,
             ]) : ''}
             {Roles.userIsInRole(Meteor.userId(), [ROLE.ADMIN]) ? (
-              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_STUFF_ADMIN} as={NavLink} to="/admin" key="admin">Manage User Accounts</Nav.Link>,
-                <Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_STUFF_ADMIN} as={NavLink} to="/createAccount" key="create-account">Create Accounts For Users</Nav.Link>,
+              [
                 <NavDropdown id={COMPONENT_IDS.NAVBAR_MANAGE_DROPDOWN} title="Manage" key="manage-dropdown">
                   <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_MANAGE_DROPDOWN_DATABASE} key="manage-database" as={NavLink} to="/manage-database"><CloudDownload /> Database</NavDropdown.Item>
-                </NavDropdown>]
+                  <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_MANAGE_DROPDOWN_ACCOUNTS} key="manage-accounts" as={NavLink} to="/admin"><Person /> User Accounts</NavDropdown.Item>
+                  <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_MANAGE_DROPDOWN_CREATE_ACCOUNT} key="manage-create-account" as={NavLink} to="/createAccount"><PersonPlus /> Create User Account</NavDropdown.Item>
+                  <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_MANAGE_DROPDOWN_REQUESTED_ACCOUNTS} key="manage-requested-accounts" as={NavLink} to="/requestedAccounts"><PersonCheck /> Requested Accounts</NavDropdown.Item>
+                </NavDropdown>,
+              ]
             ) : ''}
             {Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER]) || Roles.userIsInRole(Meteor.userId(), [ROLE.PIPE_APPROVER]) || Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER]) ? (
-              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_STUFF_ADMIN} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewOfficeApprover">Manage Reviews</Nav.Link>]
+              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_AWAITING_REVIEWS} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewOfficeApprover">Manage Reviews</Nav.Link>]
             ) : ''}
             {Roles.userIsInRole(Meteor.userId(), [ROLE.PIPE_APPROVER]) ? (
-              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_STUFF_ADMIN} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewPIPEApprover">Awaiting Reviews</Nav.Link>]
+              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_AWAITING_REVIEWS} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewPIPEApprover">Awaiting Reviews</Nav.Link>]
             ) : ''}
             {Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER]) ? (
-              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_STUFF_ADMIN} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewFinalApprover">Awaiting Reviews</Nav.Link>]
+              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_AWAITING_REVIEWS} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewFinalApprover">Awaiting Reviews</Nav.Link>]
             ) : ''}
             {Roles.userIsInRole(Meteor.userId(), [ROLE.WRITER]) ? (
-              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_TESTIMONIES} as={NavLink} to="/listTestimonies" key="listWriterTestimonies">Testimonies</Nav.Link>]
+              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_TESTIMONIES} as={NavLink} to="/listTestimonies" key="listWriterTestimonies">Testimonies</Nav.Link>],
+              [<Nav.Link id={COMPONENT_IDS.NAVBAR_DRAFT_TESTIMONY} as={NavLink} to="/draftTestimony" key="draftWriterTestimonies">Draft Testimony</Nav.Link>]
+            ) : ''}
+            {Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY]) ? (
+              [<Nav.Link id={COMPONENT_IDS.NAVBAR_REQUEST_NEW_ACCOUNT} as={NavLink} to="/requestNewAccount" key="requestNewAccount">Request New Account</Nav.Link>]
             ) : ''}
           </Nav>
           <Nav className="justify-content-end">
