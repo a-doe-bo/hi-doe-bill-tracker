@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Button,
   Col,
   Container,
-  InputGroup,
   Row,
-  Form,
   Tabs,
   Tab,
 } from 'react-bootstrap';
@@ -15,6 +12,7 @@ import BillTable from '../components/BillTable';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import Filter from '../components/Filter';
+import Autocomplete from '../components/Autocomplete';
 
 const ListBill = () => {
   const { ready, stuffs } = useTracker(() => {
@@ -26,12 +24,8 @@ const ListBill = () => {
       ready: rdy,
     };
   }, []);
-  const [searchInput, setSearchInput] = useState('');
+
   const [currentTab, setCurrentTab] = useState('Upcoming Bills');
-  const handleSearchInput = (e) => {
-    const { value } = e.target;
-    setSearchInput(value);
-  };
   // TODO: Object with { header: '', component: ''}
   const table_headers = ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
   const BillData = stuffs.map((stuff, index) => ({
@@ -53,27 +47,16 @@ const ListBill = () => {
   const handleCurrentTab = (tabName) => {
     setCurrentTab(tabName);
   };
+
   const tabs = ['Upcoming Bills', 'Bills', 'Dead Bills'];
   return (ready ? (
     <Container id={PAGE_IDS.LIST_BILLS} className="py-3">
       <Row>
         <Col md={3}>
-          {/* TODO: Make current tab switch on tab (re-rendering issue when switching tabs) */}
-          {/* TODO: Pass in three sets of data to avoid re-render on tab switch */}
           <Filter tab={currentTab} data={data} handleDataFiltering={setData} />
         </Col>
         <Col md={8} className="mx-3">
-          <InputGroup className="mb-3">
-            {/* eslint-disable-next-line react/jsx-no-undef */}
-            <Form.Control
-              value={searchInput}
-              onChange={handleSearchInput}
-              placeholder="Enter Bill Name, Bill #, or Bill Status"
-            />
-            <Button variant="outline-secondary" id="button-addon2">
-              Search
-            </Button>
-          </InputGroup>
+          <Autocomplete billData={data} onDataFiltering={setData} />
           <Tabs
             defaultActiveKey="Upcoming Bills"
             id="uncontrolled-tab-example"
