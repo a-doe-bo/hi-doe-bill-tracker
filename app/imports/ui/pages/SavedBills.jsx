@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
-import { Button, Col, Container, InputGroup, Row, Form, Tabs, Tab } from 'react-bootstrap';
+import { Col, Container, Row, Tabs, Tab } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Stuffs } from '../../api/stuff/StuffCollection';
 import SavedBill from '../components/SavedBill';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import { ROLE } from '../../api/role/Role';
+import Autocomplete from '../components/Autocomplete';
+import Filter from "../components/Filter";
 
 /* Renders a table containing all of the Stuff documents. Use <BillItem> to render each row. */
 const SavedBills = () => {
@@ -26,11 +28,8 @@ const SavedBills = () => {
       ready: rdy,
     };
   }, []);
-  const [searchInput, setSearchInput] = useState('');
-  const handleSearchInput = (e) => {
-    const { value } = e.target;
-    setSearchInput(value);
-  };
+  const [data, setData] = useState([]);
+
   const table_headers = Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY]) ?
     ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Assign'] :
     ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
@@ -40,44 +39,49 @@ const SavedBills = () => {
     bill_status: `Status_${index}`,
     bill_hearing: new Date().toLocaleString(),
     bill_number: index,
+    bill_updated: 1663711472,
+    bill_committee: 'Agriculture & Environment',
+    measureType: 'HB',
+    office: 'office1',
   }));
+  useEffect(() => {
+    setData(BillData);
+  }, [ready]);
+  const [currentTab, setCurrentTab] = useState('Upcoming Bills');
+  const handleCurrentTab = (tabName) => {
+    setCurrentTab(tabName);
+  };
   return (ready ? (
     <Container id={PAGE_IDS.SAVED_BILLS} className="py-3">
       <Row className="justify-content-center">
+        <Col md={3}>
+          <Filter tab={currentTab} data={data} handleDataFiltering={setData} />
+        </Col>
         <Col md={7}>
-          <InputGroup className="mb-3">
-            {/* eslint-disable-next-line react/jsx-no-undef */}
-            <Form.Control
-              value={searchInput}
-              onChange={handleSearchInput}
-              placeholder="Enter Bill Name, Bill #, or Bill Status"
-            />
-            <Button variant="outline-secondary" id="button-addon2">
-              Search
-            </Button>
-          </InputGroup>
+          <Autocomplete billData={data} onDataFiltering={setData} />
           <Tabs
             defaultActiveKey="upcoming-hearings"
             id="uncontrolled-tab-example"
             className="mb-3"
+            onSelect={(e) => (handleCurrentTab(e))}
           >
             <Tab eventKey="upcoming-hearings" title="Upcoming Hearings">
               <Col className="text-center">
                 <h2>Upcoming Bills</h2>
               </Col>
-              <SavedBill billData={BillData} tableHeaders={table_headers} />
+              <SavedBill billData={data} tableHeaders={table_headers} />
             </Tab>
             <Tab eventKey="bills" title="Bills">
               <Col className="text-center">
                 <h2>Bills</h2>
               </Col>
-              <SavedBill billData={BillData} tableHeaders={table_headers} />
+              <SavedBill billData={data} tableHeaders={table_headers} />
             </Tab>
             <Tab eventKey="dead-bills" title="Dead Bills">
               <Col className="text-center">
                 <h2>Dead Bills</h2>
               </Col>
-              <SavedBill billData={BillData} tableHeaders={table_headers} />
+              <SavedBill billData={data} tableHeaders={table_headers} />
             </Tab>
           </Tabs>
         </Col>

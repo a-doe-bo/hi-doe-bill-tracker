@@ -44,4 +44,7 @@ export const COMPONENT_IDS = {
   CREATE_COMMENTS_LINE: 'create-comments-form-comment',
   CREATE_COMMENTS_SUBMIT: 'create-comments-submit',
   NAVBAR_USER_PAGE: 'navbar-user-page',
+  DRAFT_TESTIMONY_FORM_SUBMIT: 'draft-testimony-form-submit',
+  DRAFT_TESTIMONY_FORM_SAVE: 'draft-testimony-form-save',
+  NAVBAR_DRAFT_TESTIMONY: 'navbar-draft-testimony',
 };
