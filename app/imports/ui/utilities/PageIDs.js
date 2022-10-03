@@ -18,5 +18,6 @@ export const PAGE_IDS = {
   AWAITING_TESTIMONIES: 'awaiting-testimonies',
   USER_PROFILE: 'user-profile',
   REQUESTED_ACCOUNTS: 'request-accounts',
+  REQUESTED_ACCOUNTS_FORM: 'request-accounts-form',
   DRAFT_TESTIMONY: 'draft-testimony',
 };

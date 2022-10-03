@@ -9,11 +9,11 @@ const Landing = () => (
     <Container id={PAGE_IDS.LANDING} className="py-3">
       <Row className="align-middle text-center">
         <Col>
-          <Image src="/images/logo-720x720.png" width="350px" marginBottom="50px" />
+          <Image src="/images/logo-720x720.png" style={{ width: '350px', marginBottom: '50px' }} />
           <br />
           <br />
           <h5 style={{ color: '#140E03' }}> DOE-Tracker is a student made web-application to assist the DOE in tracking important bills
-            through the legistlative process.
+            through the legislative process.
           </h5>
         </Col>
 
