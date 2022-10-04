@@ -3,6 +3,25 @@ import { Container, Card, Button, Col, Row, CardGroup, ListGroup, Tab, Tabs, But
 import { PAGE_IDS } from '../utilities/PageIDs';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 
+/*
+const formSchema = new SimpleSchema({
+  firstName: String,
+  lastName: String,
+  position: {
+    type: String,
+    allowedValues: ['Support', 'Oppose', 'Comments Only'],
+  },
+  testifying: {
+    type: String,
+    allowedValues: ['As an individual', 'On behalf of an organization'],
+  },
+  organization: {
+    type: String,
+    optional: true,
+  },
+  testimony: String,
+});
+*/
 const DraftTestimony = () => (
   <Container id={PAGE_IDS.DRAFT_TESTIMONY} className="py-3">
     <Row>
@@ -12,6 +31,7 @@ const DraftTestimony = () => (
         </Card>
       </CardGroup>
     </Row>
+
 
     <Card className="mt-3 border-0 bg-transparent shadow-none">
       <Row className="mb-3 col-sm-2 col-form-label bold-text">Testifier: </Row>
@@ -77,6 +97,11 @@ const DraftTestimony = () => (
                     <textarea className="form-control" style={{ width: '1250px', height: '100px' }} />
                   </div>
                 </Row>
+                <div className="justify-content-md-end mt-2">
+                    <ButtonGroup>
+                        <Button className="btn-success btn-lg" type="save" id={COMPONENT_IDS.DRAFT_TESTIMONY_FORM_SAVE}> Save </Button>
+                    </ButtonGroup>
+                </div>
               </Tab>
             </Tabs>
           </Col>
@@ -87,7 +112,7 @@ const DraftTestimony = () => (
     <div className="justify-content-md-end mt-2">
       <ButtonGroup>
         <Button className="btn-success btn-lg" type="submit" id={COMPONENT_IDS.DRAFT_TESTIMONY_FORM_SUBMIT}> Submit </Button>
-        <Button className="btn-success btn-lg" type="save" id={COMPONENT_IDS.DRAFT_TESTIMONY_FORM_SAVE}> Save </Button>
+
       </ButtonGroup>
     </div>
   </Container>
