@@ -5,6 +5,7 @@ import {
   Row,
   Tabs,
   Tab,
+  Table,
 } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Stuffs } from '../../api/stuff/StuffCollection';
@@ -13,12 +14,13 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import Filter from '../components/Filter';
 import Autocomplete from '../components/Autocomplete';
+import { Measures } from '../../api/measure/MeasureCollection';
 
 const ListBill = () => {
   const { ready, stuffs } = useTracker(() => {
-    const subscription = Stuffs.subscribeStuff();
+    const subscription = Measures.subscribeMeasures();
     const rdy = subscription.ready();
-    const stuffItems = Stuffs.find({}, { sort: { name: 1 } }).fetch();
+    const stuffItems = Measures.find({}).fetch();
     return {
       stuffs: stuffItems,
       ready: rdy,
@@ -27,13 +29,13 @@ const ListBill = () => {
 
   const [currentTab, setCurrentTab] = useState('Upcoming Bills');
   // TODO: Object with { header: '', component: ''}
-  const table_headers = ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
+  const table_headers = ['Save Bill', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
   const BillData = stuffs.map((stuff, index) => ({
     _id: stuff._id,
-    bill_name: `Bill ${index}`,
-    bill_status: `Status_${index}`,
-    bill_hearing: new Date().toLocaleString(),
-    bill_number: index,
+    billTitle: stuff.measureTitle,
+    billStatus: stuff.status,
+    billHearing: stuff.year,
+    billNumber: stuff.measureNumber,
     bill_updated: 1663711472,
     bill_committee: 'Agriculture & Environment',
     measureType: 'HB',
@@ -55,7 +57,7 @@ const ListBill = () => {
         <Col md={3}>
           <Filter tab={currentTab} data={data} handleDataFiltering={setData} />
         </Col>
-        <Col md={8} className="mx-3">
+        <Col md={7} className="mx-3">
           <Autocomplete billData={data} onDataFiltering={setData} />
           <Tabs
             defaultActiveKey="Upcoming Bills"
@@ -75,7 +77,7 @@ const ListBill = () => {
         </Col>
       </Row>
     </Container>
-  ) : <LoadingSpinner message="Loading Stuff" />);
+  ) : <LoadingSpinner message="Loading Measures" />);
 };
 
 export default ListBill;

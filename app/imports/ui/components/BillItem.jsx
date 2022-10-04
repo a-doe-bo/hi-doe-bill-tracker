@@ -11,7 +11,7 @@ import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import { ROUTE_PATHS } from '../utilities/RoutePaths';
 
 
-const BillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearing, _id } }) => {
+const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, _id } }) => {
   const { pathname } = useLocation();
   const [toggle, setToggle] = useState(true);
   const [collapsableTable, setCollapsableTable] = useState(false);
@@ -19,7 +19,9 @@ const BillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearin
   return (
     <>
       <tr>
-        <td>
+        {/* TODO: Ask a question about this */}
+        {/* Unknown data, RE: Thane Luna */}
+        {/* <td>
           {collapsableTable ? (
             <Button onClick={handleToggle(collapsableTable, setCollapsableTable)} aria-expanded={collapsableTable} aria-controls="collapse-table">
               <CaretDownFill size={40} />
@@ -30,14 +32,14 @@ const BillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearin
                 <CaretRightFill size={40} />
               </Button>
             )}
-        </td>
+        </td> */}
         <td className="text-center">
           <BookmarkPlusFill onClick={handleToggle(toggle, setToggle)} size={50} fill={toggle ? '#c4c4c4' : '#E7D27C'} />
         </td>
-        <td>{bill_number}</td>
-        <td>{bill_name}</td>
-        <td>{bill_status}</td>
-        <td>{bill_hearing}</td>
+        <td>{billNumber}</td>
+        <td>{billTitle}</td>
+        <td>{billStatus}</td>
+        <td>{billHearing}</td>
         <td>
           <Link className={COMPONENT_IDS.VIEW_BILL} to={`/bill/${_id}`}>View Bill</Link>
         </td>
@@ -47,56 +49,6 @@ const BillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearin
           </td>
         )}
       </tr>
-      <tr>
-        <td style={{ padding: 0 }} colSpan={10}>
-          <Collapse in={collapsableTable}>
-            <div id="collapse-table">
-              <Table>
-                <thead>
-                  <tr>
-                    <th>Hearing Location</th>
-                    <th>Date Introduced</th>
-                    <th>Committee</th>
-                    <th>Committee</th>
-                    <th>Committee</th>
-                    <th>Committee</th>
-                    <th>Committee</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                  </tr>
-                  <tr>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                  </tr>
-                  <tr>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                  </tr>
-                </tbody>
-              </Table>
-            </div>
-          </Collapse>
-        </td>
-      </tr>
     </>
   );
 };
@@ -104,10 +56,10 @@ const BillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearin
 BillItem.propTypes = {
   billData: PropTypes.shape({
     _id: PropTypes.string,
-    bill_name: PropTypes.string,
-    bill_status: PropTypes.string,
-    bill_hearing: PropTypes.string,
-    bill_number: PropTypes.number,
+    billNumber: PropTypes.number,
+    billTitle: PropTypes.string,
+    billStatus: PropTypes.string,
+    billHearing: PropTypes.number,
   }).isRequired,
 };
 
