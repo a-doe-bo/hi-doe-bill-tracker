@@ -46,5 +46,8 @@ export const COMPONENT_IDS = {
   NAVBAR_USER_PAGE: 'navbar-user-page',
   DRAFT_TESTIMONY_FORM_SUBMIT: 'draft-testimony-form-submit',
   DRAFT_TESTIMONY_FORM_SAVE: 'draft-testimony-form-save',
+  DRAFT_TESTIMONY_FORM_FIRST_NAME: 'draft-testimony-form-first-name',
+  DRAFT_TESTIMONY_FORM_LAST_NAME: 'draft-testimony-form-last-name',
+  DRAFT_TESTIMONY_FORM_POSITION: 'draft-testimony-form-position',
   NAVBAR_DRAFT_TESTIMONY: 'navbar-draft-testimony',
 };
