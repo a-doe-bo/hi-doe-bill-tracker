@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { BookmarkPlusFill, CaretDownFill, CaretRightFill } from 'react-bootstrap-icons';
+import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';import { BookmarkPlusFill, CaretDownFill, CaretRightFill } from 'react-bootstrap-icons';
 import { Button, Collapse, Table } from 'react-bootstrap';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
+import AssignToExpertModal from './AssignToExpertModal';
+import { ROLE } from '../../api/role/Role';
 
 const SavedBillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearing, _id } }) => {
   const [toggle, setToggle] = useState(true);
@@ -34,16 +37,13 @@ const SavedBillItem = ({ billData: { bill_name, bill_status, bill_number, bill_h
         <td>
           <Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/bill/${_id}`}>View Bill</Link>
         </td>
-        <td>
-          <button
-            type="button"
-            className="btn btn-outline-primary"
-            onClick={() => {
-              console.log('assign to expert');
-            }}
-          >Assign to Expert
-          </button>
-        </td>
+        {
+          Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY]) && (
+            <td>
+              <AssignToExpertModal />
+            </td>
+          )
+        }
       </tr>
       <tr>
         <td style={{ padding: 0 }} colSpan={7}>
