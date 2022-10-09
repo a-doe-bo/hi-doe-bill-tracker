@@ -9,6 +9,7 @@ import { useLocation } from 'react-router';
 import { ROLE } from '../../api/role/Role';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import { ROUTE_PATHS } from '../utilities/RoutePaths';
+import OfficePickDropdown from "./OfficePickDropdown";
 
 const BillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearing, _id } }) => {
   const { pathname } = useLocation();
@@ -43,6 +44,11 @@ const BillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearin
         {(pathname === ROUTE_PATHS.SAVED_BILLS && Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY])) && (
           <td>
             <Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/bill/${_id}`}>Assign</Link>
+          </td>
+        )}
+        {(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) && (
+          <td>
+            <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, _id }} />
           </td>
         )}
       </tr>
