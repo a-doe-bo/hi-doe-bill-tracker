@@ -47,7 +47,6 @@ const ListBill = () => {
   const handleCurrentTab = (tabName) => {
     setCurrentTab(tabName);
   };
-
   const tabs = ['Upcoming Bills', 'Bills', 'Dead Bills'];
   return (ready ? (
     <Container id={PAGE_IDS.LIST_BILLS} className="py-3">
