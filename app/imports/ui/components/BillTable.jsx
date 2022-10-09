@@ -21,9 +21,10 @@ const BillTable = ({ billData, tableHeaders }) => (
 BillTable.propTypes = {
   billData: PropTypes.arrayOf(PropTypes.shape({
     _id: PropTypes.string,
-    bill_name: PropTypes.string,
-    bill_status: PropTypes.string,
-    bill_number: PropTypes.number,
+    billNumber: PropTypes.number,
+    billTitle: PropTypes.string,
+    billStatus: PropTypes.string,
+    billHearing: PropTypes.number,
   })).isRequired,
   tableHeaders: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
