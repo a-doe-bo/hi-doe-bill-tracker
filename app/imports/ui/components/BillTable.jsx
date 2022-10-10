@@ -11,7 +11,6 @@ const BillTable = ({ billData, tableHeaders }) => {
   const indexOfLastBill = currentPage * billsPerPage;
   const indexOfFirstBill = indexOfLastBill - billsPerPage;
   const currentBills = billData.slice(indexOfFirstBill, indexOfLastBill);
-  
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
