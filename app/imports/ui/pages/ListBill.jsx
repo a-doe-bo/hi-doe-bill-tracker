@@ -5,10 +5,8 @@ import {
   Row,
   Tabs,
   Tab,
-  Table,
 } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
-import { Stuffs } from '../../api/stuff/StuffCollection';
 import BillTable from '../components/BillTable';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
@@ -18,9 +16,9 @@ import { Measures } from '../../api/measure/MeasureCollection';
 
 const ListBill = () => {
   const { ready, stuffs } = useTracker(() => {
-    const subscription = Stuffs.subscribeStuff();
+    const subscription = Measures.subscribeMeasures();
     const rdy = subscription.ready();
-    const stuffItems = Stuffs.find({}).fetch();
+    const stuffItems = Measures.find({}).fetch();
     return {
       stuffs: stuffItems,
       ready: rdy,
