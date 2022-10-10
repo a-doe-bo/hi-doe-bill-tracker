@@ -15,12 +15,12 @@ import Autocomplete from '../components/Autocomplete';
 import { Measures } from '../../api/measure/MeasureCollection';
 
 const ListBill = () => {
-  const { ready, stuffs } = useTracker(() => {
+  const { ready, measures } = useTracker(() => {
     const subscription = Measures.subscribeMeasures();
     const rdy = subscription.ready();
-    const stuffItems = Measures.find({}).fetch();
+    const measuresItems = Measures.find({}).fetch();
     return {
-      stuffs: stuffItems,
+      measures: measuresItems,
       ready: rdy,
     };
   }, []);
@@ -28,12 +28,12 @@ const ListBill = () => {
   const [currentTab, setCurrentTab] = useState('Upcoming Bills');
   // TODO: Object with { header: '', component: ''}
   const table_headers = ['Save Bill', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
-  const BillData = stuffs.map((stuff, index) => ({
-    _id: stuff._id,
-    billTitle: stuff.measureTitle,
-    billStatus: stuff.status,
-    billHearing: stuff.year,
-    billNumber: stuff.measureNumber,
+  const BillData = measures.map((measureData) => ({
+    _id: measureData._id,
+    billTitle: measureData.measureTitle,
+    billStatus: measureData.status,
+    billHearing: measureData.year,
+    billNumber: measureData.measureNumber,
     bill_updated: 1663711472,
     bill_committee: 'Agriculture & Environment',
     measureType: 'HB',
@@ -43,7 +43,7 @@ const ListBill = () => {
   // TODO: Remove this once we have our API set up and split the Bill data into (upcoming bills, dead bills, bills)
   useEffect(() => {
     setData(BillData);
-  }, [ready]);
+  }, [ready, measures]);
   const handleCurrentTab = (tabName) => {
     setCurrentTab(tabName);
   };
