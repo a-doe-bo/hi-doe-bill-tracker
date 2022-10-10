@@ -51,7 +51,7 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
         )}
         {(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) && (
           <td>
-            <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, _id }} />
+            <OfficePickDropdown data={{ billTitle, billStatus, billNumber, billHearing, _id }} />
           </td>
         )}
       </tr>

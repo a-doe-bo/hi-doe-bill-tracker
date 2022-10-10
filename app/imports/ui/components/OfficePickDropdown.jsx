@@ -33,10 +33,6 @@ const OfficePickDropdown = ({ data }) => {
           ))
         }
       </>
-      <option>Open this select menu</option>
-      <option value="1">One</option>
-      <option value="2">Two</option>
-      <option value="3">Three</option>
     </Form.Select>
   );
 };
@@ -44,10 +40,10 @@ const OfficePickDropdown = ({ data }) => {
 OfficePickDropdown.propTypes = {
   data: PropTypes.shape({
     _id: PropTypes.string,
-    bill_name: PropTypes.string,
-    bill_status: PropTypes.string,
-    bill_hearing: PropTypes.string,
-    bill_number: PropTypes.number,
+    billNumber: PropTypes.number,
+    billTitle: PropTypes.string,
+    billStatus: PropTypes.string,
+    billHearing: PropTypes.number,
   }).isRequired,
 };
 
