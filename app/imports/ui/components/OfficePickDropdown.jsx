@@ -20,7 +20,7 @@ const OfficePickDropdown = ({ data }) => {
   };
   const officeOptions = ['office1', 'office2', 'office3', 'office4', 'office5', 'office6', 'office7'];
   return (
-    <Form.Select aria-label="Default select example" onChange={(e) => (updateDatabase(e))}>
+    <Form.Select aria-label="Default select example" onChange={(e) => (updateDatabase(e))} style={{ width: '200px' }}>
       <>
         {
           officeOptions.map((officeName, index) => (
