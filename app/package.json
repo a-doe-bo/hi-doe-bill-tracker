@@ -3,6 +3,7 @@
   "private": true,
   "dependencies": {
     "@babel/runtime": "^7.18.3",
+    "add-to-calendar-button": "^1.17.0",
     "bootstrap": "^5.2.0",
     "classnames": "^2.3.1",
     "core-js": "^3.23.2",

@@ -10,6 +10,7 @@ import { ROLE } from '../../api/role/Role';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import { ROUTE_PATHS } from '../utilities/RoutePaths';
 import OfficePickDropdown from './OfficePickDropdown';
+import AddToCalendar from "./AddToCalendar";
 
 const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, _id } }) => {
   const { pathname } = useLocation();
@@ -53,6 +54,9 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
             <OfficePickDropdown data={{ billTitle, billStatus, billNumber, billHearing, _id }} />
           </td>
         )}
+        <td style={{ width: '150px' }}>
+          <AddToCalendar data={{ billTitle, billStatus, billNumber, billHearing, _id }} />
+        </td>
       </tr>
       <tr>
         <td style={{ padding: 0 }} colSpan={10}>
