@@ -17,6 +17,7 @@
     "react-bootstrap-typeahead": "^6.0.0",
     "react-diff-viewer": "^3.1.1",
     "react-dom": "^18.2.0",
+    "react-multi-select-component": "^4.3.4",
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
     "react-tiny-virtual-list": "^2.2.0",

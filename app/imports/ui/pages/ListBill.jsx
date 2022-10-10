@@ -18,9 +18,9 @@ import { Measures } from '../../api/measure/MeasureCollection';
 
 const ListBill = () => {
   const { ready, stuffs } = useTracker(() => {
-    const subscription = Measures.subscribeMeasures();
+    const subscription = Stuffs.subscribeStuff();
     const rdy = subscription.ready();
-    const stuffItems = Measures.find({}).fetch();
+    const stuffItems = Stuffs.find({}).fetch();
     return {
       stuffs: stuffItems,
       ready: rdy,
