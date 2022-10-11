@@ -12,7 +12,7 @@ import { ROUTE_PATHS } from '../utilities/RoutePaths';
 import OfficePickDropdown from './OfficePickDropdown';
 import AddToCalendar from "./AddToCalendar";
 
-const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, _id } }) => {
+const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, _id, billDate, billCommittee, billRoomNumber, billDoeStance } }) => {
   const { pathname } = useLocation();
   const [toggle, setToggle] = useState(true);
   const [collapsableTable, setCollapsableTable] = useState(false);
@@ -41,6 +41,10 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
         <td>{billTitle}</td>
         <td>{billStatus}</td>
         <td>{billHearing}</td>
+        <td>{billDate}</td>
+        <td>{billRoomNumber}</td>
+        <td>{billCommittee}</td>
+        <td>{billDoeStance}</td>
         <td>
           <Link className={COMPONENT_IDS.VIEW_BILL} to={`/bill/${_id}`}>View Bill</Link>
         </td>
@@ -51,7 +55,7 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
         )}
         {(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) && (
           <td style={{ width: '150px' }}>
-            <OfficePickDropdown data={{ billTitle, billStatus, billNumber, billHearing, _id }} />
+            <OfficePickDropdown data={{ billTitle, billStatus, billNumber, billHearing, _id, billDate, billRoomNumber, billDoeStance }} />
           </td>
         )}
         <td style={{ width: '150px' }}>
@@ -119,6 +123,10 @@ BillItem.propTypes = {
     billTitle: PropTypes.string,
     billStatus: PropTypes.string,
     billHearing: PropTypes.number,
+    billDate: PropTypes.number,
+    billCommittee: PropTypes.string,
+    billRoomNumber: PropTypes.number,
+    billDoeStance: PropTypes.string,
   }).isRequired,
 };
 

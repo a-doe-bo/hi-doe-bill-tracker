@@ -8,7 +8,7 @@ import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import AssignToExpertModal from './AssignToExpertModal';
 import { ROLE } from '../../api/role/Role';
 
-const SavedBillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearing, _id } }) => {
+const SavedBillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearing, _id, billDate, billCommittee, billRoomNumber, billDoeStance  } }) => {
   const [toggle, setToggle] = useState(true);
   const [collapsableTable, setCollapsableTable] = useState(false);
   const handleToggle = (state, setState) => () => { setState(!state); };
@@ -34,6 +34,10 @@ const SavedBillItem = ({ billData: { bill_name, bill_status, bill_number, bill_h
         <td>{bill_name}</td>
         <td>{bill_status}</td>
         <td>{bill_hearing}</td>
+        <td>{billDate}</td>
+        <td>{billRoomNumber}</td>
+        <td>{billCommittee}</td>
+        <td>{billDoeStance}</td>
         <td>
           <Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/bill/${_id}`}>View Bill</Link>
         </td>
@@ -106,6 +110,10 @@ SavedBillItem.propTypes = {
     bill_status: PropTypes.string,
     bill_hearing: PropTypes.string,
     bill_number: PropTypes.number,
+    billDate: PropTypes.number,
+    billCommittee: PropTypes.string,
+    billRoomNumber: PropTypes.number,
+    billDoeStance: PropTypes.string,
   }).isRequired,
 };
 
