@@ -7,7 +7,7 @@ import Pagination2 from './Pagination2';
 const BillTable = ({ billData, tableHeaders }) => {
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [billsPerPage] = useState(235);
+  const [billsPerPage] = useState(270);
   const indexOfLastBill = currentPage * billsPerPage;
   const indexOfFirstBill = indexOfLastBill - billsPerPage;
   const currentBills = billData.slice(indexOfFirstBill, indexOfLastBill);
