@@ -37,7 +37,7 @@ class ExpertCollection extends BaseCollection {
         }
         this._collection.update(docID, { $set: updateData });
     }
-    
+
     publish() {
         if (Meteor.isServer) {
           // get the MeasureCollection instance
@@ -67,3 +67,5 @@ class ExpertCollection extends BaseCollection {
     }
 
 }
+
+export const Experts = new ExpertCollection();
