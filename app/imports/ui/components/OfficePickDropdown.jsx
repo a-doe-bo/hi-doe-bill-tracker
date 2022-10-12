@@ -40,9 +40,6 @@ OfficePickDropdown.propTypes = {
     billTitle: PropTypes.string,
     billStatus: PropTypes.string,
     billHearing: PropTypes.number,
-    billDate: PropTypes.number,
-    billRoomNumber: PropTypes.number,
-    billDoeStance: PropTypes.string,
   }).isRequired,
 };
 

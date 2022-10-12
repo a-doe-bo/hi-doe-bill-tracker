@@ -12,7 +12,7 @@ import { ROUTE_PATHS } from '../utilities/RoutePaths';
 import OfficePickDropdown from './OfficePickDropdown';
 import AddToCalendar from "./AddToCalendar";
 
-const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, _id, billDate, billCommittee, billRoomNumber, billDoeStance } }) => {
+const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, _id } }) => {
   const { pathname } = useLocation();
   const [toggle, setToggle] = useState(true);
   const [collapsableTable, setCollapsableTable] = useState(false);
@@ -41,10 +41,6 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
         <td>{billTitle}</td>
         <td>{billStatus}</td>
         <td>{billHearing}</td>
-        <td>{billDate}</td>
-        <td>{billRoomNumber}</td>
-        <td>{billCommittee}</td>
-        <td>{billDoeStance}</td>
         <td>
           <Link className={COMPONENT_IDS.VIEW_BILL} to={`/bill/${_id}`}>View Bill</Link>
         </td>
@@ -55,7 +51,7 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
         )}
         {(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) && (
           <td style={{ width: '150px' }}>
-            <OfficePickDropdown data={{ billTitle, billStatus, billNumber, billHearing, _id, billDate, billRoomNumber, billDoeStance }} />
+            <OfficePickDropdown data={{ billTitle, billStatus, billNumber, billHearing, _id }} />
           </td>
         )}
         <td style={{ width: '150px' }}>
@@ -71,11 +67,10 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
                   <tr>
                     <th>Hearing Location</th>
                     <th>Date Introduced</th>
-                    <th>Committee</th>
-                    <th>Committee</th>
-                    <th>Committee</th>
-                    <th>Committee</th>
-                    <th>Committee</th>
+                    <th>Committee Hearing</th>
+                    <th>Room #</th>
+                    <th>DOE Stance</th>
+                    <th>Date/Time</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -86,7 +81,6 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
                     <td>Some Data</td>
                     <td>Some Data</td>
                     <td>Some Data</td>
-                    <td>Some Data</td>
                   </tr>
                   <tr>
                     <td>Some Data</td>
@@ -95,10 +89,8 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
                     <td>Some Data</td>
                     <td>Some Data</td>
                     <td>Some Data</td>
-                    <td>Some Data</td>
                   </tr>
                   <tr>
-                    <td>Some Data</td>
                     <td>Some Data</td>
                     <td>Some Data</td>
                     <td>Some Data</td>
@@ -123,10 +115,6 @@ BillItem.propTypes = {
     billTitle: PropTypes.string,
     billStatus: PropTypes.string,
     billHearing: PropTypes.number,
-    billDate: PropTypes.number,
-    billCommittee: PropTypes.string,
-    billRoomNumber: PropTypes.number,
-    billDoeStance: PropTypes.string,
   }).isRequired,
 };
 

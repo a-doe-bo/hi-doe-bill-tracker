@@ -8,7 +8,7 @@ import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import AssignToExpertModal from './AssignToExpertModal';
 import { ROLE } from '../../api/role/Role';
 
-const SavedBillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearing, _id, billDate, billCommittee, billRoomNumber, billDoeStance  } }) => {
+const SavedBillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearing, _id } }) => {
   const [toggle, setToggle] = useState(true);
   const [collapsableTable, setCollapsableTable] = useState(false);
   const handleToggle = (state, setState) => () => { setState(!state); };
@@ -34,10 +34,6 @@ const SavedBillItem = ({ billData: { bill_name, bill_status, bill_number, bill_h
         <td>{bill_name}</td>
         <td>{bill_status}</td>
         <td>{bill_hearing}</td>
-        <td>{billDate}</td>
-        <td>{billRoomNumber}</td>
-        <td>{billCommittee}</td>
-        <td>{billDoeStance}</td>
         <td>
           <Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/bill/${_id}`}>View Bill</Link>
         </td>
@@ -58,11 +54,10 @@ const SavedBillItem = ({ billData: { bill_name, bill_status, bill_number, bill_h
                   <tr>
                     <th>Hearing Location</th>
                     <th>Date Introduced</th>
-                    <th>Committee</th>
-                    <th>Committee</th>
-                    <th>Committee</th>
-                    <th>Committee</th>
-                    <th>Committee</th>
+                    <th>Committee Hearing</th>
+                    <th>Room #</th>
+                    <th>DOE Stance</th>
+                    <th>Date/Time</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -73,7 +68,6 @@ const SavedBillItem = ({ billData: { bill_name, bill_status, bill_number, bill_h
                     <td>Some Data</td>
                     <td>Some Data</td>
                     <td>Some Data</td>
-                    <td>Some Data</td>
                   </tr>
                   <tr>
                     <td>Some Data</td>
@@ -82,10 +76,8 @@ const SavedBillItem = ({ billData: { bill_name, bill_status, bill_number, bill_h
                     <td>Some Data</td>
                     <td>Some Data</td>
                     <td>Some Data</td>
-                    <td>Some Data</td>
                   </tr>
                   <tr>
-                    <td>Some Data</td>
                     <td>Some Data</td>
                     <td>Some Data</td>
                     <td>Some Data</td>
@@ -110,10 +102,6 @@ SavedBillItem.propTypes = {
     bill_status: PropTypes.string,
     bill_hearing: PropTypes.string,
     bill_number: PropTypes.number,
-    billDate: PropTypes.number,
-    billCommittee: PropTypes.string,
-    billRoomNumber: PropTypes.number,
-    billDoeStance: PropTypes.string,
   }).isRequired,
 };
 
