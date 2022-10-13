@@ -18,6 +18,9 @@ class SimplePage {
 
 export const billDetailsPage = new SimplePage(PAGE_IDS.BILL_DETAILS);
 export const listBillsPage = new SimplePage(PAGE_IDS.LIST_BILLS);
-export const listStuffAdminPage = new SimplePage(PAGE_IDS.LIST_STUFF_ADMIN);
+export const listSavedBillsPage = new SimplePage(PAGE_IDS.SAVED_BILLS);
+export const manageUserAccounts = new SimplePage(PAGE_IDS.MANAGE_ACCOUNTS);
 export const manageDatabasePage = new SimplePage(PAGE_IDS.MANAGE_DATABASE);
+export const createAccount = new SimplePage(PAGE_IDS.SIGN_UP);
+export const requestedAccounts = new SimplePage(PAGE_IDS.REQUESTED_ACCOUNTS);
 export const signOutPage = new SimplePage(PAGE_IDS.SIGN_OUT);

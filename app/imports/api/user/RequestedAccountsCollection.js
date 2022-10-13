@@ -7,9 +7,10 @@ import { Users } from './UserCollection';
 export const userPublications = {
   users: 'Users',
 };
-class UserProfileCollection extends BaseProfileCollection {
+
+class RequestedAccountsCollection extends BaseProfileCollection {
   constructor() {
-    super('UserProfile', new SimpleSchema({}));
+    super('RequestedAccounts', new SimpleSchema({}));
   }
 
   /**
@@ -27,8 +28,10 @@ class UserProfileCollection extends BaseProfileCollection {
     const user = this.findOne({ email, firstName, lastName });
     if (!user) {
       const userID = Users.define({ username, role, password });
+      // TODO: change validRoles when we know what data to put
       const validRoles = [];
       Object.values(ROLE).map((userRole) => validRoles.push(userRole));
+      // inserts profile data if role is valid
       if (validRoles.includes(role)) {
         return this._collection.insert({ email, firstName, lastName, userID, role, employeeID });
       }
@@ -37,7 +40,7 @@ class UserProfileCollection extends BaseProfileCollection {
   }
 
   /**
-   * Updates the UserProfile. You cannot change the email or role.
+   * Updates the RequestedAccount. You cannot change the email or role.
    * @param docID the id of the UserProfile
    * @param firstName new first name (optional).
    * @param lastName new last name (optional).
@@ -95,15 +98,16 @@ class UserProfileCollection extends BaseProfileCollection {
 
   /**
    * Returns an object representing the UserProfile docID in a format acceptable to define().
-   * @param docID The docID of a UserProfile
+   * @param docID The docID of a Requested Account
    * @returns { Object } An object representing the definition of docID.
    */
   dumpOne(docID) {
     const doc = this.findDoc(docID);
     const email = doc.email;
+    const role = doc.role;
     const firstName = doc.firstName;
     const lastName = doc.lastName;
-    return { email, firstName, lastName };
+    return { email, firstName, lastName, role };
   }
 
   /**
@@ -135,4 +139,4 @@ class UserProfileCollection extends BaseProfileCollection {
  * Provides the singleton instance of this class to all other entities.
  * @type {UserProfileCollection}
  */
-export const UserProfiles = new UserProfileCollection();
+export const RequestedProfiles = new RequestedAccountsCollection();

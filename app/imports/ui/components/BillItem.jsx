@@ -67,11 +67,10 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
                   <tr>
                     <th>Hearing Location</th>
                     <th>Date Introduced</th>
-                    <th>Committee</th>
-                    <th>Committee</th>
-                    <th>Committee</th>
-                    <th>Committee</th>
-                    <th>Committee</th>
+                    <th>Committee Hearing</th>
+                    <th>Room #</th>
+                    <th>DOE Stance</th>
+                    <th>Date/Time</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -82,7 +81,6 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
                     <td>Some Data</td>
                     <td>Some Data</td>
                     <td>Some Data</td>
-                    <td>Some Data</td>
                   </tr>
                   <tr>
                     <td>Some Data</td>
@@ -91,10 +89,8 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
                     <td>Some Data</td>
                     <td>Some Data</td>
                     <td>Some Data</td>
-                    <td>Some Data</td>
                   </tr>
                   <tr>
-                    <td>Some Data</td>
                     <td>Some Data</td>
                     <td>Some Data</td>
                     <td>Some Data</td>
