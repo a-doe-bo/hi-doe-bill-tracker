@@ -7,6 +7,7 @@ export const PAGE_IDS = {
   EMAIL_FORM: 'email-form',
   LIST_STUFF_ADMIN: 'list-stuff-admin',
   MANAGE_DATABASE: 'manage-database',
+  MANAGE_ACCOUNTS: 'manage-accounts',
   NOT_AUTHORIZED: 'not-authorized',
   NOT_FOUND: 'not-found',
   SIGN_IN: 'sign-in',
@@ -17,6 +18,6 @@ export const PAGE_IDS = {
   CREATE_COMMENTS: 'create-comments',
   AWAITING_TESTIMONIES: 'awaiting-testimonies',
   USER_PROFILE: 'user-profile',
-  REQUESTED_ACCOUNTS: 'request-accounts',
+  REQUESTED_ACCOUNTS: 'requested-accounts',
   DRAFT_TESTIMONY: 'draft-testimony',
 };

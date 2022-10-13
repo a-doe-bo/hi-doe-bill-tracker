@@ -1,8 +1,9 @@
 import { Selector, t } from 'testcafe';
+import { PAGE_IDS } from '../imports/ui/utilities/PageIDs';
 
-class SignoutPage {
+class ManageDatabase {
   constructor() {
-    this.pageId = '#signout-page';
+    this.pageId = `#${PAGE_IDS.MANAGE_DATABASE}`;
     this.pageSelector = Selector(this.pageId);
   }
 
@@ -12,4 +13,4 @@ class SignoutPage {
   }
 }
 
-export const signoutPage = new SignoutPage();
+export const manageDatabase = new ManageDatabase();

@@ -17,7 +17,7 @@ const ListAccounts = () => {
     };
   }, []);
   return (ready ? (
-    <Container id={PAGE_IDS.LIST_STUFF_ADMIN} className="py-3">
+    <Container id={PAGE_IDS.MANAGE_ACCOUNTS} className="py-3">
       <Row className="justify-content-center">
         <Col md={7}>
           <Col className="text-center"><h2>DOE Users</h2></Col>
