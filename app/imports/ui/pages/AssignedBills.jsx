@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { Meteor } from 'meteor/meteor';
 import { Col, Container, Row, Tabs, Tab } from 'react-bootstrap';
+import { Roles } from 'meteor/alanning:roles';
 import { useTracker } from 'meteor/react-meteor-data';
-import BillTable from '../components/BillTable';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import Filter from '../components/Filter';
 import Autocomplete from '../components/Autocomplete';
-import { Measures } from '../../api/measure/MeasureCollection';
+import AssignedBill from '../components/AssignedBill';
 
 /* Renders a table containing all of the Stuff documents. Use <BillItem> to render each row. */
 const AssignedBills = () => {
@@ -15,10 +16,12 @@ const AssignedBills = () => {
     // Note that this subscription will get cleaned up
     // when your component is unmounted or deps change.
     // Get access to Stuff documents.
+    // eslint-disable-next-line no-undef
     const subscription = Stuffs.subscribeStuff();
     // Determine if the subscription is ready
     const rdy = subscription.ready();
     // Get the Stuff documents
+    // eslint-disable-next-line no-undef
     const stuffItems = Stuffs.find({}, { sort: { name: 1 } }).fetch();
     return {
       stuffs: stuffItems,
@@ -27,7 +30,7 @@ const AssignedBills = () => {
   }, []);
   const [data, setData] = useState([]);
 
-  const table_headers = Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY]) ?
+  const table_headers = Roles.userIsInRole(Meteor.userId()) ?
     ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Assign'] :
     ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
   const BillData = stuffs.map((stuff, index) => ({
@@ -66,13 +69,13 @@ const AssignedBills = () => {
               <Col className="text-center">
                 <h2>Upcoming Bills</h2>
               </Col>
-              <SavedBill billData={data} tableHeaders={table_headers} />
+              <AssignedBill billData={data} tableHeaders={table_headers} />
             </Tab>
             <Tab eventKey="bills" title="Bills">
               <Col className="text-center">
                 <h2>Bills</h2>
               </Col>
-              <SavedBill billData={data} tableHeaders={table_headers} />
+              <AssignedBill billData={data} tableHeaders={table_headers} />
             </Tab>
           </Tabs>
         </Col>
