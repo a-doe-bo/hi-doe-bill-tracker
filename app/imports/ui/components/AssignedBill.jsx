@@ -18,7 +18,7 @@ const AssignedBill = ({ billData, tableHeaders }) => (
   </Table>
 );
 
-AssignedBill.propTypes = {
+SavedBillItem.propTypes = {
   billData: PropTypes.arrayOf(PropTypes.shape({
     _id: PropTypes.string,
     bill_name: PropTypes.string,

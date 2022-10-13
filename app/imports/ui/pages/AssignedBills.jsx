@@ -8,49 +8,47 @@ import { PAGE_IDS } from '../utilities/PageIDs';
 import Filter from '../components/Filter';
 import Autocomplete from '../components/Autocomplete';
 import AssignedBill from '../components/AssignedBill';
+import { Measures } from '../../api/measure/MeasureCollection';
 
-/* Renders a table containing all of the Stuff documents. Use <BillItem> to render each row. */
 const AssignedBills = () => {
   // useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
-  const { ready, stuffs } = useTracker(() => {
-    // Note that this subscription will get cleaned up
-    // when your component is unmounted or deps change.
-    // Get access to Stuff documents.
-    // eslint-disable-next-line no-undef
-    const subscription = Stuffs.subscribeStuff();
-    // Determine if the subscription is ready
-    const rdy = subscription.ready();
-    // Get the Stuff documents
-    // eslint-disable-next-line no-undef
-    const stuffItems = Stuffs.find({}, { sort: { name: 1 } }).fetch();
-    return {
-      stuffs: stuffItems,
-      ready: rdy,
-    };
-  }, []);
-  const [data, setData] = useState([]);
+  const { ready, measures } = useTracker(() => {
+      const subscription = Measures.subscribeMeasures();
+      const rdy = subscription.ready();
+      const measuresItems = Measures.find({}).fetch();
+      return {
+        measures: measuresItems,
+        ready: rdy,
+      };
+    }, []);
 
-  const table_headers = Roles.userIsInRole(Meteor.userId()) ?
-    ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Assign'] :
-    ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
-  const BillData = stuffs.map((stuff, index) => ({
-    _id: stuff._id,
-    bill_name: `Bill ${index}`,
-    bill_status: `Status_${index}`,
-    bill_hearing: new Date().toLocaleString(),
-    bill_number: index,
-    bill_updated: 1663711472,
-    bill_committee: 'Agriculture & Environment',
-    measureType: 'HB',
-    office: 'office1',
-  }));
+  const [currentTab, setCurrentTab] = useState('Assigned Bills');
+
+  const table_headers = Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY]) ?
+      ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Assign'] :
+      ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
+
+  const BillData = measures.map((measureData) => ({
+      _id: measureData._id,
+      billTitle: measureData.measureTitle,
+      billStatus: measureData.status,
+      billHearing: measureData.year,
+      billNumber: measureData.measureNumber,
+      bill_updated: 1663711472,
+      bill_committee: 'Agriculture & Environment',
+      measureType: 'HB',
+      office: 'office1',
+    }));
+
+  const [data, setData] = useState([]);
   useEffect(() => {
     setData(BillData);
-  }, [ready]);
-  const [currentTab, setCurrentTab] = useState('Upcoming Bills');
+  }, [ready, measures]);
+
   const handleCurrentTab = (tabName) => {
     setCurrentTab(tabName);
   };
+  const tabs = ['Assigned Bills'];
   return (ready ? (
     <Container id={PAGE_IDS.ASSIGNED_BILLS} className="py-3">
       <Row className="justify-content-center">
@@ -60,28 +58,24 @@ const AssignedBills = () => {
         <Col md={7}>
           <Autocomplete billData={data} onDataFiltering={setData} />
           <Tabs
-            defaultActiveKey="upcoming-hearings"
+            defaultActiveKey="Assigned Bills"
             id="uncontrolled-tab-example"
             className="mb-3"
             onSelect={(e) => (handleCurrentTab(e))}
           >
-            <Tab eventKey="upcoming-hearings" title="Upcoming Hearings">
-              <Col className="text-center">
-                <h2>Upcoming Bills</h2>
-              </Col>
-              <AssignedBill billData={data} tableHeaders={table_headers} />
-            </Tab>
-            <Tab eventKey="bills" title="Bills">
-              <Col className="text-center">
-                <h2>Bills</h2>
-              </Col>
-              <AssignedBill billData={data} tableHeaders={table_headers} />
-            </Tab>
+            {tabs.map((tab, index) => (
+              <Tab eventKey={tab} title={tab} key={index}>
+                <Col className="text-center">
+                  <h2>{tab}</h2>
+                </Col>
+                <BillTable billData={data} tableHeaders={table_headers} />
+              </Tab>
+            ))}
           </Tabs>
         </Col>
       </Row>
     </Container>
-  ) : <LoadingSpinner message="Loading BIlls" />);
+  ) : <LoadingSpinner message="Loading Assigned Bills" />);
 };
 
 export default AssignedBills;
