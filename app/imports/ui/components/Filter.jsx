@@ -1,13 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Accordion, Button, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import { useTracker } from 'meteor/react-meteor-data';
 import FormCheck from './FormCheck';
+import { Filters } from '../../api/filter/FilterCollection';
 
 const DAY_IN_MILISECONDS = 1000 * 3600 * 24;
 
 const BillFilter = ({ handleDataFiltering, data, tab }) => {
+  const { filterOptions, ready } = useTracker(() => {
+    const subscription = Filters.subscribeFilter();
+    const rdy = subscription.ready();
+    const filterOptionsItems = Filters.find({}, {}).fetch();
+    return {
+      filterOptions: filterOptionsItems,
+      ready: rdy,
+    };
+  });
+  console.log(filterOptions);
+  console.log(ready);
   const statusOptions = ['Writing', 'Office Approver', 'PIPE Approver', 'Final Approver', 'Pending Process', 'Processed', 'Status_1'];
-  const officeOptions = ['office1', 'office2', 'office3', 'office4', 'office5'];
+  const officeOptions = ['Deputy', 'OCID', 'OFO', 'OFS', 'OITS', 'OSIP', 'OSSS', 'OTM'];
   const houseCommittees =
       ['Agriculture', 'Culture, Arts & International Affairs',
         'Corrections, Military, & Veterans', 'Consumer Protection & Commerce', 'Economic Development', 'Education',
@@ -45,6 +58,7 @@ const BillFilter = ({ handleDataFiltering, data, tab }) => {
     const differenceInTime = todayInMs - billData;
     return differenceInTime / DAY_IN_MILISECONDS;
   };
+
   const filterData = () => {
     let filteredData = ogData;
     let filteredOffice = [];
