@@ -1,16 +1,16 @@
 import { Selector, t } from 'testcafe';
 import {
-  listStuffAdminPage,
-  /* manageDatabasePage, */
   signOutPage,
   listBillsPage,
   billDetailsPage,
+  listSavedBillsPage,
+  // manageDatabasePage,
+  manageUserAccounts,
+  createAccount,
+  requestedAccounts,
 } from './simple.page';
 import { landingPage } from './landing.page';
 import { signInPage } from './signin.page';
-/*
-import { signUpPage } from './signup.page';
- */
 import { navBar } from './navbar.component';
 import { COMPONENT_IDS } from '../imports/ui/utilities/ComponentIDs';
 
@@ -59,8 +59,17 @@ test('Test that admin pages show up', async () => {
   const viewBill = await Selector(`.${COMPONENT_IDS.VIEW_BILL}`);
   await t.click(viewBill().nth(0));
   await billDetailsPage.isDisplayed();
-  // await navBar.gotoListStuffAdminPage();
-  // await listStuffAdminPage.isDisplayed();
-  // await navBar.gotoManageDatabasePage();
+  await navBar.gotoSavedBillsPage();
+  await listSavedBillsPage.isDisplayed();
+
+  // Check if all items in "Manage" (admin) drop down menu are displayed.
+  // Was unsure which page we were referencing to here yet
+  // await navBar.gotoManageDropDown(COMPONENT_IDS.NAVBAR_MANAGE_DROPDOWN_DATABASE);
   // await manageDatabasePage.isDisplayed();
+  await navBar.gotoManageDropDown(COMPONENT_IDS.NAVBAR_MANAGE_DROPDOWN_REQUESTED_ACCOUNTS);
+  await requestedAccounts.isDisplayed();
+  await navBar.gotoManageDropDown(COMPONENT_IDS.NAVBAR_MANAGE_DROPDOWN_ACCOUNTS);
+  await manageUserAccounts.isDisplayed();
+  await navBar.gotoManageDropDown(COMPONENT_IDS.NAVBAR_MANAGE_DROPDOWN_CREATE_ACCOUNT);
+  await createAccount.isDisplayed();
 });

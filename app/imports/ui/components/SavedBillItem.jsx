@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
-import { Roles } from 'meteor/alanning:roles';import { BookmarkPlusFill, CaretDownFill, CaretRightFill } from 'react-bootstrap-icons';
+import { Roles } from 'meteor/alanning:roles';
+import { BookmarkPlusFill, CaretDownFill, CaretRightFill } from 'react-bootstrap-icons';
 import { Button, Collapse, Table } from 'react-bootstrap';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import AssignToExpertModal from './AssignToExpertModal';
@@ -54,11 +55,10 @@ const SavedBillItem = ({ billData: { bill_name, bill_status, bill_number, bill_h
                   <tr>
                     <th>Hearing Location</th>
                     <th>Date Introduced</th>
-                    <th>Committee</th>
-                    <th>Committee</th>
-                    <th>Committee</th>
-                    <th>Committee</th>
-                    <th>Committee</th>
+                    <th>Committee Hearing</th>
+                    <th>Room #</th>
+                    <th>DOE Stance</th>
+                    <th>Date/Time</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -69,7 +69,6 @@ const SavedBillItem = ({ billData: { bill_name, bill_status, bill_number, bill_h
                     <td>Some Data</td>
                     <td>Some Data</td>
                     <td>Some Data</td>
-                    <td>Some Data</td>
                   </tr>
                   <tr>
                     <td>Some Data</td>
@@ -78,10 +77,8 @@ const SavedBillItem = ({ billData: { bill_name, bill_status, bill_number, bill_h
                     <td>Some Data</td>
                     <td>Some Data</td>
                     <td>Some Data</td>
-                    <td>Some Data</td>
                   </tr>
                   <tr>
-                    <td>Some Data</td>
                     <td>Some Data</td>
                     <td>Some Data</td>
                     <td>Some Data</td>
