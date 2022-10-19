@@ -2,17 +2,24 @@ import React from 'react';
 import '/client/style.css';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { PAGE_IDS } from '../utilities/PageIDs';
+import UserProfileData from '../components/UserProfileData';
+import { UserProfiles } from '../../api/user/UserProfileCollection';
 
 const UserPage = () => {
+  const { ready, user } = useTracker(() => {
+      const subscription = UserProfiles.subscribeUser();
+      const rdy = subscription.ready();
+      const users = UserProfiles.find({}).fetch();
+      return {
+        user: users,
+        ready: rdy,
+      };
+    }, []);
+    /*
+    const UserData = user.map((userProfileData) => ({
 
-  const user = {
-    name: 'John Foo',
-    email: 'john@foo.com',
-    title: 'DOE Public Affairs',
-    img: '/images/butterfly.png',
-    role: 'Secretary',
-  };
-
+    })
+    */
   return (
     <Container id={PAGE_IDS.USER_PROFILE} className="py-3">
       <Row>
