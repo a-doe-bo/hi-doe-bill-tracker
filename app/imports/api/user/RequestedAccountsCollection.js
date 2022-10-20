@@ -5,7 +5,7 @@ import { ROLE } from '../role/Role';
 import { Users } from './UserCollection';
 
 export const userPublications = {
-  users: 'Users',
+  users: 'RequestedAccounts',
 };
 
 class RequestedAccountsCollection extends BaseProfileCollection {
@@ -22,7 +22,7 @@ class RequestedAccountsCollection extends BaseProfileCollection {
    * @param role The role of the user.
    * @param employeeID The employeeID of the user.
    */
-  define({ email, firstName, lastName, password, role, employeeID }) {
+  define({ email, firstName, lastName, role, password, employeeID }) {
     // if (Meteor.isServer) {
     const username = email;
     const user = this.findOne({ email, firstName, lastName });
