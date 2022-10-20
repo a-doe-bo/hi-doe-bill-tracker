@@ -2,23 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { Accordion, Button, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useTracker } from 'meteor/react-meteor-data';
+import swal from 'sweetalert';
+import { Meteor } from 'meteor/meteor';
 import FormCheck from './FormCheck';
 import { Filters } from '../../api/filter/FilterCollection';
+import { defineMethod, updateMethod } from '../../api/base/BaseCollection.methods';
 
 const DAY_IN_MILISECONDS = 1000 * 3600 * 24;
 
 const BillFilter = ({ handleDataFiltering, data, tab }) => {
   const { filterOptions, ready } = useTracker(() => {
+    const owner = Meteor.user().username;
     const subscription = Filters.subscribeFilter();
     const rdy = subscription.ready();
-    const filterOptionsItems = Filters.find({}, {}).fetch();
+    const filterOptionsItems = Filters.find({ owner }, {}).fetch();
     return {
-      filterOptions: filterOptionsItems,
+      filterOptions: filterOptionsItems[0],
       ready: rdy,
     };
   });
-  console.log(filterOptions);
-  console.log(ready);
   const statusOptions = ['Writing', 'Office Approver', 'PIPE Approver', 'Final Approver', 'Pending Process', 'Processed', 'Status_1'];
   const officeOptions = ['Deputy', 'OCID', 'OFO', 'OFS', 'OITS', 'OSIP', 'OSSS', 'OTM'];
   const houseCommittees =
@@ -43,11 +45,6 @@ const BillFilter = ({ handleDataFiltering, data, tab }) => {
   const [dateState, setDateState] = useState([]);
   const [ogData, setOgData] = useState([]);
 
-  // Set our original data on page load
-  useEffect(() => {
-    setOgData(data);
-  }, []);
-
   const highestDateInArray = () => {
     const days = dateState.map((str) => (str.match(/\d+/)));
     return Math.max(...days);
@@ -58,7 +55,6 @@ const BillFilter = ({ handleDataFiltering, data, tab }) => {
     const differenceInTime = todayInMs - billData;
     return differenceInTime / DAY_IN_MILISECONDS;
   };
-
   const filterData = () => {
     let filteredData = ogData;
     let filteredOffice = [];
@@ -98,6 +94,45 @@ const BillFilter = ({ handleDataFiltering, data, tab }) => {
     }
   };
 
+  // Set our original data on page load
+  useEffect(() => {
+    if (filterOptions) {
+      setStatusCheckedState(filterOptions.statusOptions);
+      setOfficeCheckedState(filterOptions.officeOptions);
+      setMeasureTypes(filterOptions.measureTypeOptions);
+      setDateState(filterOptions.dateStateOptions);
+      filterData();
+    }
+    setOgData(data);
+  }, [ready]);
+
+  const submit = () => {
+    const owner = Meteor.user().username;
+    const collectionName = Filters.getCollectionName();
+    const savedFilterSettings = {
+      statusOptions: statusCheckedState,
+      officeOptions: officeCheckedState,
+      measureTypeOptions: measureTypesState,
+      dateStateOptions: dateState,
+      owner,
+    };
+    // Update the filter collection
+    if (filterOptions) {
+      savedFilterSettings.id = filterOptions._id;
+      const updateData = savedFilterSettings;
+      updateMethod.callPromise(({ collectionName, updateData }))
+        .catch((e) => swal('Error', e.message, 'error'))
+        .then(() => swal('Success', 'Item updated Successfully', 'Success'));
+    } else {
+      const definitionData = savedFilterSettings;
+      defineMethod.callPromise({ collectionName, definitionData })
+        .catch((e) => swal('Error', e.message, 'error'))
+        .then(() => {
+          swal('Success', 'Item Added Successfully', 'success');
+        });
+    }
+  };
+
   return (
     <Card style={{ width: '18rem' }}>
       <Card.Header>Filter</Card.Header>
@@ -107,6 +142,7 @@ const BillFilter = ({ handleDataFiltering, data, tab }) => {
           <Accordion.Body>
             <FormCheck
               options={statusOptions}
+              data={statusCheckedState}
               handleCheckedState={setStatusCheckedState}
             />
           </Accordion.Body>
@@ -115,6 +151,7 @@ const BillFilter = ({ handleDataFiltering, data, tab }) => {
           <Accordion.Header>Office</Accordion.Header>
           <Accordion.Body>
             <FormCheck
+              data={officeCheckedState}
               options={officeOptions}
               handleCheckedState={setOfficeCheckedState}
             />
@@ -124,6 +161,7 @@ const BillFilter = ({ handleDataFiltering, data, tab }) => {
           <Accordion.Header>Measure Type</Accordion.Header>
           <Accordion.Body>
             <FormCheck
+              data={measureTypesState}
               options={measureTypes}
               handleCheckedState={setMeasureTypes}
             />
@@ -133,6 +171,7 @@ const BillFilter = ({ handleDataFiltering, data, tab }) => {
           <Accordion.Header>House Committees</Accordion.Header>
           <Accordion.Body>
             <FormCheck
+              data={houseCommitteeState}
               options={houseCommittees}
               handleCheckedState={setHouseCommitteeState}
             />
@@ -142,6 +181,7 @@ const BillFilter = ({ handleDataFiltering, data, tab }) => {
           <Accordion.Header>Senate Committees</Accordion.Header>
           <Accordion.Body>
             <FormCheck
+              data={senateCommitteeState}
               options={senateCommittees}
               handleCheckedState={setSenateCommitteeState}
             />
@@ -151,6 +191,7 @@ const BillFilter = ({ handleDataFiltering, data, tab }) => {
           <Accordion.Header>Bill Updated</Accordion.Header>
           <Accordion.Body>
             <FormCheck
+              data={dateState}
               options={date}
               handleCheckedState={setDateState}
             />
@@ -158,6 +199,7 @@ const BillFilter = ({ handleDataFiltering, data, tab }) => {
         </Accordion.Item>
       </Accordion>
       <Button onClick={() => (filterData())}>Filter</Button>
+      <Button onClick={() => (submit())}>Save Filters</Button>
     </Card>
   );
 };

@@ -12,13 +12,8 @@ export const FilterPublications = {
 class FilterCollection extends BaseCollection {
   constructor() {
     super('Filters', new SimpleSchema({
-      statusOptions: Array,
-      'statusOptions.$': {
-        type: Object,
-      },
+      statusOptions: [{ type: String }],
       officeOptions: [{ type: String }],
-      houseCommitteeOptions: [{ type: String }],
-      senateCommitteeOptions: [{ type: String }],
       measureTypeOptions: [{ type: String }],
       dateStateOptions: [{ type: String }],
       owner: String,
@@ -40,7 +35,7 @@ class FilterCollection extends BaseCollection {
 
   /**
    * Updates the given document.
-   * @param docID the id of the document to update.
+   * @param id
    * @param statusOptions
    * @param officeOptions
    * @param houseCommitteeOptions
@@ -48,11 +43,13 @@ class FilterCollection extends BaseCollection {
    * @param measureTypeOptions
    * @param dateStateOptions
    */
-  update(docID, statusOptions, officeOptions, houseCommitteeOptions, senateCommitteeOptions, measureTypeOptions, dateStateOptions) {
-    const updateData = {
-      statusOptions, officeOptions, houseCommitteeOptions, senateCommitteeOptions, measureTypeOptions, dateStateOptions,
-    };
-    this._collection.update(docID, { $set: updateData });
+  update(id, statusOptions, officeOptions, houseCommitteeOptions, senateCommitteeOptions, measureTypeOptions, dateStateOptions) {
+    const updateData = {};
+    updateData.statusOptions = statusOptions;
+    updateData.officeOptions = officeOptions;
+    updateData.measureTypeOptions = measureTypeOptions;
+    updateData.dateStateOptions = dateStateOptions;
+    this._collection.update(id, { $set: updateData });
   }
 
   /**
