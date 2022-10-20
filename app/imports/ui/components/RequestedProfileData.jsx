@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import swal from 'sweetalert';
 import { Button } from 'react-bootstrap';
 import { UserProfiles } from '../../api/user/UserProfileCollection';
-import { removeItMethod } from '../../api/base/BaseCollection.methods';
+import { defineMethod, removeItMethod } from '../../api/base/BaseCollection.methods';
 import { RequestedProfiles } from '../../api/user/RequestedAccountsCollection';
 
 /** Renders a single row in the List Stuff (Admin) table. See pages/ListStuffAdmin.jsx. */
-const RequestedProfileData = ({ requestedProfile: { email, firstName, lastName, role, employeeID, _id } }) => {
+const RequestedProfileData = ({ requestedProfile: { email, firstName, lastName, role, employeeID, password, _id } }) => {
   const handleRemove = () => {
     const collectionName = RequestedProfiles.getCollectionName();
     const instance = _id;
@@ -24,15 +24,19 @@ const RequestedProfileData = ({ requestedProfile: { email, firstName, lastName, 
     });
   };
   const handleAccept = () => {
-    const collectionName = RequestedProfiles.getCollectionName();
-    const instance = _id;
+    const collectionName = UserProfiles.getCollectionName();
+    const definitionData = { email, firstName, lastName, role, employeeID, password };
+    const collectionName2 = RequestedProfiles.getCollectionName();
+    const instance2 = _id;
     swal({
       title: 'Are you sure?',
       text: 'Do you really want to add this User',
       buttons: true,
     }).then((willAccept) => {
       if (willAccept) {
-        removeItMethod.callPromise({ collectionName, instance });
+        defineMethod.callPromise({ collectionName, definitionData });
+        swal('Success', 'User added successfully', 'success');
+        removeItMethod.callPromise({ collectionName2, instance2 });
       }
     });
   };
@@ -51,6 +55,10 @@ const RequestedProfileData = ({ requestedProfile: { email, firstName, lastName, 
           onClick={() => { handleRemove(); }}
         >Remove
         </Button>
+        <Button
+          onClick={() => { handleAccept(); }}
+        >Accept
+        </Button>
       </td>
     </tr>
   );
@@ -65,6 +73,7 @@ RequestedProfileData.propTypes = {
     _id: PropTypes.string,
     role: PropTypes.string,
     userID: PropTypes.string,
+    password: PropTypes.string,
     employeeID: PropTypes.string,
   }).isRequired,
 };

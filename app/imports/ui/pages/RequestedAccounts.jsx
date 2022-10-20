@@ -7,18 +7,6 @@ import { RequestedProfiles } from '../../api/user/RequestedAccountsCollection';
 import LoadingSpinner from '../components/LoadingSpinner';
 import RequestedProfileData from '../components/RequestedProfileData';
 
-/**
- * const user1 = {
-  first: 'Sarah',
-  last: 'foo',
-  email: 'Sarahfoo@aml.com',
-};
-const user2 = {
-  first: 'Jack',
-  last: 'foo',
-  email: 'Jackfoo@aml.com',
-}; */
-
 const RequestedAccounts = () => {
   const { reqAccounts, ready } = useTracker(() => {
     const subscription = RequestedProfiles.subscribeUser();
