@@ -14,9 +14,9 @@ class ExpertCollection extends BaseCollection {
         super('Experts', new SimpleSchema({
             recipient: String,
             bill_name: String,
-            bill_number: String,
+            bill_number: Number,
             bill_status: String,
-            bill_hearing: String,
+            bill_hearing: Number,
         }));
     }
 
