@@ -122,7 +122,7 @@ const BillFilter = ({ handleDataFiltering, data, tab }) => {
       const updateData = savedFilterSettings;
       updateMethod.callPromise(({ collectionName, updateData }))
         .catch((e) => swal('Error', e.message, 'error'))
-        .then(() => swal('Success', 'Item updated Successfully', 'Success'));
+        .then(() => swal('Success', 'Item updated Successfully', 'success'));
     } else {
       const definitionData = savedFilterSettings;
       defineMethod.callPromise({ collectionName, definitionData })
@@ -198,8 +198,8 @@ const BillFilter = ({ handleDataFiltering, data, tab }) => {
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>
-      <Button onClick={() => (filterData())}>Filter</Button>
-      <Button onClick={() => (submit())}>Save Filters</Button>
+      <Button onClick={() => (filterData())} className="mt-2">Filter</Button>
+      <Button onClick={() => (submit())} className="mt-2">Save Filters</Button>
     </Card>
   );
 };

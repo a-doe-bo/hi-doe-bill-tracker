@@ -36,15 +36,11 @@ class FilterCollection extends BaseCollection {
   /**
    * Updates the given document.
    * @param id
-   * @param statusOptions
-   * @param officeOptions
-   * @param houseCommitteeOptions
-   * @param senateCommitteeOptions
-   * @param measureTypeOptions
-   * @param dateStateOptions
+   * @param userOptions
    */
-  update(id, statusOptions, officeOptions, houseCommitteeOptions, senateCommitteeOptions, measureTypeOptions, dateStateOptions) {
+  update(id, userOptions) {
     const updateData = {};
+    const { statusOptions, officeOptions, measureTypeOptions, dateStateOptions } = userOptions;
     updateData.statusOptions = statusOptions;
     updateData.officeOptions = officeOptions;
     updateData.measureTypeOptions = measureTypeOptions;
