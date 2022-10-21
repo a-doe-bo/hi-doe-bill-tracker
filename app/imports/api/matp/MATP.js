@@ -5,6 +5,8 @@ import { UserProfiles } from '../user/UserProfileCollection';
 import { Hearings } from '../hearing/HearingCollection';
 import { Measures } from '../measure/MeasureCollection';
 import { RequestedProfiles } from '../user/RequestedAccountsCollection';
+import { Experts } from '../expert/ExpertCollection';
+import { Saved } from '../save/SavedBillCollection';
 
 class MATPClass {
   collections;
@@ -21,7 +23,8 @@ class MATPClass {
       Measures,
       Stuffs,
       UserProfiles,
-
+      Experts,
+      Saved,
       RequestedProfiles,
     ];
     /*
@@ -31,6 +34,8 @@ class MATPClass {
       AdminProfiles,
       UserProfiles,
       Stuffs,
+      Experts,
+      Saved,
     ];
 
     /*
