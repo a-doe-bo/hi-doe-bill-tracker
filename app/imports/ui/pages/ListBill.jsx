@@ -43,7 +43,7 @@ const ListBill = () => {
   // TODO: Remove this once we have our API set up and split the Bill data into (upcoming bills, dead bills, bills)
   useEffect(() => {
     setData(BillData);
-  }, [ready, measures]);
+  }, [ready]);
   const handleCurrentTab = (tabName) => {
     setCurrentTab(tabName);
   };

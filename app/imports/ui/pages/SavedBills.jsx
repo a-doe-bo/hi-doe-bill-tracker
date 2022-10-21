@@ -9,8 +9,8 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import { ROLE } from '../../api/role/Role';
 import Autocomplete from '../components/Autocomplete';
-import Filter from "../components/Filter";
 import { Saved } from '../../api/save/SavedBillCollection';
+import Filter from '../components/Filter';
 
 /* Renders a table containing all of the Stuff documents. Use <BillItem> to render each row. */
 const SavedBills = () => {
