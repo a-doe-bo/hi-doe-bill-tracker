@@ -15,7 +15,7 @@ class SavedBillCollection extends BaseCollection {
       bill_number: Number,
       bill_name: String,
       bill_status: String,
-      bill_hearing: Number,
+      bill_hearing: String,
     }));
   }
 

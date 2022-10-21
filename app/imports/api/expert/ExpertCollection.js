@@ -16,7 +16,7 @@ class ExpertCollection extends BaseCollection {
             bill_name: String,
             bill_number: Number,
             bill_status: String,
-            bill_hearing: Number,
+            bill_hearing: String,
         }));
     }
 
@@ -70,6 +70,10 @@ class ExpertCollection extends BaseCollection {
         }
         return null;
     }
+
+  assertValidRoleForMethod(userId) {
+    this.assertRole(userId, [ROLE.SECRETARY]);
+  }
 
     dumpOne(docID) {
         const doc = this.findDoc(docID);

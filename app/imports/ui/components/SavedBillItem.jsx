@@ -41,7 +41,7 @@ const SavedBillItem = ({ billData: { bill_name, bill_status, bill_number, bill_h
         {
           Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY]) && (
             <td>
-              <AssignToExpertModal />
+              <AssignToExpertModal billData={{bill_number, bill_name, bill_hearing, bill_status}} />
             </td>
           )
         }
