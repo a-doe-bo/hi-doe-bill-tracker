@@ -29,6 +29,8 @@
   "public": {
     "development": true,
     "measuresFileName": "measures.json",
-    "loadMeasures": true
+    "loadMeasures": true,
+    "loadSaved":  true,
+    "savedFileName": "saved.json"
   }
 }

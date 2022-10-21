@@ -8,12 +8,12 @@
     "introducer": "B. KOBAYASHI, DECOITE, HASHIMOTO, KAPELA, LOWEN, MARTEN, NAKAMURA, PERRUSO, WILDBERGER, WOODSON, Branco, Morikawa",
     "lastUpdated": 1663711472,
     "measureArchiveUrl": "https://www.capitol.hawaii.gov/measure_indiv.aspx?billtype=HB&billnumber=124&year=2022",
-    "measureNumber": 124,
+    "bill_number": 124,
     "measurePdfUrl": "https://www.capitol.hawaii.gov/session2022/bills/HB124_SD1_.pdf",
-    "measureTitle": "RELATING TO ELECTIONS.",
+    "bill_name": "RELATING TO ELECTIONS.",
     "measureType": "hb",
     "reportTitle": "Elections; Chief Election Officer; Voter Information Guide",
-    "status": "(S)3/22/2022-Report adopted; Passed Second Reading, as amended (SD 1) and referred to WAM.",
-    "year": 2022
+    "bill_status": "(S)3/22/2022-Report adopted; Passed Second Reading, as amended (SD 1) and referred to WAM.",
+    "bill_hearing": 2022
   }
 ]
