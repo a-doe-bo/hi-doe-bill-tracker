@@ -2,13 +2,12 @@ import React from 'react';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { AutoForm, ErrorsField, SelectField, SubmitField, TextField } from 'uniforms-bootstrap5';
 import swal from 'sweetalert';
-import { Meteor } from 'meteor/meteor';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
-import { Stuffs } from '../../api/stuff/StuffCollection';
 import { defineMethod } from '../../api/base/BaseCollection.methods';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
+import { RequestedProfiles } from '../../api/user/RequestedAccountsCollection';
 
 // Create a schema to specify the structure of the data to appear in the form.
 const formSchema = new SimpleSchema({
@@ -16,6 +15,7 @@ const formSchema = new SimpleSchema({
   lastName: String,
   email: String,
   employeeID: String,
+  password: String,
   role: { type: String, allowedValues: ['SECRETARY', 'WRITER', 'OFFICE APPROVER', 'PIPE APPROVER', 'FINAL APPROVER'] },
 });
 
@@ -26,10 +26,10 @@ const RequestAccounts = () => {
 
   // On submit, insert the data.
   const submit = (data, formRef) => {
-    const { firstName, lastName, email, employeeID, role } = data;
-    const owner = Meteor.user().username;
-    const collectionName = Stuffs.getCollectionName();
-    const definitionData = { firstName, lastName, email, employeeID, role, owner };
+    const { firstName, lastName, email, employeeID, password, role } = data;
+    /* Giving an error where */
+    const collectionName = RequestedProfiles.getCollectionName();
+    const definitionData = { firstName, lastName, email, employeeID, role, password };
     defineMethod.callPromise({ collectionName, definitionData })
       .catch(error => swal('Error', error.message, 'error'))
       .then(() => {
@@ -50,6 +50,7 @@ const RequestAccounts = () => {
                 <TextField id={COMPONENT_IDS.SIGN_UP_FORM_FIRST_NAME} name="firstName" />
                 <TextField id={COMPONENT_IDS.SIGN_UP_FORM_LAST_NAME} name="lastName" />
                 <TextField id={COMPONENT_IDS.SIGN_UP_FORM_EMAIL} name="email" type="email" />
+                <TextField id={COMPONENT_IDS.SIGN_UP_FORM_PASSWORD} name="password" placeholder="Password" type="password" />
                 <TextField id={COMPONENT_IDS.SIGN_UP_EMPLOYEE_ID} name="employeeID" />
                 <SelectField id={COMPONENT_IDS.SIGN_UP_FORM_ROLE} name="role" placeholder="Choose a role" />
                 <SubmitField value="Submit" />

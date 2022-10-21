@@ -2,8 +2,9 @@ import { Meteor } from 'meteor/meteor';
 import { Stuffs } from '../stuff/StuffCollection';
 import { AdminProfiles } from '../user/AdminProfileCollection';
 import { UserProfiles } from '../user/UserProfileCollection';
-import { Hearings } from "../hearing/HearingCollection";
-import { Measures } from "../measure/MeasureCollection";
+import { Hearings } from '../hearing/HearingCollection';
+import { Measures } from '../measure/MeasureCollection';
+import { RequestedProfiles } from '../user/RequestedAccountsCollection';
 
 class MATPClass {
   collections;
@@ -20,6 +21,7 @@ class MATPClass {
       Measures,
       Stuffs,
       UserProfiles,
+      RequestedProfiles,
     ];
     /*
      * A list of collection class instances in the order required for them to be sequentially loaded from a file.

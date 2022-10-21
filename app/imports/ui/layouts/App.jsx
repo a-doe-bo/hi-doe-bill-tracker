@@ -24,6 +24,7 @@ import UserPage from '../pages/UserPage';
 import RequestedAccounts from '../pages/RequestedAccounts';
 import RequestAccounts from '../pages/RequestAccounts';
 import DraftTestimony from '../pages/DraftTestimony';
+import AssignedBills from '../pages/AssignedBills';
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
 const App = () => (
@@ -38,6 +39,7 @@ const App = () => (
         <Route path="/home" element={<ProtectedRoute><Landing /></ProtectedRoute>} />
         <Route path="/list" element={<ProtectedRoute><ListBill /></ProtectedRoute>} />
         <Route path="/savedBills" element={<ProtectedRoute><SavedBills /></ProtectedRoute>} />
+        <Route path="/assignedBills" element={<ProtectedRoute><AssignedBills /></ProtectedRoute>} />
         <Route path="/listAwaitingReviews" element={<ProtectedRoute><ListAwaitingReview /></ProtectedRoute>} />
         <Route path="/listTestimonies" element={<ProtectedRoute> <ListTestimonies /> </ProtectedRoute>} />
         <Route path="/draftTestimony" element={<ProtectedRoute> <DraftTestimony /> </ProtectedRoute>} />
