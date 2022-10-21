@@ -38,6 +38,13 @@ class SavedBillCollection extends BaseCollection {
     this._collection.update(docID, { $set: updateData });
   }
 
+  removeIt(name) {
+    const doc = this.findDoc(name);
+    check(doc, Object);
+    this._collection.remove(doc._id);
+    return true;
+  }
+
   publish() {
     if (Meteor.isServer) {
       const instance = this;

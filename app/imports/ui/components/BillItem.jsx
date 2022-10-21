@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { BsFillBookmarkPlusFill } from 'react-icons/bs';
 import { BookmarkPlusFill, CaretDownFill, CaretRightFill } from 'react-bootstrap-icons';
 import { useLocation } from 'react-router';
 import { Button, Collapse, Table } from 'react-bootstrap';
@@ -16,12 +17,17 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
   const { pathname } = useLocation();
   const [toggle, setToggle] = useState(true);
   const [collapsableTable, setCollapsableTable] = useState(false);
-  const handleToggle = (state, setState) => () => { setState(!state); };
+  const handleToggle = (state, setState) => () => {
+    setState(!state);
+    if (!state) {
+      console.log("unsaved");
+    } else {
+      console.log("saved");
+    }
+  };
   return (
     <>
       <tr>
-        {/* TODO: Ask a question about this */}
-        {/* Unknown data, RE: Thane Luna */}
         <td>
           {collapsableTable ? (
             <Button onClick={handleToggle(collapsableTable, setCollapsableTable)} aria-expanded={collapsableTable} aria-controls="collapse-table">
