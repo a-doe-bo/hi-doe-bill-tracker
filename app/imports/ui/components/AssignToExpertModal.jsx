@@ -16,9 +16,7 @@ const AssignToExpertModal = ({billData: { bill_number, bill_name, bill_status, b
     const collectionName = Experts.getCollectionName();
     const recipientsArray = recipients.split(',');
     recipientsArray.forEach((recipient) => {
-      console.log(recipient);
       const definitionData = { recipient, bill_number, bill_name, bill_status, bill_hearing };
-      console.log(bill_number);
       defineMethod.callPromise({ collectionName, definitionData })
         .catch(error => swal('Error', error.message, 'error'))
         .then(() => {
