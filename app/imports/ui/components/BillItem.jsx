@@ -10,7 +10,7 @@ import { ROLE } from '../../api/role/Role';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import { ROUTE_PATHS } from '../utilities/RoutePaths';
 import OfficePickDropdown from './OfficePickDropdown';
-import AddToCalendar from "./AddToCalendar";
+import AddToCalendar from './AddToCalendar';
 
 const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, _id } }) => {
   const { pathname } = useLocation();
