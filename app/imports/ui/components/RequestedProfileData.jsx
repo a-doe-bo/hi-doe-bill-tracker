@@ -35,8 +35,9 @@ const RequestedProfileData = ({ requestedProfile: { email, firstName, lastName, 
     }).then((willAccept) => {
       if (willAccept) {
         defineMethod.callPromise({ collectionName, definitionData });
+        console.log(definitionData);
         swal('Success', 'User added successfully', 'success');
-        removeItMethod.callPromise({ collectionName2, instance2 });
+        removeItMethod.callPromise({ collection: collectionName2, instance: instance2 });
       }
     });
   };

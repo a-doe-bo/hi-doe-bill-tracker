@@ -18,6 +18,8 @@ const CreateUserAccount = () => {
     email: String,
     password: String,
     employeeID: String,
+    office: { type: String, allowedValues: ['Facilities and Operations', 'Curriculum and Instructional Design', 'Fiscal Services',
+      'Information Technology Services', 'Strategy, Innovation and Performance', 'Student Support Services', 'Talent Management' ]},
     role: { type: String, allowedValues: ['SECRETARY', 'WRITER', 'OFFICE APPROVER', 'PIPE APPROVER', 'FINAL APPROVER'] },
   });
   const bridge = new SimpleSchema2Bridge(schema);
@@ -52,6 +54,7 @@ const CreateUserAccount = () => {
                 <TextField id={COMPONENT_IDS.SIGN_UP_FORM_EMAIL} name="email" placeholder="E-mail address" />
                 <TextField id={COMPONENT_IDS.SIGN_UP_EMPLOYEE_ID} name="employeeID" placeholder="Employee ID" />
                 <TextField id={COMPONENT_IDS.SIGN_UP_FORM_PASSWORD} name="password" placeholder="Password" type="password" />
+                <SelectField id={COMPONENT_IDS.SIGN_UP_FORM_OFFICE} name="office" placeholder="Choose an office" />
                 <SelectField id={COMPONENT_IDS.SIGN_UP_FORM_ROLE} name="role" placeholder="Choose a role" />
                 <ErrorsField />
                 <SubmitField id={COMPONENT_IDS.SIGN_UP_FORM_SUBMIT} />

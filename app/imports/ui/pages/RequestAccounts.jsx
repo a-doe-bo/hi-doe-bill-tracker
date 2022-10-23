@@ -4,10 +4,12 @@ import { AutoForm, ErrorsField, SelectField, SubmitField, TextField } from 'unif
 import swal from 'sweetalert';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
-import { defineMethod } from '../../api/base/BaseCollection.methods';
+import { Mongo } from 'meteor/mongo';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import { RequestedProfiles } from '../../api/user/RequestedAccountsCollection';
+import { Stuffs } from '../../api/stuff/StuffCollection';
+import { defineMethod } from '../../api/base/BaseCollection.methods';
 
 // Create a schema to specify the structure of the data to appear in the form.
 const formSchema = new SimpleSchema({
@@ -16,20 +18,21 @@ const formSchema = new SimpleSchema({
   email: String,
   employeeID: String,
   password: String,
+  office: { type: String, allowedValues: ['Facilities and Operations', 'Curriculum and Instructional Design', 'Fiscal Services',
+      'Information Technology Services', 'Strategy, Innovation and Performance', 'Student Support Services', 'Talent Management' ]},
   role: { type: String, allowedValues: ['SECRETARY', 'WRITER', 'OFFICE APPROVER', 'PIPE APPROVER', 'FINAL APPROVER'] },
 });
 
 const bridge = new SimpleSchema2Bridge(formSchema);
 
 /* Renders the RequestAccounts page for adding a document. */
-const RequestAccounts = () => {
 
+const RequestAccounts = () => {
   // On submit, insert the data.
   const submit = (data, formRef) => {
-    const { firstName, lastName, email, employeeID, password, role } = data;
-    /* Giving an error where */
     const collectionName = RequestedProfiles.getCollectionName();
-    const definitionData = { firstName, lastName, email, employeeID, role, password };
+    const definitionData = data;
+    /* Giving an error where */
     defineMethod.callPromise({ collectionName, definitionData })
       .catch(error => swal('Error', error.message, 'error'))
       .then(() => {
@@ -52,6 +55,7 @@ const RequestAccounts = () => {
                 <TextField id={COMPONENT_IDS.SIGN_UP_FORM_EMAIL} name="email" type="email" />
                 <TextField id={COMPONENT_IDS.SIGN_UP_FORM_PASSWORD} name="password" placeholder="Password" type="password" />
                 <TextField id={COMPONENT_IDS.SIGN_UP_EMPLOYEE_ID} name="employeeID" />
+                <SelectField id={COMPONENT_IDS.SIGN_UP_FORM_OFFICE} name="office" placeholder="Choose an office" />
                 <SelectField id={COMPONENT_IDS.SIGN_UP_FORM_ROLE} name="role" placeholder="Choose a role" />
                 <SubmitField value="Submit" />
                 <ErrorsField />
