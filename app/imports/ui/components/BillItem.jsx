@@ -75,28 +75,12 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                  </tr>
-                  <tr>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                  </tr>
-                  <tr>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
+                    <td>hearingLocation</td>
+                    <td>dateIntroduced</td>
+                    <td>committeeHearing</td>
+                    <td>roomNumber</td>
+                    <td>doeStance</td>
+                    <td>dateTime</td>
                   </tr>
                 </tbody>
               </Table>
