@@ -12,7 +12,7 @@ import { ROUTE_PATHS } from '../utilities/RoutePaths';
 import OfficePickDropdown from './OfficePickDropdown';
 import AddToCalendar from './AddToCalendar';
 
-const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, _id } }) => {
+const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, _id }, hearingData: { hearingLocation, dateIntroduced, committeeHearing, roomNumber, doeStance, dateTime } }) => {
   const { pathname } = useLocation();
   const [toggle, setToggle] = useState(true);
   const [collapsableTable, setCollapsableTable] = useState(false);
@@ -75,12 +75,12 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
                 </thead>
                 <tbody>
                   <tr>
-                    <td>hearingLocation</td>
-                    <td>dateIntroduced</td>
-                    <td>committeeHearing</td>
-                    <td>roomNumber</td>
-                    <td>doeStance</td>
-                    <td>dateTime</td>
+                    <td>{hearingLocation}</td>
+                    <td>{dateIntroduced}</td>
+                    <td>{committeeHearing}</td>
+                    <td>{roomNumber}</td>
+                    <td>{doeStance}</td>
+                    <td>{dateTime}</td>
                   </tr>
                 </tbody>
               </Table>
@@ -99,6 +99,14 @@ BillItem.propTypes = {
     billTitle: PropTypes.string,
     billStatus: PropTypes.string,
     billHearing: PropTypes.number,
+  }).isRequired,
+  hearingData: PropTypes.shape({
+    hearingLocation: PropTypes.string,
+    dateIntroduced: PropTypes.number,
+    committeeHearing: PropTypes.string,
+    roomNumber: PropTypes.number,
+    doeStance: PropTypes.string,
+    dateTime: PropTypes.number,
   }).isRequired,
 };
 

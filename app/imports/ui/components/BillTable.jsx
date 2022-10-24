@@ -24,7 +24,7 @@ const BillTable = ({ billData, tableHeaders }) => {
           </tr>
         </thead>
         <tbody>
-          {currentBills.map((data, index) => <BillItem key={index} billData={data} />)}
+          {currentBills.map((data, index) => <BillItem key={index} billData={data} hearingData={data} />)}
         </tbody>
       </Table>
       <Pagination2 billsPerPage={billsPerPage} totalBills={billData.length} paginate={paginate} />
@@ -40,6 +40,14 @@ BillTable.propTypes = {
     billStatus: PropTypes.string,
     billHearing: PropTypes.number,
   })).isRequired,
+  hearingData: PropTypes.shape({
+    hearingLocation: PropTypes.string,
+    dateIntroduced: PropTypes.number,
+    committeeHearing: PropTypes.string,
+    roomNumber: PropTypes.number,
+    doeStance: PropTypes.string,
+    dateTime: PropTypes.number,
+  }).isRequired,
   tableHeaders: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
