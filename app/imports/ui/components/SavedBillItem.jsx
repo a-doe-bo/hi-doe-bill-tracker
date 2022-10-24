@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
-import { Roles } from 'meteor/alanning:roles';import { BookmarkPlusFill, CaretDownFill, CaretRightFill } from 'react-bootstrap-icons';
+import { Roles } from 'meteor/alanning:roles';
+import { BookmarkPlusFill, CaretDownFill, CaretRightFill } from 'react-bootstrap-icons';
 import { Button, Collapse, Table } from 'react-bootstrap';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import AssignToExpertModal from './AssignToExpertModal';
@@ -40,7 +41,7 @@ const SavedBillItem = ({ billData: { bill_name, bill_status, bill_number, bill_h
         {
           Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY]) && (
             <td>
-              <AssignToExpertModal />
+              <AssignToExpertModal billData={{bill_number, bill_name, bill_hearing, bill_status}} />
             </td>
           )
         }

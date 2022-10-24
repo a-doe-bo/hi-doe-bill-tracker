@@ -9,22 +9,23 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import { ROLE } from '../../api/role/Role';
 import Autocomplete from '../components/Autocomplete';
-import Filter from "../components/Filter";
+import { Saved } from '../../api/save/SavedBillCollection';
+import Filter from '../components/Filter';
 
 /* Renders a table containing all of the Stuff documents. Use <BillItem> to render each row. */
 const SavedBills = () => {
   // useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
-  const { ready, stuffs } = useTracker(() => {
+  const { ready, savedBill } = useTracker(() => {
     // Note that this subscription will get cleaned up
     // when your component is unmounted or deps change.
     // Get access to Stuff documents.
-    const subscription = Stuffs.subscribeStuff();
+    const subscription = Saved.subscribeToSavedBill();
     // Determine if the subscription is ready
     const rdy = subscription.ready();
     // Get the Stuff documents
-    const stuffItems = Stuffs.find({}, { sort: { name: 1 } }).fetch();
+    const savedBillItem = Saved.find({});
     return {
-      stuffs: stuffItems,
+      savedBill: savedBillItem,
       ready: rdy,
     };
   }, []);
@@ -33,16 +34,12 @@ const SavedBills = () => {
   const table_headers = Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY]) ?
     ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Assign'] :
     ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
-  const BillData = stuffs.map((stuff, index) => ({
+  const BillData = savedBill.map((stuff) => ({
     _id: stuff._id,
-    bill_name: `Bill ${index}`,
-    bill_status: `Status_${index}`,
-    bill_hearing: new Date().toLocaleString(),
-    bill_number: index,
-    bill_updated: 1663711472,
-    bill_committee: 'Agriculture & Environment',
-    measureType: 'HB',
-    office: 'office1',
+    bill_name: stuff.bill_name,
+    bill_status: stuff.bill_status,
+    bill_hearing: stuff.bill_hearing,
+    bill_number: stuff.bill_number,
   }));
   useEffect(() => {
     setData(BillData);

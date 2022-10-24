@@ -4,28 +4,25 @@ import swal from 'sweetalert';
 import { Meteor } from 'meteor/meteor';
 import { Stuffs } from '../../api/stuff/StuffCollection';
 import { defineMethod } from '../../api/base/BaseCollection.methods';
+import { Experts } from '../../api/expert/ExpertCollection';
 
-const AssignToExpertModal = () => {
+const AssignToExpertModal = ({billData: { bill_number, bill_name, bill_status, bill_hearing }}) => {
   const [show, setShow] = useState(false);
   const [recipients, setRecipients] = useState('');
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const submit = (data, formRef) => {
-    const { name, quantity, condition } = data;
+  const submit = () => {
+    const collectionName = Experts.getCollectionName();
     const recipientsArray = recipients.split(',');
     recipientsArray.forEach((recipient) => {
-      console.log(recipient);
+      const definitionData = { recipient, bill_number, bill_name, bill_status, bill_hearing };
+      defineMethod.callPromise({ collectionName, definitionData })
+        .catch(error => swal('Error', error.message, 'error'))
+        .then(() => {
+          swal('Success', 'Item added successfully', 'success');
+        });
     });
-    const owner = Meteor.user().username;
-    const collectionName = Stuffs.getCollectionName();
-    const definitionData = { name, quantity, condition, owner };
-    defineMethod.callPromise({ collectionName, definitionData })
-      .catch(error => swal('Error', error.message, 'error'))
-      .then(() => {
-        swal('Success', 'Item added successfully', 'success');
-        formRef.reset();
-      });
   };
   return (
     <>
@@ -46,7 +43,7 @@ const AssignToExpertModal = () => {
                 Members will be notified of bill updates
               </Form.Text>
             </Form.Group>
-            <Button variant="primary" type="submit" onSubmit={data => submit(data)}>
+            <Button variant="primary" type="submit" onClick={submit}>
               Submit
             </Button>
           </Form>
