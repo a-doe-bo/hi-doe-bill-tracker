@@ -13,6 +13,7 @@ import { PAGE_IDS } from '../utilities/PageIDs';
 import Filter from '../components/Filter';
 import Autocomplete from '../components/Autocomplete';
 import { Measures } from '../../api/measure/MeasureCollection';
+import { Hearings } from '../../api/hearing/HearingCollection';
 
 const ListBill = () => {
   const { ready, measures } = useTracker(() => {
@@ -22,6 +23,15 @@ const ListBill = () => {
     return {
       measures: measuresItems,
       ready: rdy,
+    };
+  }, []);
+  const { ready2, hearings } = useTracker(() => {
+    const subscription = Hearings.subscribeHearings();
+    const rdy2 = subscription.ready();
+    const hearingItems = Hearings.find({}).fetch();
+    return {
+      hearings: hearingItems,
+      ready2: rdy2,
     };
   }, []);
 
@@ -38,6 +48,14 @@ const ListBill = () => {
     bill_committee: 'Agriculture & Environment',
     measureType: 'HB',
     office: 'office1',
+  }));
+  const HearingData = hearings.map((hearingData) => ({
+    hearingLocation: hearingData.room,
+    dateIntroduced: hearingData.year,
+    committeeHearing: hearingData.committee,
+    roomNumber: hearingData.room,
+    doeStance: hearingData.description,
+    dateTime: hearingData.datetime,
   }));
   const [data, setData] = useState([]);
   // TODO: Remove this once we have our API set up and split the Bill data into (upcoming bills, dead bills, bills)
