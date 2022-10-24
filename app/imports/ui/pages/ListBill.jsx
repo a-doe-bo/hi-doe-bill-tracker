@@ -16,25 +16,19 @@ import { Measures } from '../../api/measure/MeasureCollection';
 import { Hearings } from '../../api/hearing/HearingCollection';
 
 const ListBill = () => {
-  const { ready, measures } = useTracker(() => {
+  const { ready, measures, hearings } = useTracker(() => {
     const subscription = Measures.subscribeMeasures();
+    const subscription2 = Hearings.subscribeHearings();
     const rdy = subscription.ready();
+    const rdy2 = subscription2.ready();
     const measuresItems = Measures.find({}).fetch();
-    return {
-      measures: measuresItems,
-      ready: rdy,
-    };
-  }, []);
-  const { ready2, hearings } = useTracker(() => {
-    const subscription = Hearings.subscribeHearings();
-    const rdy2 = subscription.ready();
     const hearingItems = Hearings.find({}).fetch();
     return {
+      measures: measuresItems,
       hearings: hearingItems,
-      ready2: rdy2,
+      ready: rdy, rdy2,
     };
   }, []);
-
   const [currentTab, setCurrentTab] = useState('Upcoming Bills');
   // TODO: Object with { header: '', component: ''}
   const table_headers = ['Save Bill', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
@@ -62,6 +56,10 @@ const ListBill = () => {
   useEffect(() => {
     setData(BillData);
   }, [ready]);
+  const [data2, setHearingData] = useState([]);
+  useEffect(() => {
+    setHearingData(HearingData);
+  }, [ready]);
   const handleCurrentTab = (tabName) => {
     setCurrentTab(tabName);
   };
@@ -85,7 +83,7 @@ const ListBill = () => {
                 <Col className="text-center">
                   <h2>{tab}</h2>
                 </Col>
-                <BillTable billData={data} tableHeaders={table_headers} />
+                <BillTable billData={data} hearingData={data2} tableHeaders={table_headers} />
               </Tab>
             ))}
           </Tabs>
