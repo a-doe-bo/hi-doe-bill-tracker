@@ -12,17 +12,40 @@ import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import { ROUTE_PATHS } from '../utilities/RoutePaths';
 import OfficePickDropdown from './OfficePickDropdown';
 import AddToCalendar from "./AddToCalendar";
+import { Saved } from '../../api/save/SavedBillCollection';
+import { defineMethod } from '../../api/base/BaseCollection.methods';
+import swal from 'sweetalert';
 
 const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, _id } }) => {
+
+  const save = () => {
+    console.log("saved");
+    // insert the data into the collection
+    // need to have owner in the collection
+    const owner = Meteor.user().username;
+    const collectionName = Saved.getCollectionName();
+    const definitionData = { bill_number: billNumber, bill_name: billTitle, bill_status: billStatus, bill_hearing: billHearing, owner };
+    defineMethod.callPromise({ collectionName, definitionData })
+      .catch(error => swal('Error', error.message, 'error'))
+      .then(() => {
+        swal('Success', 'Bookmarked Successfully', 'success');
+      });
+
+  };
+  const unsaved = () => {
+    console.log("unsaved");
+    // remove the data from the collection
+
+  }
   const { pathname } = useLocation();
   const [toggle, setToggle] = useState(true);
   const [collapsableTable, setCollapsableTable] = useState(false);
   const handleToggle = (state, setState) => () => {
     setState(!state);
     if (!state) {
-      console.log("unsaved");
+      unsaved();
     } else {
-      console.log("saved");
+      save();
     }
   };
   return (

@@ -16,14 +16,15 @@ class SavedBillCollection extends BaseCollection {
       bill_name: String,
       bill_status: String,
       bill_hearing: String,
+      owner: String,
     }));
   }
 
-  define({ bill_number, bill_name, bill_status, bill_hearing }) {
-    if (this.isDefined({ bill_number, bill_name, bill_status, bill_hearing })) {
-      return this.findDoc({ bill_number, bill_name, bill_status, bill_hearing })._id;
+  define({ bill_number, bill_name, bill_status, bill_hearing, owner }) {
+    if (this.isDefined({ bill_number, bill_name, bill_status, bill_hearing, owner })) {
+      return this.findDoc({ bill_number, bill_name, bill_status, bill_hearing, owner })._id;
     }
-    const docID = this._collection.insert({ bill_number, bill_name, bill_status, bill_hearing });
+    const docID = this._collection.insert({ bill_number, bill_name, bill_status, bill_hearing, owner });
     return docID;
   }
 
@@ -62,13 +63,18 @@ class SavedBillCollection extends BaseCollection {
     return null;
   }
 
+  assertValidRoleForMethod(userId) {
+    this.assertRole(userId, [ROLE.SECRETARY, ROLE.USER, ROLE.PIPE_APPROVER, ROLE.ADMIN, ROLE.FINAL_APPROVER, ROLE.WRITER]);
+  }
+
   dumpOne(docID) {
     const doc = this.findDoc(docID);
     const bill_number = doc.bill_number;
     const bill_name = doc.bill_name;
     const bill_status = doc.bill_status;
     const bill_hearing = doc.bill_hearing;
-    return { bill_number, bill_name, bill_status, bill_hearing };
+    const owner = doc.owner;
+    return { bill_number, bill_name, bill_status, bill_hearing, owner };
   }
 
 }
