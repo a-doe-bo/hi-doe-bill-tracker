@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { BsFillBookmarkPlusFill } from 'react-icons/bs';
 import { BookmarkPlusFill, CaretDownFill, CaretRightFill } from 'react-bootstrap-icons';
 import { useLocation } from 'react-router';
 import { Button, Collapse, Table } from 'react-bootstrap';
@@ -11,17 +12,45 @@ import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import { ROUTE_PATHS } from '../utilities/RoutePaths';
 import OfficePickDropdown from './OfficePickDropdown';
 import AddToCalendar from "./AddToCalendar";
+import { Saved } from '../../api/save/SavedBillCollection';
+import { defineMethod } from '../../api/base/BaseCollection.methods';
+import swal from 'sweetalert';
 
 const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, _id } }) => {
+
+  const save = () => {
+    console.log("saved");
+    // insert the data into the collection
+    // need to have owner in the collection
+    const owner = Meteor.user().username;
+    const collectionName = Saved.getCollectionName();
+    const definitionData = { bill_number: billNumber, bill_name: billTitle, bill_status: billStatus, bill_hearing: billHearing, owner };
+    defineMethod.callPromise({ collectionName, definitionData })
+      .catch(error => swal('Error', error.message, 'error'))
+      .then(() => {
+        swal('Success', 'Bookmarked Successfully', 'success');
+      });
+
+  };
+  const unsaved = () => {
+    console.log("unsaved");
+    // remove the data from the collection
+
+  }
   const { pathname } = useLocation();
   const [toggle, setToggle] = useState(true);
   const [collapsableTable, setCollapsableTable] = useState(false);
-  const handleToggle = (state, setState) => () => { setState(!state); };
+  const handleToggle = (state, setState) => () => {
+    setState(!state);
+    if (!state) {
+      unsaved();
+    } else {
+      save();
+    }
+  };
   return (
     <>
       <tr>
-        {/* TODO: Ask a question about this */}
-        {/* Unknown data, RE: Thane Luna */}
         <td>
           {collapsableTable ? (
             <Button onClick={handleToggle(collapsableTable, setCollapsableTable)} aria-expanded={collapsableTable} aria-controls="collapse-table">

@@ -23,7 +23,8 @@ const SavedBills = () => {
     // Determine if the subscription is ready
     const rdy = subscription.ready();
     // Get the Stuff documents
-    const savedBillItem = Saved.find({});
+    const owner = Meteor.user().username;
+    const savedBillItem = Saved.find({owner}).fetch();
     return {
       savedBill: savedBillItem,
       ready: rdy,
@@ -34,6 +35,7 @@ const SavedBills = () => {
   const table_headers = Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY]) ?
     ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Assign'] :
     ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
+
   const BillData = savedBill.map((stuff) => ({
     _id: stuff._id,
     bill_name: stuff.bill_name,
@@ -41,6 +43,7 @@ const SavedBills = () => {
     bill_hearing: stuff.bill_hearing,
     bill_number: stuff.bill_number,
   }));
+
   useEffect(() => {
     setData(BillData);
   }, [ready]);
