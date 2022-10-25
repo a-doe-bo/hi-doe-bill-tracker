@@ -4,7 +4,10 @@ import { AdminProfiles } from '../user/AdminProfileCollection';
 import { UserProfiles } from '../user/UserProfileCollection';
 import { Hearings } from '../hearing/HearingCollection';
 import { Measures } from '../measure/MeasureCollection';
+import { Filters } from '../filter/FilterCollection';
 import { RequestedProfiles } from '../user/RequestedAccountsCollection';
+import { Experts } from '../expert/ExpertCollection';
+import { Saved } from '../save/SavedBillCollection';
 
 class MATPClass {
   collections;
@@ -21,7 +24,10 @@ class MATPClass {
       Measures,
       Stuffs,
       UserProfiles,
+      Experts,
+      Saved,
       RequestedProfiles,
+      Filters,
     ];
     /*
      * A list of collection class instances in the order required for them to be sequentially loaded from a file.
@@ -30,6 +36,8 @@ class MATPClass {
       AdminProfiles,
       UserProfiles,
       Stuffs,
+      Experts,
+      Saved,
     ];
 
     /*

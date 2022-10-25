@@ -19,15 +19,9 @@ const OfficePickDropdown = ({ data }) => {
         console.log('database updated');
       });
   };
-  const options = [
-    { label: 'office 1', value: 'office 1' },
-    { label: 'office 2', value: 'office 2' },
-    { label: 'office 3', value: 'office 3' },
-    { label: 'office 4', value: 'office 4' },
-    { label: 'office 5', value: 'office 5' },
-    { label: 'office 6', value: 'office 6' },
-    { label: 'office 7', value: 'office 7' },
-  ];
+  const options = ['Deputy', 'OCID', 'OFO', 'OFS', 'OITS', 'OSIP', 'OSSS', 'OTM'].map((officeOptions) => (
+    { label: officeOptions, value: officeOptions }
+  ));
   return (
     <MultiSelect options={options} value={office} onChange={(e) => (updateDatabase(e))} labelledBy="Select" hasSelectAll={false} />
   );
