@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { BsFillBookmarkPlusFill } from 'react-icons/bs';
 import { BookmarkPlusFill, CaretDownFill, CaretRightFill } from 'react-bootstrap-icons';
 import { useLocation } from 'react-router';
 import { Button, Collapse, Table } from 'react-bootstrap';
@@ -16,8 +15,7 @@ import AddToCalendar from './AddToCalendar';
 import { Saved } from '../../api/save/SavedBillCollection';
 import { defineMethod } from '../../api/base/BaseCollection.methods';
 
-const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, _id } }) => {
-
+const BillItem = ({ savedBillData, billData: { billTitle, billStatus, billNumber, billHearing, _id } }) => {
   const save = () => {
     // insert the data into the collection
     // need to have owner in the collection
@@ -40,6 +38,12 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
   const handleToggle = (state, setState) => () => {
     setState(!state);
   };
+  useEffect(() => {
+    const elementInSaved = savedBillData.filter((bill) => (bill.billNumber === billNumber));
+    if (elementInSaved.length >= 1) {
+      setToggle(false);
+    }
+  }, []);
 
   const handleSave = (state, setState) => () => {
     setState(!state);
@@ -146,6 +150,14 @@ BillItem.propTypes = {
     billStatus: PropTypes.string,
     billHearing: PropTypes.number,
   }).isRequired,
+  savedBillData: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.string,
+    billNumber: PropTypes.number,
+    billTitle: PropTypes.string,
+    billStatus: PropTypes.string,
+    billHearing: PropTypes.number,
+    owner: PropTypes.string,
+  })).isRequired,
 };
 
 export default BillItem;
