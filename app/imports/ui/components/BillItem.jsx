@@ -21,7 +21,7 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
   const save = () => {
     // insert the data into the collection
     // need to have owner in the collection
-    const owner = Meteor.user().username;
+    const owner = Meteor.userId();
     const collectionName = Saved.getCollectionName();
     const definitionData = { bill_number: billNumber, bill_name: billTitle, bill_status: billStatus, bill_hearing: billHearing, owner };
     defineMethod.callPromise({ collectionName, definitionData })
