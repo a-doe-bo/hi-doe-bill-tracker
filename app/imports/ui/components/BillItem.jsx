@@ -43,7 +43,7 @@ const BillItem = ({ savedBillData, billData: { billTitle, billStatus, billNumber
     if (elementInSaved.length >= 1) {
       setToggle(false);
     }
-  }, []);
+  }, [savedBillData]);
 
   const handleSave = (state, setState) => () => {
     setState(!state);
