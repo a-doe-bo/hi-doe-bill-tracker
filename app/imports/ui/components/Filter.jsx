@@ -96,14 +96,25 @@ const BillFilter = ({ handleDataFiltering, data, tab }) => {
 
   // Set our original data on page load
   useEffect(() => {
-    if (filterOptions) {
-      setStatusCheckedState(filterOptions.statusOptions);
-      setOfficeCheckedState(filterOptions.officeOptions);
-      setMeasureTypes(filterOptions.measureTypeOptions);
-      setDateState(filterOptions.dateStateOptions);
-      filterData();
+    if (data) {
+      setOgData(data);
     }
-    setOgData(data);
+    if (filterOptions) {
+      // eslint-disable-next-line no-shadow
+      const { statusOptions, officeOptions, measureTypeOptions, dateStateOptions } = filterOptions;
+      if (statusOptions.length !== 0 ||
+          officeOptions.length !== 0 ||
+          measureTypeOptions.length !== 0 ||
+          dateStateOptions.length !== 0
+      ) {
+        setStatusCheckedState(statusOptions);
+        setOfficeCheckedState(officeOptions);
+        setMeasureTypes(measureTypeOptions);
+        setDateState(dateStateOptions);
+        filterData();
+      }
+    }
+    return () => {};
   }, [ready]);
 
   const submit = () => {
