@@ -25,8 +25,8 @@ const SavedBills = () => {
   const [data, setData] = useState([]);
 
   const table_headers = Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY]) ?
-    ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Assign'] :
-    ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
+    ['', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Assign', 'Remove'] :
+    ['', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Remove'];
 
   const BillData = savedBill.map((stuff) => ({
     _id: stuff._id,
