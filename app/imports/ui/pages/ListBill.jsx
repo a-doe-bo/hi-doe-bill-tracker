@@ -23,6 +23,8 @@ const ListBill = () => {
     const rdy2 = subscription2.ready();
     const measuresItems = Measures.find({}).fetch();
     const hearingItems = Hearings.find({}).fetch();
+    console.log(measuresItems);
+    console.log(hearingItems);
     return {
       measures: measuresItems,
       hearings: hearingItems,

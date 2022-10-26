@@ -12,7 +12,7 @@ import { ROUTE_PATHS } from '../utilities/RoutePaths';
 import OfficePickDropdown from './OfficePickDropdown';
 import AddToCalendar from './AddToCalendar';
 
-const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, _id }, hearingData: { hearingLocation, dateIntroduced, committeeHearing, roomNumber, doeStance, dateTime } }) => {
+const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, _id } }, { hearingData: { hearingLocation, dateIntroduced, committeeHearing, roomNumber, doeStance, dateTime } }) => {
   const { pathname } = useLocation();
   const [toggle, setToggle] = useState(true);
   const [collapsableTable, setCollapsableTable] = useState(false);
@@ -104,9 +104,9 @@ BillItem.propTypes = {
     hearingLocation: PropTypes.string,
     dateIntroduced: PropTypes.number,
     committeeHearing: PropTypes.string,
-    roomNumber: PropTypes.number,
+    roomNumber: PropTypes.string,
     doeStance: PropTypes.string,
-    dateTime: PropTypes.number,
+    dateTime: PropTypes.string,
   }).isRequired,
 };
 

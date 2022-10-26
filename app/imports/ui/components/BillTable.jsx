@@ -4,7 +4,7 @@ import { Table } from 'react-bootstrap';
 import BillItem from './BillItem';
 import Pagination2 from './Pagination2';
 
-const BillTable = ({ billData, tableHeaders }) => {
+const BillTable = ({ billData, tableHeaders, hearingData }) => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [billsPerPage] = useState(270);
@@ -24,7 +24,8 @@ const BillTable = ({ billData, tableHeaders }) => {
           </tr>
         </thead>
         <tbody>
-          {currentBills.map((data, index) => <BillItem key={index} billData={data} hearingData={data} />)}
+          {currentBills.map((data, index) => <BillItem key={index} billData={data} />)}
+          {hearingData.map((data2, index) => <BillItem key={index} hearingData={data2} />)}
         </tbody>
       </Table>
       <Pagination2 billsPerPage={billsPerPage} totalBills={billData.length} paginate={paginate} />
@@ -40,14 +41,14 @@ BillTable.propTypes = {
     billStatus: PropTypes.string,
     billHearing: PropTypes.number,
   })).isRequired,
-  hearingData: PropTypes.shape({
+  hearingData: PropTypes.arrayOf(PropTypes.shape({
     hearingLocation: PropTypes.string,
     dateIntroduced: PropTypes.number,
     committeeHearing: PropTypes.string,
-    roomNumber: PropTypes.number,
+    roomNumber: PropTypes.string,
     doeStance: PropTypes.string,
-    dateTime: PropTypes.number,
-  }).isRequired,
+    dateTime: PropTypes.string,
+  })).isRequired,
   tableHeaders: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
