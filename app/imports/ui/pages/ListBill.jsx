@@ -7,33 +7,27 @@ import {
   Tab,
 } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
-import { Meteor } from 'meteor/meteor';
 import BillTable from '../components/BillTable';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import Filter from '../components/Filter';
 import Autocomplete from '../components/Autocomplete';
 import { Measures } from '../../api/measure/MeasureCollection';
-import { Saved } from '../../api/save/SavedBillCollection';
 
 const ListBill = () => {
-  const { ready, measures, savedBills } = useTracker(() => {
-    const owner = Meteor.user().username;
+  const { ready, measures } = useTracker(() => {
     const subscription = Measures.subscribeMeasures();
-    const savedBillsSubscription = Saved.subscribeToSavedBill();
-    const rdy = subscription.ready() && savedBillsSubscription.ready();
-    const measuresItems = Measures.find({}, {}).fetch();
-    const savedBillItems = Saved.find({ owner }, {}).fetch();
+    const rdy = subscription.ready();
+    const measuresItems = Measures.find({}).fetch();
     return {
       measures: measuresItems,
-      savedBills: savedBillItems,
       ready: rdy,
     };
   }, []);
 
   const [currentTab, setCurrentTab] = useState('Upcoming Bills');
   // TODO: Object with { header: '', component: ''}
-  const table_headers = ['Bill Details', 'Save Bill', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
+  const table_headers = ['Bill Details','Save Bill', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
   const BillData = measures.map((measureData) => ({
     _id: measureData._id,
     billTitle: measureData.measureTitle,
@@ -44,14 +38,6 @@ const ListBill = () => {
     bill_committee: 'Agriculture & Environment',
     measureType: 'HB',
     office: 'office1',
-  }));
-  const SavedData = savedBills.map((save) => ({
-    _id: save._id,
-    billNumber: save.bill_number,
-    billTitle: save.bill_name,
-    billStatus: save.bill_status,
-    billHearing: save.bill_hearing,
-    owner: save.owner,
   }));
   const [data, setData] = useState([]);
   // TODO: Remove this once we have our API set up and split the Bill data into (upcoming bills, dead bills, bills)
@@ -81,7 +67,7 @@ const ListBill = () => {
                 <Col className="text-center">
                   <h2>{tab}</h2>
                 </Col>
-                <BillTable billData={data} savedBillData={SavedData} tableHeaders={table_headers} />
+                <BillTable billData={data} tableHeaders={table_headers} />
               </Tab>
             ))}
           </Tabs>

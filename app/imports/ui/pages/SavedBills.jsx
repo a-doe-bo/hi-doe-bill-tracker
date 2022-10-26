@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { Col, Container, Row, Tabs, Tab } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
+import { Stuffs } from '../../api/stuff/StuffCollection';
 import SavedBill from '../components/SavedBill';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
@@ -11,12 +12,19 @@ import Autocomplete from '../components/Autocomplete';
 import { Saved } from '../../api/save/SavedBillCollection';
 import Filter from '../components/Filter';
 
+/* Renders a table containing all of the Stuff documents. Use <BillItem> to render each row. */
 const SavedBills = () => {
+  // useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
   const { ready, savedBill } = useTracker(() => {
+    // Note that this subscription will get cleaned up
+    // when your component is unmounted or deps change.
+    // Get access to Stuff documents.
     const subscription = Saved.subscribeToSavedBill();
+    // Determine if the subscription is ready
     const rdy = subscription.ready();
+    // Get the Stuff documents
     const owner = Meteor.user().username;
-    const savedBillItem = Saved.find({ owner }, {}).fetch();
+    const savedBillItem = Saved.find({owner}).fetch();
     return {
       savedBill: savedBillItem,
       ready: rdy,
