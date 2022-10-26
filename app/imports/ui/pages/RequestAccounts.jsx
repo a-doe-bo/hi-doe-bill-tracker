@@ -4,11 +4,9 @@ import { AutoForm, ErrorsField, SelectField, SubmitField, TextField } from 'unif
 import swal from 'sweetalert';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
-import { Mongo } from 'meteor/mongo';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import { RequestedProfiles } from '../../api/user/RequestedAccountsCollection';
-import { Stuffs } from '../../api/stuff/StuffCollection';
 import { defineMethod } from '../../api/base/BaseCollection.methods';
 
 // Create a schema to specify the structure of the data to appear in the form.
@@ -18,8 +16,7 @@ const formSchema = new SimpleSchema({
   email: String,
   employeeID: String,
   password: String,
-  office: { type: String, allowedValues: ['Facilities and Operations', 'Curriculum and Instructional Design', 'Fiscal Services',
-      'Information Technology Services', 'Strategy, Innovation and Performance', 'Student Support Services', 'Talent Management' ]},
+  office: { type: String, allowedValues: ['Deputy', 'OCID', 'OFO', 'OFS', 'OITS', 'OSIP', 'OSSS', 'OTM' ]},
   role: { type: String, allowedValues: ['SECRETARY', 'WRITER', 'OFFICE APPROVER', 'PIPE APPROVER', 'FINAL APPROVER'] },
 });
 
@@ -31,7 +28,8 @@ const RequestAccounts = () => {
   // On submit, insert the data.
   const submit = (data, formRef) => {
     const collectionName = RequestedProfiles.getCollectionName();
-    const definitionData = data;
+    //const definitionData = { firstName, lastName, email, employeeID, password, office, role  };
+    const definitionData = data ;
     /* Giving an error where */
     defineMethod.callPromise({ collectionName, definitionData })
       .catch(error => swal('Error', error.message, 'error'))

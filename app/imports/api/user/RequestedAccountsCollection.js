@@ -6,6 +6,7 @@ import BaseCollection from '../base/BaseCollection';
 import { ROLE } from '../role/Role';
 
 export const RequestedAccountsPublications = {
+  accounts: 'accounts',
   accountsAdmin: 'RequestedAccountsAdmin',
 };
 
@@ -19,7 +20,7 @@ class RequestedAccountsCollection extends BaseCollection {
       employeeID: String,
       office: String,
       role: String,
-    },));
+    }));
   }
 
   /**
@@ -57,6 +58,12 @@ class RequestedAccountsCollection extends BaseCollection {
     if (Meteor.isServer) {
       // get the StuffCollection instance.
       const instance = this;
+      Meteor.publish(RequestedAccountsPublications.accounts, function publish() {
+        if (this.userId) {
+          return instance._collection.find();
+        }
+        return this.ready();
+      });
       /** This subscription publishes all documents regardless of user, but only if the logged in user is the Admin. */
       Meteor.publish(RequestedAccountsPublications.accountsAdmin, function publish() {
         if (this.userId && Roles.userIsInRole(this.userId, ROLE.ADMIN)) {
@@ -68,10 +75,20 @@ class RequestedAccountsCollection extends BaseCollection {
   }
 
   /**
+   * Subscription method for users to subscribe to the collection.
+   */
+  subscribeRequested() {
+    if (Meteor.isClient) {
+      return Meteor.subscribe(RequestedAccountsPublications.accounts);
+    }
+    return null;
+  }
+
+  /**
    * Subscription method for admin users.
    * It subscribes to the entire collection.
    */
-  subscribeStuffAdmin() {
+  subscribeRequestedAdmin() {
     if (Meteor.isClient) {
       return Meteor.subscribe(RequestedAccountsPublications.accountsAdmin);
     }
@@ -85,7 +102,8 @@ class RequestedAccountsCollection extends BaseCollection {
    * @throws { Meteor.Error } If there is no logged in user, or the user is not an Admin or User.
    */
   assertValidRoleForMethod(userId) {
-    this.assertRole(userId, [ROLE.ADMIN, ROLE.USER]);
+    // this.assertRole(userId, [ROLE.ADMIN, ROLE.USER]);
+    return true;
   }
 
   /**

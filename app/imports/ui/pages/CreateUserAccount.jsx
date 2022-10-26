@@ -18,8 +18,7 @@ const CreateUserAccount = () => {
     email: String,
     password: String,
     employeeID: String,
-    office: { type: String, allowedValues: ['Facilities and Operations', 'Curriculum and Instructional Design', 'Fiscal Services',
-      'Information Technology Services', 'Strategy, Innovation and Performance', 'Student Support Services', 'Talent Management' ]},
+    office: { type: String, allowedValues: ['Deputy', 'OCID', 'OFO', 'OFS', 'OITS', 'OSIP', 'OSSS', 'OTM' ]},
     role: { type: String, allowedValues: ['SECRETARY', 'WRITER', 'OFFICE APPROVER', 'PIPE APPROVER', 'FINAL APPROVER'] },
   });
   const bridge = new SimpleSchema2Bridge(schema);

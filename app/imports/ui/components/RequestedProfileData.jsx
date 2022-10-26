@@ -7,7 +7,7 @@ import { defineMethod, removeItMethod } from '../../api/base/BaseCollection.meth
 import { RequestedProfiles } from '../../api/user/RequestedAccountsCollection';
 
 /** Renders a single row in the List Stuff (Admin) table. See pages/ListStuffAdmin.jsx. */
-const RequestedProfileData = ({ requestedProfile: { email, firstName, lastName, role, employeeID, password, _id } }) => {
+const RequestedProfileData = ({ requestedProfile: { email, firstName, lastName, office, role, employeeID, password, _id } }) => {
   const handleRemove = () => {
     const collectionName = RequestedProfiles.getCollectionName();
     const instance = _id;
@@ -25,7 +25,7 @@ const RequestedProfileData = ({ requestedProfile: { email, firstName, lastName, 
   };
   const handleAccept = () => {
     const collectionName = UserProfiles.getCollectionName();
-    const definitionData = { email, firstName, lastName, role, employeeID, password };
+    const definitionData = { email, firstName, lastName, office, role, employeeID, password };
     const collectionName2 = RequestedProfiles.getCollectionName();
     const instance2 = _id;
     swal({
@@ -36,18 +36,19 @@ const RequestedProfileData = ({ requestedProfile: { email, firstName, lastName, 
       if (willAccept) {
         defineMethod.callPromise({ collectionName, definitionData });
         console.log(definitionData);
+        removeItMethod.callPromise({ collectionName2, instance2 });
         swal('Success', 'User added successfully', 'success');
-        removeItMethod.callPromise({ collection: collectionName2, instance: instance2 });
       }
     });
   };
   /* Returns a table with user information */
-  console.log('profile', email, firstName, lastName, role, employeeID, _id);
+  console.log('profile', email, firstName, office, lastName, role, employeeID, _id);
   return (
     <tr>
       <td>{email}</td>
       <td>{firstName}</td>
       <td>{lastName}</td>
+      <td>{office}</td>
       <td>{role}</td>
       <td>{employeeID}</td>
       <td className="text-center">
@@ -72,6 +73,7 @@ RequestedProfileData.propTypes = {
     firstName: PropTypes.string,
     lastName: PropTypes.string,
     _id: PropTypes.string,
+    office: PropTypes.string,
     role: PropTypes.string,
     userID: PropTypes.string,
     password: PropTypes.string,
