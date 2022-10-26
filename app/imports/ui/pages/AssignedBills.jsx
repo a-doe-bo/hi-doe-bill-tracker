@@ -10,37 +10,46 @@ import Autocomplete from '../components/Autocomplete';
 import { Measures } from '../../api/measure/MeasureCollection';
 import { Saved } from '../../api/save/SavedBillCollection';
 import { Hearings } from '../../api/hearing/HearingCollection';
+import { Experts } from '../../api/expert/ExpertCollection';
 
 const AssignedBills = () => {
-  const { ready, measures, savedBills, hearings } = useTracker(() => {
+  const { ready, measures, expertsBills, savedBills, hearings } = useTracker(() => {
     const owner = Meteor.user().username;
-    const subscription = Measures.subscribeMeasures();
     const savedBillsSubscription = Saved.subscribeToSavedBill();
     const hearingBillsSubscription = Hearings.subscribeHearings();
-    const rdy = subscription.ready() && savedBillsSubscription.ready() && hearingBillsSubscription.ready();
-    const measuresItems = Measures.find({}, {}).fetch();
+    const expertSubscription = Experts.subscribeToExpert();
+    const rdy = savedBillsSubscription.ready() && hearingBillsSubscription.ready() && expertSubscription.ready();
     const savedBillItems = Saved.find({ owner }, {}).fetch();
     const hearingItems = Hearings.find({}).fetch();
+    const expertItems = Experts.find({ owner }, {}).fetch();
     return {
-      measures: measuresItems,
       savedBills: savedBillItems,
       hearings: hearingItems,
+      expertsBills: expertItems,
       ready: rdy,
     };
   }, []);
+
+  const { ready2, experts } = useTracker(() => {
+    const owner = Meteor.user().username;
+    const expertSubscription = Experts.subscribeToExpert();
+    const rdy = expertSubscription.ready();
+    const expertItems = Experts.find({recipient: owner}, {}).fetch();
+    return {
+      experts: expertItems,
+      ready2: rdy,
+    };
+  }, []);
+
   const [currentTab, setCurrentTab] = useState('Assigned Bills');
   // TODO: Object with { header: '', component: ''}
   const table_headers = ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
-  const BillData = measures.map((measureData) => ({
-    _id: measureData._id,
-    billTitle: measureData.measureTitle,
-    billStatus: measureData.status,
-    billHearing: measureData.year,
-    billNumber: measureData.measureNumber,
-    bill_updated: 1663711472,
-    bill_committee: 'Agriculture & Environment',
-    measureType: 'HB',
-    office: 'office1',
+  const BillData = experts.map((bill) => ({
+    _id: bill._id,
+    billTitle: bill.bill_name,
+    billStatus: bill.bill_status,
+    billHearing: bill.bill_hearing,
+    billNumber: bill.bill_number,
   }));
   const HearingData2 = hearings.map((hearingData) => ({
     hearingLocation: hearingData.room,
@@ -63,7 +72,7 @@ const AssignedBills = () => {
   // TODO: Remove this once we have our API set up and split the Bill data into (upcoming bills, dead bills, bills)
   useEffect(() => {
     setData(BillData);
-  }, [ready, measures]);
+  }, [ready, experts]);
   const handleCurrentTab = (tabName) => {
     setCurrentTab(tabName);
   };
