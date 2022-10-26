@@ -1,13 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
-import { _ } from 'meteor/underscore';
-import { Roles } from 'meteor/alanning:roles';
 import BaseCollection from '../base/BaseCollection';
 import { ROLE } from '../role/Role';
 
 export const savedPublications = {
-  saved: 'saved'
-}
+  saved: 'saved',
+};
 
 class SavedBillCollection extends BaseCollection {
   constructor() {
@@ -50,15 +48,13 @@ class SavedBillCollection extends BaseCollection {
     if (Meteor.isServer) {
       const instance = this;
       Meteor.publish(savedPublications.saved, function publish() {
-        if (this.userId)
-          return instance._collection.find({});
+        if (this.userId) return instance._collection.find({});
         return this.ready();
       });
     }
   }
 
-  subscribeToSavedBill()
-  {
+  subscribeToSavedBill() {
     if (Meteor.isClient) return Meteor.subscribe(savedPublications.saved);
     return null;
   }

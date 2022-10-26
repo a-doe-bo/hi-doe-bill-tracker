@@ -7,19 +7,18 @@ import { BsFillBookmarkPlusFill } from 'react-icons/bs';
 import { BookmarkPlusFill, CaretDownFill, CaretRightFill } from 'react-bootstrap-icons';
 import { useLocation } from 'react-router';
 import { Button, Collapse, Table } from 'react-bootstrap';
+import swal from 'sweetalert';
 import { ROLE } from '../../api/role/Role';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import { ROUTE_PATHS } from '../utilities/RoutePaths';
 import OfficePickDropdown from './OfficePickDropdown';
-import AddToCalendar from "./AddToCalendar";
+import AddToCalendar from './AddToCalendar';
 import { Saved } from '../../api/save/SavedBillCollection';
 import { defineMethod } from '../../api/base/BaseCollection.methods';
-import swal from 'sweetalert';
 
 const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, _id } }) => {
 
   const save = () => {
-    console.log("saved");
     // insert the data into the collection
     // need to have owner in the collection
     const owner = Meteor.userId();
@@ -32,10 +31,9 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
       });
   };
   const unsaved = () => {
-    console.log("unsaved");
+    console.log('unsaved');
     // remove the data from the collection
-
-  }
+  };
   const { pathname } = useLocation();
   const [toggle, setToggle] = useState(true);
   const [collapsableTable, setCollapsableTable] = useState(false);
@@ -50,13 +48,13 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
     } else {
       save();
     }
-  }
+  };
   return (
     <>
       <tr>
         <td>
           {collapsableTable ? (
-            <Button onClick={handleToggle(collapsableTable, setCollapsableTable)} aria-expanded={collapsableTable} aria-controls="collapse-table" >
+            <Button onClick={handleToggle(collapsableTable, setCollapsableTable)} aria-expanded={collapsableTable} aria-controls="collapse-table">
               <CaretDownFill size={40} />
             </Button>
           )
