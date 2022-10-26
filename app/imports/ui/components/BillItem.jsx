@@ -12,10 +12,11 @@ import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import { ROUTE_PATHS } from '../utilities/RoutePaths';
 import OfficePickDropdown from './OfficePickDropdown';
 import AddToCalendar from './AddToCalendar';
+import HearingBillData from './HearingBillData';
 import { Saved } from '../../api/save/SavedBillCollection';
 import { defineMethod, removeItMethod } from '../../api/base/BaseCollection.methods';
 
-const BillItem = ({ savedBillData, billData: { billTitle, billStatus, billNumber, billHearing, _id } }, { hearingData: { hearingLocation, dateIntroduced, committeeHearing, roomNumber, doeStance, dateTime } }) => {
+const BillItem = ({ savedBillData, hearingData, billData: { billTitle, billStatus, billNumber, billHearing, _id } }) => {
   const collectionName = Saved.getCollectionName();
   const save = () => {
     // insert the data into the collection
@@ -57,7 +58,6 @@ const BillItem = ({ savedBillData, billData: { billTitle, billStatus, billNumber
       save();
     }
   };
-
   return (
     <>
       <tr>
@@ -113,14 +113,7 @@ const BillItem = ({ savedBillData, billData: { billTitle, billStatus, billNumber
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>{hearingLocation}</td>
-                    <td>{dateIntroduced}</td>
-                    <td>{committeeHearing}</td>
-                    <td>{roomNumber}</td>
-                    <td>{doeStance}</td>
-                    <td>{dateTime}</td>
-                  </tr>
+                  {hearingData.map((data, index) => <HearingBillData key={index} hearingData={data} />)}
                 </tbody>
               </Table>
             </div>
@@ -139,14 +132,15 @@ BillItem.propTypes = {
     billStatus: PropTypes.string,
     billHearing: PropTypes.number,
   }).isRequired,
-  hearingData: PropTypes.shape({
+  hearingData: PropTypes.arrayOf(PropTypes.shape({
     hearingLocation: PropTypes.string,
     dateIntroduced: PropTypes.number,
     committeeHearing: PropTypes.string,
+    measureNum: PropTypes.number,
     roomNumber: PropTypes.string,
     doeStance: PropTypes.string,
     dateTime: PropTypes.string,
-  }).isRequired,
+  })).isRequired,
   savedBillData: PropTypes.arrayOf(PropTypes.shape({
     _id: PropTypes.string,
     billNumber: PropTypes.string,

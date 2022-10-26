@@ -51,7 +51,8 @@ const ListBill = () => {
   const HearingData2 = hearings.map((hearingData) => ({
     hearingLocation: hearingData.room,
     dateIntroduced: hearingData.year,
-    committeeHearing: hearingData.committee,
+    committeeHearing: hearingData.notice,
+    measureNum: hearingData.measureNumber,
     roomNumber: hearingData.room,
     doeStance: hearingData.description,
     dateTime: hearingData.datetime,

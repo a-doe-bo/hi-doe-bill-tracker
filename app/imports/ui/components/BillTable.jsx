@@ -23,7 +23,7 @@ const BillTable = ({ billData, tableHeaders, savedBillData, hearingData }) => {
           </tr>
         </thead>
         <tbody>
-          {currentBills.map((data, index) => <BillItem key={index} billData={data} savedBillData={savedBillData} hearingData={hearingData} />)}
+          {currentBills.map((data, index) => <BillItem key={index} billData={data} savedBillData={savedBillData} hearingData={hearingData.filter((hearing) => (hearing.measureNum === data.billNumber))} />)}
         </tbody>
       </Table>
       <Pagination2 billsPerPage={billsPerPage} totalBills={billData.length} paginate={paginate} />
@@ -43,6 +43,7 @@ BillTable.propTypes = {
     hearingLocation: PropTypes.string,
     dateIntroduced: PropTypes.number,
     committeeHearing: PropTypes.string,
+    measureNum: PropTypes.number,
     roomNumber: PropTypes.string,
     doeStance: PropTypes.string,
     dateTime: PropTypes.string,
