@@ -4,8 +4,7 @@ import { Table } from 'react-bootstrap';
 import BillItem from './BillItem';
 import Pagination2 from './Pagination2';
 
-const BillTable = ({ billData, tableHeaders, hearingData }) => {
-
+const BillTable = ({ billData, tableHeaders, savedBillData, hearingData }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [billsPerPage] = useState(270);
   const indexOfLastBill = currentPage * billsPerPage;
@@ -24,8 +23,7 @@ const BillTable = ({ billData, tableHeaders, hearingData }) => {
           </tr>
         </thead>
         <tbody>
-          {currentBills.map((data, index) => <BillItem key={index} billData={data} />)}
-          {hearingData.map((data2, index) => <BillItem key={index} hearingData={data2} />)}
+          {currentBills.map((data, index) => <BillItem key={index} billData={data} savedBillData={savedBillData} hearingData={hearData} />)}
         </tbody>
       </Table>
       <Pagination2 billsPerPage={billsPerPage} totalBills={billData.length} paginate={paginate} />
@@ -50,6 +48,14 @@ BillTable.propTypes = {
     dateTime: PropTypes.string,
   })).isRequired,
   tableHeaders: PropTypes.arrayOf(PropTypes.string).isRequired,
+  savedBillData: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.string,
+    billNumber: PropTypes.number,
+    billTitle: PropTypes.string,
+    billStatus: PropTypes.string,
+    billHearing: PropTypes.string,
+    owner: PropTypes.string,
+  })).isRequired,
 };
 
 export default BillTable;

@@ -3,16 +3,29 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
-import { BookmarkPlusFill, CaretDownFill, CaretRightFill } from 'react-bootstrap-icons';
+import { CaretDownFill, CaretRightFill, TrashFill } from 'react-bootstrap-icons';
 import { Button, Collapse, Table } from 'react-bootstrap';
+import swal from 'sweetalert';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import AssignToExpertModal from './AssignToExpertModal';
 import { ROLE } from '../../api/role/Role';
+import { removeItMethod } from '../../api/base/BaseCollection.methods';
+import { Saved } from '../../api/save/SavedBillCollection';
 
 const SavedBillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearing, _id } }) => {
-  const [toggle, setToggle] = useState(true);
   const [collapsableTable, setCollapsableTable] = useState(false);
   const handleToggle = (state, setState) => () => { setState(!state); };
+  const onDelete = () => {
+    const collectionName = Saved.getCollectionName();
+    const instance = _id;
+    removeItMethod.callPromise({ collectionName, instance })
+      .then(() => {
+        swal('Success', 'Removed Successfully', 'success');
+      })
+      .catch((error) => (
+        swal('Error', error.message, 'error')
+      ));
+  };
   return (
     <>
       <tr>
@@ -28,9 +41,6 @@ const SavedBillItem = ({ billData: { bill_name, bill_status, bill_number, bill_h
               </Button>
             )}
         </td>
-        <td className="text-center">
-          <BookmarkPlusFill onClick={handleToggle(toggle, setToggle)} size={50} fill={toggle ? '#c4c4c4' : '#E7D27C'} />
-        </td>
         <td>{bill_number}</td>
         <td>{bill_name}</td>
         <td>{bill_status}</td>
@@ -41,13 +51,16 @@ const SavedBillItem = ({ billData: { bill_name, bill_status, bill_number, bill_h
         {
           Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY]) && (
             <td>
-              <AssignToExpertModal billData={{bill_number, bill_name, bill_hearing, bill_status}} />
+              <AssignToExpertModal billData={{ bill_number, bill_name, bill_hearing, bill_status }} />
             </td>
           )
         }
+        <td className="text-center">
+          <Button variant="danger" onClick={() => (onDelete())}><TrashFill size={20} /></Button>
+        </td>
       </tr>
       <tr>
-        <td style={{ padding: 0 }} colSpan={7}>
+        <td style={{ padding: 0 }} colSpan={8}>
           <Collapse in={collapsableTable}>
             <div id="collapse-table">
               <Table>
