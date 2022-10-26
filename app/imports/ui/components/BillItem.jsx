@@ -13,14 +13,14 @@ import { ROUTE_PATHS } from '../utilities/RoutePaths';
 import OfficePickDropdown from './OfficePickDropdown';
 import AddToCalendar from './AddToCalendar';
 import { Saved } from '../../api/save/SavedBillCollection';
-import { defineMethod } from '../../api/base/BaseCollection.methods';
+import { defineMethod, removeItMethod } from '../../api/base/BaseCollection.methods';
 
 const BillItem = ({ savedBillData, billData: { billTitle, billStatus, billNumber, billHearing, _id } }) => {
+  const collectionName = Saved.getCollectionName();
   const save = () => {
     // insert the data into the collection
     // need to have owner in the collection
     const owner = Meteor.user().username;
-    const collectionName = Saved.getCollectionName();
     const definitionData = { bill_number: billNumber, bill_name: billTitle, bill_status: billStatus, bill_hearing: billHearing, owner };
     defineMethod.callPromise({ collectionName, definitionData })
       .catch(error => swal('Error', error.message, 'error'))
@@ -29,7 +29,11 @@ const BillItem = ({ savedBillData, billData: { billTitle, billStatus, billNumber
       });
   };
   const unsaved = () => {
-    console.log('unsaved');
+    const instance = savedBillData.filter((sb) => (sb.billNumber === billNumber))[0]._id;
+    removeItMethod.callPromise({ collectionName, instance })
+      .then(() => {
+        swal('Success', 'Removed Successfully', 'success');
+      });
     // remove the data from the collection
   };
   const { pathname } = useLocation();
@@ -47,12 +51,13 @@ const BillItem = ({ savedBillData, billData: { billTitle, billStatus, billNumber
 
   const handleSave = (state, setState) => () => {
     setState(!state);
-    if (!setState) {
+    if (!state) {
       unsaved();
     } else {
       save();
     }
   };
+
   return (
     <>
       <tr>
@@ -152,10 +157,10 @@ BillItem.propTypes = {
   }).isRequired,
   savedBillData: PropTypes.arrayOf(PropTypes.shape({
     _id: PropTypes.string,
-    billNumber: PropTypes.number,
+    billNumber: PropTypes.string,
     billTitle: PropTypes.string,
     billStatus: PropTypes.string,
-    billHearing: PropTypes.number,
+    billHearing: PropTypes.string,
     owner: PropTypes.string,
   })).isRequired,
 };
