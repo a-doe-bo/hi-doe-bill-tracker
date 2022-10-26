@@ -33,8 +33,8 @@ const BillItem = ({ savedBillData, billData: { billTitle, billStatus, billNumber
     removeItMethod.callPromise({ collectionName, instance })
       .then(() => {
         swal('Success', 'Removed Successfully', 'success');
-      });
-    // remove the data from the collection
+      })
+      .catch((error) => swal('Error', error.message, 'error'));
   };
   const { pathname } = useLocation();
   const [toggle, setToggle] = useState(true);

@@ -38,7 +38,7 @@ const SavedBills = () => {
 
   useEffect(() => {
     setData(BillData);
-  }, [ready]);
+  }, [ready, savedBill]);
   const [currentTab, setCurrentTab] = useState('Upcoming Bills');
   const handleCurrentTab = (tabName) => {
     setCurrentTab(tabName);

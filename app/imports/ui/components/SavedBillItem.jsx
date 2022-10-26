@@ -5,15 +5,26 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { CaretDownFill, CaretRightFill, TrashFill } from 'react-bootstrap-icons';
 import { Button, Collapse, Table } from 'react-bootstrap';
+import swal from 'sweetalert';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import AssignToExpertModal from './AssignToExpertModal';
 import { ROLE } from '../../api/role/Role';
+import { removeItMethod } from '../../api/base/BaseCollection.methods';
+import { Saved } from '../../api/save/SavedBillCollection';
 
 const SavedBillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearing, _id } }) => {
   const [collapsableTable, setCollapsableTable] = useState(false);
   const handleToggle = (state, setState) => () => { setState(!state); };
   const onDelete = () => {
-    console.log('Removed');
+    const collectionName = Saved.getCollectionName();
+    const instance = _id;
+    removeItMethod.callPromise({ collectionName, instance })
+      .then(() => {
+        swal('Success', 'Removed Successfully', 'success');
+      })
+      .catch((error) => (
+        swal('Error', error.message, 'error')
+      ));
   };
   return (
     <>
