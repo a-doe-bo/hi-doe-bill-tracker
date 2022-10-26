@@ -14,23 +14,26 @@ import { PAGE_IDS } from '../utilities/PageIDs';
 import Filter from '../components/Filter';
 import Autocomplete from '../components/Autocomplete';
 import { Measures } from '../../api/measure/MeasureCollection';
+import { Hearings } from '../../api/hearing/HearingCollection';
 import { Saved } from '../../api/save/SavedBillCollection';
 
 const ListBill = () => {
-  const { ready, measures, savedBills } = useTracker(() => {
+  const { ready, measures, savedBills, hearings } = useTracker(() => {
     const owner = Meteor.user().username;
     const subscription = Measures.subscribeMeasures();
     const savedBillsSubscription = Saved.subscribeToSavedBill();
-    const rdy = subscription.ready() && savedBillsSubscription.ready();
+    const hearingBillsSubscription = Hearings.subscribeHearings();
+    const rdy = subscription.ready() && savedBillsSubscription.ready() && hearingBillsSubscription.ready();
     const measuresItems = Measures.find({}, {}).fetch();
     const savedBillItems = Saved.find({ owner }, {}).fetch();
+    const hearingItems = Hearings.find({}).fetch();
     return {
       measures: measuresItems,
       savedBills: savedBillItems,
+      hearings: hearingItems,
       ready: rdy,
     };
   }, []);
-
   const [currentTab, setCurrentTab] = useState('Upcoming Bills');
   // TODO: Object with { header: '', component: ''}
   const table_headers = ['Bill Details', 'Save Bill', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
@@ -44,6 +47,15 @@ const ListBill = () => {
     bill_committee: 'Agriculture & Environment',
     measureType: 'HB',
     office: 'office1',
+  }));
+  const HearingData2 = hearings.map((hearingData) => ({
+    hearingLocation: hearingData.room,
+    dateIntroduced: hearingData.year,
+    committeeHearing: hearingData.notice,
+    measureNum: hearingData.measureNumber,
+    roomNumber: hearingData.room,
+    doeStance: hearingData.description,
+    dateTime: hearingData.datetime,
   }));
   const SavedData = savedBills.map((save) => ({
     _id: save._id,
@@ -81,7 +93,7 @@ const ListBill = () => {
                 <Col className="text-center">
                   <h2>{tab}</h2>
                 </Col>
-                <BillTable billData={data} savedBillData={SavedData} tableHeaders={table_headers} />
+                <BillTable billData={data} savedBillData={SavedData} hearingData={HearingData2} tableHeaders={table_headers} />
               </Tab>
             ))}
           </Tabs>
