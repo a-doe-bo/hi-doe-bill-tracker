@@ -30,7 +30,6 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
       .then(() => {
         swal('Success', 'Bookmarked Successfully', 'success');
       });
-
   };
   const unsaved = () => {
     console.log("unsaved");
@@ -42,18 +41,22 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
   const [collapsableTable, setCollapsableTable] = useState(false);
   const handleToggle = (state, setState) => () => {
     setState(!state);
-    if (!state) {
+  };
+
+  const handleSave = (state, setState) => () => {
+    setState(!state);
+    if (!setState) {
       unsaved();
     } else {
       save();
     }
-  };
+  }
   return (
     <>
       <tr>
         <td>
           {collapsableTable ? (
-            <Button onClick={handleToggle(collapsableTable, setCollapsableTable)} aria-expanded={collapsableTable} aria-controls="collapse-table">
+            <Button onClick={handleToggle(collapsableTable, setCollapsableTable)} aria-expanded={collapsableTable} aria-controls="collapse-table" >
               <CaretDownFill size={40} />
             </Button>
           )
@@ -64,7 +67,7 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
             )}
         </td>
         <td className="text-center">
-          <BookmarkPlusFill onClick={handleToggle(toggle, setToggle)} size={50} fill={toggle ? '#c4c4c4' : '#E7D27C'} />
+          <BookmarkPlusFill onClick={handleSave(toggle, setToggle)} size={50} fill={toggle ? '#c4c4c4' : '#E7D27C'} />
         </td>
         <td>{billNumber}</td>
         <td>{billTitle}</td>
