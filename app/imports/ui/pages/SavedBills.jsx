@@ -3,7 +3,6 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { Col, Container, Row, Tabs, Tab } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
-import { Stuffs } from '../../api/stuff/StuffCollection';
 import SavedBill from '../components/SavedBill';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
@@ -11,8 +10,6 @@ import { ROLE } from '../../api/role/Role';
 import Autocomplete from '../components/Autocomplete';
 import { Saved } from '../../api/save/SavedBillCollection';
 import Filter from '../components/Filter';
-import { Users } from '../../api/user/UserCollection';
-import { UserProfiles } from '../../api/user/UserProfileCollection';
 
 /* Renders a table containing all of the Stuff documents. Use <BillItem> to render each row. */
 const SavedBills = () => {
@@ -26,7 +23,7 @@ const SavedBills = () => {
     const rdy = subscription.ready();
     const owner = Meteor.userId();
     // Get the Stuff documents
-    const savedBillItem = Saved.find({owner}).fetch();
+    const savedBillItem = Saved.find({ owner }, {}).fetch();
     return {
       savedBill: savedBillItem,
       ready: rdy,
@@ -36,8 +33,8 @@ const SavedBills = () => {
   const [data, setData] = useState([]);
 
   const table_headers = Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY]) ?
-    ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Assign'] :
-    ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
+    ['', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Assign', 'Remove'] :
+    ['', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Remove'];
 
   const BillData = savedBill.map((stuff) => ({
     _id: stuff._id,

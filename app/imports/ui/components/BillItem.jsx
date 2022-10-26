@@ -40,6 +40,12 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
   const handleToggle = (state, setState) => () => {
     setState(!state);
   };
+  useEffect(() => {
+    const elementInSaved = savedBillData.filter((bill) => (bill.billNumber === billNumber));
+    if (elementInSaved.length >= 1) {
+      setToggle(false);
+    }
+  }, [savedBillData]);
 
   const handleSave = (state, setState) => () => {
     setState(!state);
