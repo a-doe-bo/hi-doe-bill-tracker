@@ -23,7 +23,7 @@ const BillTable = ({ billData, tableHeaders, savedBillData, hearingData }) => {
           </tr>
         </thead>
         <tbody>
-          {currentBills.map((data, index) => <BillItem key={index} billData={data} savedBillData={savedBillData} hearingData={hearData} />)}
+          {currentBills.map((data, index) => <BillItem key={index} billData={data} savedBillData={savedBillData} hearingData={hearingData} />)}
         </tbody>
       </Table>
       <Pagination2 billsPerPage={billsPerPage} totalBills={billData.length} paginate={paginate} />

@@ -92,7 +92,7 @@ const ListBill = () => {
                 <Col className="text-center">
                   <h2>{tab}</h2>
                 </Col>
-                <BillTable billData={data} savedBillData={SavedData} hearingData={hearData} tableHeaders={table_headers} />
+                <BillTable billData={data} savedBillData={SavedData} hearingData={HearingData2} tableHeaders={table_headers} />
               </Tab>
             ))}
           </Tabs>
