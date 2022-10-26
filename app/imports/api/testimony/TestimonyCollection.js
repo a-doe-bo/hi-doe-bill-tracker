@@ -10,30 +10,41 @@ export const testimonyPublications = {
 class TestimonyCollection extends BaseCollection {
   constructor() {
     super('Testimonies', new SimpleSchema({
+      billNo: String,
       firstName: String,
       lastName: String,
       position: {
         type: String,
         allowedValues: ['Support', 'Oppose', 'Comments Only'],
       },
-      testimony: String,
+      testimony: {
+        type: String,
+        optional: true,
+      },
+      hasPdf: {
+        type: Boolean,
+        defaultValue: false,
+      },
     }));
   }
 
   /**
-   * Defines a new testimony item.
+   * Defines a new Stuff item.
+   * @param bill the name of the testified bill
    * @param firstName the first name of the testifier.
    * @param lastName the last name of the testifier.
    * @param position .
    * @param testimony .
    * @return {String} the docID of the new document.
    */
-  define({ firstName, lastName, position, testimony }) {
+  define({ firstName, lastName, position, testimony, billNo, hasPdf }) {
     const docID = this._collection.insert({
+      billNo,
       firstName,
       lastName,
       position,
       testimony,
+      hasPdf,
     });
     return docID;
   }
@@ -81,7 +92,7 @@ class TestimonyCollection extends BaseCollection {
   /**
    * Subscription method for stuff owned by the current user.
    */
-  subscribeStuff() {
+  subscribeTestimony() {
     if (Meteor.isClient) {
       return Meteor.subscribe(testimonyPublications.testimony);
     }
@@ -95,8 +106,9 @@ class TestimonyCollection extends BaseCollection {
    * @throws { Meteor.Error } If there is no logged in user, or the user is not an Admin or User.
    */
   assertValidRoleForMethod(userId) {
-    this.assertRole(userId, [ROLE.ADMIN, ROLE.USER]);
+    this.assertRole(userId, [ROLE.ADMIN, ROLE.USER, ROLE.WRITER]);
   }
+
 }
 
 /**
