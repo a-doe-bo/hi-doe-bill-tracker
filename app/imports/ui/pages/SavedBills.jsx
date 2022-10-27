@@ -49,7 +49,7 @@ const SavedBills = () => {
         <Col md={3}>
           <Filter tab={currentTab} data={data} handleDataFiltering={setData} />
         </Col>
-        <Col md={7}>
+        <Col md={7} className="mx-3">
           <Autocomplete billData={data} onDataFiltering={setData} />
           <Tabs
             defaultActiveKey="upcoming-hearings"
