@@ -8,7 +8,9 @@ const Autocomplete = ({ billData, onDataFiltering }) => {
   const [search, setSearch] = useState([]);
   const [ogData, setOgData] = useState([]);
   useEffect(() => {
-    setOgData(billData);
+    if (billData.length > 1) {
+      setOgData(billData);
+    }
   }, [billData]);
 
   useEffect(() => {
