@@ -24,6 +24,7 @@ SavedBillItem.propTypes = {
     bill_name: PropTypes.string,
     bill_status: PropTypes.string,
     bill_number: PropTypes.number,
+    bill_hearing: PropTypes.string,
   })).isRequired,
   tableHeaders: PropTypes.arrayOf(PropTypes.string).isRequired,
 };

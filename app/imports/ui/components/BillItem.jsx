@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import PropTypes from 'prop-types';
@@ -6,22 +6,61 @@ import { Link } from 'react-router-dom';
 import { BookmarkPlusFill, CaretDownFill, CaretRightFill } from 'react-bootstrap-icons';
 import { useLocation } from 'react-router';
 import { Button, Collapse, Table } from 'react-bootstrap';
+import swal from 'sweetalert';
 import { ROLE } from '../../api/role/Role';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import { ROUTE_PATHS } from '../utilities/RoutePaths';
 import OfficePickDropdown from './OfficePickDropdown';
-import AddToCalendar from "./AddToCalendar";
+import AddToCalendar from './AddToCalendar';
+import HearingBillData from './HearingBillData';
+import { Saved } from '../../api/save/SavedBillCollection';
+import { defineMethod, removeItMethod } from '../../api/base/BaseCollection.methods';
 
-const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, _id } }) => {
+const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_status, bill_hearing, bill_number, _id } }) => {
+  const collectionName = Saved.getCollectionName();
+  const save = () => {
+    // insert the data into the collection
+    // need to have owner in the collection
+    const owner = Meteor.user().username;
+    const definitionData = { bill_number, bill_name, bill_status, bill_hearing, owner };
+    defineMethod.callPromise({ collectionName, definitionData })
+      .catch(error => swal('Error', error.message, 'error'))
+      .then(() => {
+        swal('Success', 'Bookmarked Successfully', 'success');
+      });
+  };
+  const unsaved = () => {
+    const instance = savedBillData.filter((sb) => (sb.billNumber === bill_number))[0]._id;
+    removeItMethod.callPromise({ collectionName, instance })
+      .then(() => {
+        swal('Success', 'Removed Successfully', 'success');
+      })
+      .catch((error) => swal('Error', error.message, 'error'));
+  };
   const { pathname } = useLocation();
   const [toggle, setToggle] = useState(true);
   const [collapsableTable, setCollapsableTable] = useState(false);
-  const handleToggle = (state, setState) => () => { setState(!state); };
+  const handleToggle = (state, setState) => () => {
+    setState(!state);
+  };
+  useEffect(() => {
+    const elementInSaved = savedBillData.filter((bill) => (bill.billNumber === bill_number));
+    if (elementInSaved.length >= 1) {
+      setToggle(false);
+    }
+  }, [savedBillData]);
+
+  const handleSave = (state, setState) => () => {
+    setState(!state);
+    if (!state) {
+      unsaved();
+    } else {
+      save();
+    }
+  };
   return (
     <>
       <tr>
-        {/* TODO: Ask a question about this */}
-        {/* Unknown data, RE: Thane Luna */}
         <td>
           {collapsableTable ? (
             <Button onClick={handleToggle(collapsableTable, setCollapsableTable)} aria-expanded={collapsableTable} aria-controls="collapse-table">
@@ -35,12 +74,12 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
             )}
         </td>
         <td className="text-center">
-          <BookmarkPlusFill onClick={handleToggle(toggle, setToggle)} size={50} fill={toggle ? '#c4c4c4' : '#E7D27C'} />
+          <BookmarkPlusFill onClick={handleSave(toggle, setToggle)} size={50} fill={toggle ? '#c4c4c4' : '#E7D27C'} />
         </td>
-        <td>{billNumber}</td>
-        <td>{billTitle}</td>
-        <td>{billStatus}</td>
-        <td>{billHearing}</td>
+        <td>{bill_number}</td>
+        <td>{bill_name}</td>
+        <td>{bill_status}</td>
+        <td>{bill_hearing}</td>
         <td>
           <Link className={COMPONENT_IDS.VIEW_BILL} to={`/bill/${_id}`}>View Bill</Link>
         </td>
@@ -51,11 +90,11 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
         )}
         {(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) && (
           <td style={{ width: '150px' }}>
-            <OfficePickDropdown data={{ billTitle, billStatus, billNumber, billHearing, _id }} />
+            <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, _id }} />
           </td>
         )}
         <td style={{ width: '150px' }}>
-          <AddToCalendar data={{ billTitle, billStatus, billNumber, billHearing, _id }} />
+          <AddToCalendar data={{ bill_name, bill_status, bill_number, bill_hearing, _id }} />
         </td>
       </tr>
       <tr>
@@ -74,30 +113,7 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                  </tr>
-                  <tr>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                  </tr>
-                  <tr>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                  </tr>
+                  {hearingData.map((data, index) => <HearingBillData key={index} hearingData={data} />)}
                 </tbody>
               </Table>
             </div>
@@ -111,11 +127,32 @@ const BillItem = ({ billData: { billTitle, billStatus, billNumber, billHearing, 
 BillItem.propTypes = {
   billData: PropTypes.shape({
     _id: PropTypes.string,
-    billNumber: PropTypes.number,
+    bill_name: PropTypes.string,
+    bill_status: PropTypes.string,
+    bill_hearing: PropTypes.string,
+    bill_number: PropTypes.number,
+    bill_updated: PropTypes.number,
+    bill_committee: PropTypes.string,
+    measureType: PropTypes.string,
+    office: PropTypes.string,
+  }).isRequired,
+  hearingData: PropTypes.arrayOf(PropTypes.shape({
+    hearingLocation: PropTypes.string,
+    dateIntroduced: PropTypes.number,
+    committeeHearing: PropTypes.string,
+    measureNum: PropTypes.number,
+    roomNumber: PropTypes.string,
+    doeStance: PropTypes.string,
+    dateTime: PropTypes.string,
+  })).isRequired,
+  savedBillData: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.string,
+    billNumber: PropTypes.string,
     billTitle: PropTypes.string,
     billStatus: PropTypes.string,
-    billHearing: PropTypes.number,
-  }).isRequired,
+    billHearing: PropTypes.string,
+    owner: PropTypes.string,
+  })).isRequired,
 };
 
 export default BillItem;

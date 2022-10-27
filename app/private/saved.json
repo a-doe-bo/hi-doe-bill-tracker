@@ -14,6 +14,7 @@
     "measureType": "hb",
     "reportTitle": "Elections; Chief Election Officer; Voter Information Guide",
     "bill_status": "(S)3/22/2022-Report adopted; Passed Second Reading, as amended (SD 1) and referred to WAM.",
-    "bill_hearing": "11/22/2022"
+    "bill_hearing": "11/22/2022",
+    "owner": "secretary@foo.com"
   }
 ]

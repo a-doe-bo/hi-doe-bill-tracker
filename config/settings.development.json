@@ -31,6 +31,8 @@
     "measuresFileName": "measures.json",
     "loadMeasures": true,
     "loadSaved":  true,
-    "savedFileName": "saved.json"
+    "savedFileName": "saved.json",
+    "hearingsFileName": "hearings.json",
+    "loadHearings":  true
   }
 }

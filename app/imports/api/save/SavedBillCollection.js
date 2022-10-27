@@ -1,13 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
-import { _ } from 'meteor/underscore';
-import { Roles } from 'meteor/alanning:roles';
+import { check } from 'meteor/check';
 import BaseCollection from '../base/BaseCollection';
 import { ROLE } from '../role/Role';
 
 export const savedPublications = {
-  saved: 'saved'
-}
+  saved: 'saved',
+};
 
 class SavedBillCollection extends BaseCollection {
   constructor() {
@@ -16,14 +15,15 @@ class SavedBillCollection extends BaseCollection {
       bill_name: String,
       bill_status: String,
       bill_hearing: String,
+      owner: String,
     }));
   }
 
-  define({ bill_number, bill_name, bill_status, bill_hearing }) {
-    if (this.isDefined({ bill_number, bill_name, bill_status, bill_hearing })) {
-      return this.findDoc({ bill_number, bill_name, bill_status, bill_hearing })._id;
+  define({ bill_number, bill_name, bill_status, bill_hearing, owner }) {
+    if (this.isDefined({ bill_number, bill_name, bill_status, bill_hearing, owner })) {
+      return this.findDoc({ bill_number, bill_name, bill_status, bill_hearing, owner })._id;
     }
-    const docID = this._collection.insert({ bill_number, bill_name, bill_status, bill_hearing });
+    const docID = this._collection.insert({ bill_number, bill_name, bill_status, bill_hearing, owner });
     return docID;
   }
 
@@ -38,21 +38,30 @@ class SavedBillCollection extends BaseCollection {
     this._collection.update(docID, { $set: updateData });
   }
 
+  removeIt(name) {
+    const doc = this.findDoc(name);
+    check(doc, Object);
+    this._collection.remove(doc._id);
+    return true;
+  }
+
   publish() {
     if (Meteor.isServer) {
       const instance = this;
       Meteor.publish(savedPublications.saved, function publish() {
-        if (this.userId)
-          return instance._collection.find({});
+        if (this.userId) return instance._collection.find({});
         return this.ready();
       });
     }
   }
 
-  subscribeToSavedBill()
-  {
+  subscribeToSavedBill() {
     if (Meteor.isClient) return Meteor.subscribe(savedPublications.saved);
     return null;
+  }
+
+  assertValidRoleForMethod(userId) {
+    this.assertRole(userId, [ROLE.SECRETARY, ROLE.USER, ROLE.PIPE_APPROVER, ROLE.ADMIN, ROLE.FINAL_APPROVER, ROLE.WRITER]);
   }
 
   dumpOne(docID) {
@@ -61,7 +70,8 @@ class SavedBillCollection extends BaseCollection {
     const bill_name = doc.bill_name;
     const bill_status = doc.bill_status;
     const bill_hearing = doc.bill_hearing;
-    return { bill_number, bill_name, bill_status, bill_hearing };
+    const owner = doc.owner;
+    return { bill_number, bill_name, bill_status, bill_hearing, owner };
   }
 
 }
