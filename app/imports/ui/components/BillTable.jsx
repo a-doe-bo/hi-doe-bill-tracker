@@ -34,10 +34,14 @@ const BillTable = ({ billData, tableHeaders, savedBillData, hearingData }) => {
 BillTable.propTypes = {
   billData: PropTypes.arrayOf(PropTypes.shape({
     _id: PropTypes.string,
-    billNumber: PropTypes.number,
-    billTitle: PropTypes.string,
-    billStatus: PropTypes.string,
-    billHearing: PropTypes.number,
+    bill_name: PropTypes.string,
+    bill_status: PropTypes.string,
+    bill_hearing: PropTypes.string,
+    bill_number: PropTypes.number,
+    bill_updated: PropTypes.number,
+    bill_committee: PropTypes.string,
+    measureType: PropTypes.string,
+    office: PropTypes.string,
   })).isRequired,
   hearingData: PropTypes.arrayOf(PropTypes.shape({
     hearingLocation: PropTypes.string,
