@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import swal from 'sweetalert';
 import { Button } from 'react-bootstrap';
 import { UserProfiles } from '../../api/user/UserProfileCollection';
-import { removeItMethod } from '../../api/base/BaseCollection.methods';
+import { defineMethod, removeItMethod } from '../../api/base/BaseCollection.methods';
 import { RequestedProfiles } from '../../api/user/RequestedAccountsCollection';
 
 /** Renders a single row in the List Stuff (Admin) table. See pages/ListStuffAdmin.jsx. */
-const RequestedProfileData = ({ requestedProfile: { email, firstName, lastName, role, employeeID, _id } }) => {
+const RequestedProfileData = ({ requestedProfile: { email, firstName, lastName, office, role, employeeID, password, _id } }) => {
   const handleRemove = () => {
     const collectionName = RequestedProfiles.getCollectionName();
     const instance = _id;
@@ -24,25 +24,31 @@ const RequestedProfileData = ({ requestedProfile: { email, firstName, lastName, 
     });
   };
   const handleAccept = () => {
-    const collectionName = RequestedProfiles.getCollectionName();
-    const instance = _id;
+    const collectionName = UserProfiles.getCollectionName();
+    const definitionData = { email, firstName, lastName, office, role, employeeID, password };
+    const collectionName2 = RequestedProfiles.getCollectionName();
+    const instance2 = _id;
     swal({
       title: 'Are you sure?',
       text: 'Do you really want to add this User',
       buttons: true,
     }).then((willAccept) => {
       if (willAccept) {
-        removeItMethod.callPromise({ collectionName, instance });
+        defineMethod.callPromise({ collectionName, definitionData });
+        console.log(definitionData);
+        removeItMethod.callPromise({ collectionName2, instance2 });
+        swal('Success', 'User added successfully', 'success');
       }
     });
   };
   /* Returns a table with user information */
-  console.log('profile', email, firstName, lastName, role, employeeID, _id);
+  console.log('profile', email, firstName, office, lastName, role, employeeID, _id);
   return (
     <tr>
       <td>{email}</td>
       <td>{firstName}</td>
       <td>{lastName}</td>
+      <td>{office}</td>
       <td>{role}</td>
       <td>{employeeID}</td>
       <td className="text-center">
@@ -50,6 +56,10 @@ const RequestedProfileData = ({ requestedProfile: { email, firstName, lastName, 
           variant="danger"
           onClick={() => { handleRemove(); }}
         >Remove
+        </Button>
+        <Button
+          onClick={() => { handleAccept(); }}
+        >Accept
         </Button>
       </td>
     </tr>
@@ -63,8 +73,10 @@ RequestedProfileData.propTypes = {
     firstName: PropTypes.string,
     lastName: PropTypes.string,
     _id: PropTypes.string,
+    office: PropTypes.string,
     role: PropTypes.string,
     userID: PropTypes.string,
+    password: PropTypes.string,
     employeeID: PropTypes.string,
   }).isRequired,
 };

@@ -34,6 +34,7 @@ export const COMPONENT_IDS = {
   SIGN_UP_EMPLOYEE_ID: 'sign-up-employee-id',
   SIGN_UP_FORM_PASSWORD: 'sign-up-form-password',
   SIGN_UP_FORM_ROLE: 'sign-up-form-role',
+  SIGN_UP_FORM_OFFICE: 'sign-up-form-office',
   SIGN_UP_FORM_SUBMIT: 'sign-up-form-submit',
   NAVBAR_LIST_TESTIMONIES: 'navbar-list-testimonies',
   NAVBAR_REQUEST_ACCOUNTS: 'request-accounts',
@@ -51,4 +52,5 @@ export const COMPONENT_IDS = {
   DRAFT_TESTIMONY_FORM_POSITION: 'draft-testimony-form-position',
   NAVBAR_DRAFT_TESTIMONY: 'navbar-draft-testimony',
   NAVBAR_ASSIGNED_BILLS: 'navbar-assigned-bills',
+
 };
