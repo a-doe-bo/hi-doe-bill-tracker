@@ -1,13 +1,14 @@
 import React from 'react';
 import { Alert, Button, Col, Container, Row } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
-import { useParams } from 'react-router';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
+import PropTypes from 'prop-types';
+import { useParams } from 'react-router';
 import { Stuffs } from '../../api/stuff/StuffCollection';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
-import PropTypes from 'prop-types';
 import BillItem from '../components/BillItem';
+import { Measures } from '../../api/measure/MeasureCollection';
 
 const oldCode = `
 THE SENATE
@@ -54,21 +55,32 @@ BE IT ENACTED BY THE LEGISLATURE OF THE STATE OF HAWAII:
 `;
 
 /* Renders the EditStuff page for editing a single document. */
-const BillDetails = ({ billData: { bill_name, bill_status, bill_number, bill_hearing, report_title, bill_description, _id } }) => {
+const BillDetails = () => {
 
   // useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
-  const { ready } = useTracker(() => {
+  const { _id } = useParams();
+
+  const { ready, measure } = useTracker(() => {
     // Get access to Stuff documents.
-    const subscription = Stuffs.subscribeStuff();
+    const subscription = Measures.subscribeMeasures();
     // Determine if the subscription is ready
     const rdy = subscription.ready();
     // Get the document
-    const document = Stuffs.findDoc(_id);
+    const thisMeasure = Measures.findOne({ id: _id }).fetch();
     return {
-      doc: document,
+      measure: thisMeasure,
       ready: rdy,
     };
   }, [_id]);
+  // eslint-disable-next-line array-callback-return
+
+  BillItem.BillData.bill_name = measure.bill_name;
+  BillItem.BillData.bill_status = measure.bill_status;
+  BillItem.BillData.bill_hearing = measure.bill_hearing;
+  BillItem.BillData.bill_number = measure.bill_number;
+  BillItem.BillData.report_title = measure.report_title;
+  BillItem.BillData.bill_name = measure.bill_name;
+  BillItem.BillData.bill_description = measure.bill_description;
 
   return ready ? (
     <Container id={PAGE_IDS.BILL_DETAILS} className="py-3">
@@ -91,7 +103,7 @@ const BillDetails = ({ billData: { bill_name, bill_status, bill_number, bill_hea
             Measure Title:
           </Col>
           <Col>
-            {bill_name}
+            {BillItem.BillData.bill_name}
           </Col>
         </Row>
         <Row className="pt-lg-0">
@@ -99,7 +111,7 @@ const BillDetails = ({ billData: { bill_name, bill_status, bill_number, bill_hea
             Report Title:
           </Col>
           <Col>
-            {report_title}
+            {BillItem.BillData.report_title}
           </Col>
         </Row>
         <Row className="pt-lg-0">
@@ -107,7 +119,7 @@ const BillDetails = ({ billData: { bill_name, bill_status, bill_number, bill_hea
             Description:
           </Col>
           <Col>
-            {bill_description}
+            {BillItem.BillData.bill_description}
           </Col>
         </Row>
         <Row className="pt-lg-0">
@@ -115,7 +127,7 @@ const BillDetails = ({ billData: { bill_name, bill_status, bill_number, bill_hea
             Companion:
           </Col>
           <Col xs={2}>
-            {bill_number}
+            {BillItem.BillData.bill_number}
           </Col>
         </Row>
         <Row className="pt-lg-0">
