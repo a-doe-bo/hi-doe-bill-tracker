@@ -25,16 +25,16 @@ const TestimonyList = () => {
         <Col md={7} style={style}>
           <Table striped bordered hover style={style}>
             <thead>
-            <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Position</th>
-              <th>Testimony</th>
-              <th>Edit</th>
-            </tr>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Position</th>
+                <th>Testimony</th>
+                <th>Edit</th>
+              </tr>
             </thead>
             <tbody>
-            {testimonies.map((testimony) => (<TestimonyItem key={testimony.id} testimony={testimony} />))}
+              {testimonies.map((testimony) => (<TestimonyItem key={testimony.id} testimony={testimony} />))}
             </tbody>
           </Table>
         </Col>

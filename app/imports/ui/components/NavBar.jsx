@@ -49,7 +49,7 @@ const NavBar = () => {
             ) : ''}
             {Roles.userIsInRole(Meteor.userId(), [ROLE.WRITER]) ? (
               [<Nav.Link id={COMPONENT_IDS.NAVBAR_TESTIMONY_LIST} as={NavLink} to="/testimonyList" key="listWriterTestimonies">Testimony List</Nav.Link>,
-              <Nav.Link id={COMPONENT_IDS.NAVBAR_DRAFT_TESTIMONY} as={NavLink} to="/draftTestimony" key="draftWriterTestimonies">Draft Testimony</Nav.Link>]
+                <Nav.Link id={COMPONENT_IDS.NAVBAR_DRAFT_TESTIMONY} as={NavLink} to="/draftTestimony" key="draftWriterTestimonies">Draft Testimony</Nav.Link>]
             ) : ''}
             {Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY]) ? (
               [<Nav.Link id={COMPONENT_IDS.NAVBAR_REQUEST_NEW_ACCOUNT} as={NavLink} to="/requestNewAccount" key="requestNewAccount">Request New Account</Nav.Link>]
