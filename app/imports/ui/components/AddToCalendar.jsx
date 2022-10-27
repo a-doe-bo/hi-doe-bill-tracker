@@ -4,11 +4,11 @@ import 'add-to-calendar-button/assets/css/atcb.css';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-const AddToCalendar = ({ data: { billTitle, billStatus, billNumber, billHearing, _id } }) => (
+const AddToCalendar = ({ data }) => (
   <Button
     onClick={() => {
       atcb_action({
-        name: billTitle,
+        name: data.bill_name,
         startDate: '2022-10-14',
         endDate: '2022-10-18',
         startTime: '10:13',
