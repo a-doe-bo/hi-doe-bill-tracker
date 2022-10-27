@@ -81,7 +81,7 @@ const ListBill = () => {
           <Filter tab={currentTab} data={data} handleDataFiltering={setData} />
         </Col>
         <Col md={7} className="mx-3">
-          <Autocomplete billData={data} onDataFiltering={setData} />
+          <Autocomplete billData={BillData} onDataFiltering={setData} />
           <Tabs
             defaultActiveKey="Upcoming Bills"
             id="uncontrolled-tab-example"
