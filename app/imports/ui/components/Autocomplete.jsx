@@ -9,7 +9,7 @@ const Autocomplete = ({ billData, onDataFiltering }) => {
   const [ogData, setOgData] = useState([]);
   useEffect(() => {
     setOgData(billData);
-  }, []);
+  }, [billData]);
 
   useEffect(() => {
     const filteredData = ogData;
