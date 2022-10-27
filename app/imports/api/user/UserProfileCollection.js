@@ -1,10 +1,12 @@
-import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
-import { Roles } from 'meteor/alanning:roles';
+import { Meteor } from 'meteor/meteor';
 import BaseProfileCollection from './BaseProfileCollection';
 import { ROLE } from '../role/Role';
 import { Users } from './UserCollection';
 
+export const userPublications = {
+  users: 'Users',
+};
 class UserProfileCollection extends BaseProfileCollection {
   constructor() {
     super('UserProfile', new SimpleSchema({}));
@@ -16,23 +18,22 @@ class UserProfileCollection extends BaseProfileCollection {
    * @param password The password for this user.
    * @param firstName The first name.
    * @param lastName The last name.
-   * @param position The position.
-   * @param assignedOffice The assigned office.
+   * @param role The role of the user.
+   * @param employeeID The employeeID of the user.
    */
-  define({ email, firstName, lastName, password, position, assignedOffice }) {
-    if (Meteor.isServer) {
-      const username = email;
-      const user = this.findOne({ email, firstName, lastName });
-      if (!user) {
-        const role = ROLE.USER;
-        const profileID = this._collection.insert({ email, firstName, lastName, userID: this.getFakeUserId(), role, position, assignedOffice });
-        const userID = Users.define({ username, role, password });
-        this._collection.update(profileID, { $set: { userID } });
-        return profileID;
+  define({ email, firstName, lastName, password, role, employeeID }) {
+    // if (Meteor.isServer) {
+    const username = email;
+    const user = this.findOne({ email, firstName, lastName });
+    if (!user) {
+      const userID = Users.define({ username, role, password });
+      const validRoles = [];
+      Object.values(ROLE).map((userRole) => validRoles.push(userRole));
+      if (validRoles.includes(role)) {
+        return this._collection.insert({ email, firstName, lastName, userID, role, employeeID });
       }
-      return user._id;
     }
-    return undefined;
+    return user._id;
   }
 
   /**
@@ -40,10 +41,8 @@ class UserProfileCollection extends BaseProfileCollection {
    * @param docID the id of the UserProfile
    * @param firstName new first name (optional).
    * @param lastName new last name (optional).
-   * @param position
-   * @param assignedOffice
    */
-  update(docID, { firstName, lastName, position, assignedOffice }) {
+  update(docID, { firstName, lastName }) {
     this.assertDefined(docID);
     const updateData = {};
     if (firstName) {
@@ -51,12 +50,6 @@ class UserProfileCollection extends BaseProfileCollection {
     }
     if (lastName) {
       updateData.lastName = lastName;
-    }
-    if (position) {
-      updateData.position = position;
-    }
-    if (assignedOffice) {
-      updateData.assignedOffice = assignedOffice;
     }
     this._collection.update(docID, { $set: updateData });
   }
@@ -103,51 +96,43 @@ class UserProfileCollection extends BaseProfileCollection {
   /**
    * Returns an object representing the UserProfile docID in a format acceptable to define().
    * @param docID The docID of a UserProfile
-   * @returns {{firstName: *, lastName: *, position: *, assignedOffice: *, email: *}} An object representing the definition of docID.
+   * @returns { Object } An object representing the definition of docID.
    */
   dumpOne(docID) {
     const doc = this.findDoc(docID);
     const email = doc.email;
     const firstName = doc.firstName;
     const lastName = doc.lastName;
-    const position = doc.position;
-    const assignedOffice = doc.assignedOffice;
-    return { email, firstName, lastName, position, assignedOffice };
+    return { email, firstName, lastName };
+  }
+
+  /**
+   * Subscription method for stuff owned by the current user.
+   */
+  subscribeUser() {
+    if (Meteor.isClient) {
+      return Meteor.subscribe(userPublications.users);
+    }
+    return null;
   }
 
   /**
    * Default publication method for entities.
-   * It publishes the entire UserProfileCollection collection for admi.
+   * It publishes the entire collection for admin and just the stuff associated to an owner.
    */
   publish() {
     if (Meteor.isServer) {
-      // get the UserProfileCollection instance.
       const instance = this;
-      Meteor.publish('UserProfile', function publish() {
-        if (this.userId && Roles.userIsInRole(this.userId, ROLE.ADMIN)) {
-          return instance._collection.find();
-        }
-        if (this.userId && Roles.userIsInRole(this.userId, ROLE.USER)) {
-          return instance._collection.find({ userID: this.userId });
-        }
-        return this.ready();
+      Meteor.publish(userPublications.users, function publish() {
+        return instance._collection.find();
       });
     }
   }
 
-  /**
-   * Subscription method for USerProfileCollection
-   */
-  subscribeUserProfiles() {
-    if (Meteor.isClient) {
-      return Meteor.subscribe('UserProfile');
-    }
-    return null;
-  }
 }
 
 /**
- * Profides the singleton instance of this class to all other entities.
+ * Provides the singleton instance of this class to all other entities.
  * @type {UserProfileCollection}
  */
 export const UserProfiles = new UserProfileCollection();

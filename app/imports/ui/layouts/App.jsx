@@ -19,13 +19,13 @@ import ListAccounts from '../pages/ListAccounts';
 import SavedBills from '../pages/SavedBills';
 import ListAwaitingReview from '../pages/ListAwaitingReview';
 import CreateComment from '../pages/CreateComment';
+import ListTestimonies from '../pages/ListTestimonies';
 import UserPage from '../pages/UserPage';
 import RequestedAccounts from '../pages/RequestedAccounts';
 import RequestAccounts from '../pages/RequestAccounts';
 import DraftTestimony from '../pages/DraftTestimony';
 import AssignedBills from '../pages/AssignedBills';
 import Pdf from '../pages/Pdf';
-import TestimonyList from '../pages/TestimonyList';
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
 const App = () => (
@@ -42,7 +42,7 @@ const App = () => (
         <Route path="/savedBills" element={<ProtectedRoute><SavedBills /></ProtectedRoute>} />
         <Route path="/assignedBills" element={<ProtectedRoute><AssignedBills /></ProtectedRoute>} />
         <Route path="/listAwaitingReviews" element={<ProtectedRoute><ListAwaitingReview /></ProtectedRoute>} />
-        <Route path="/testimonyList" element={<ProtectedRoute> <TestimonyList /> </ProtectedRoute>} />
+        <Route path="/listTestimonies" element={<ProtectedRoute> <ListTestimonies /> </ProtectedRoute>} />
         <Route path="/draftTestimony" element={<ProtectedRoute> <DraftTestimony /> </ProtectedRoute>} />
         <Route path="/requestNewAccount" element={<ProtectedRoute> <RequestAccounts /> </ProtectedRoute>} />
         <Route path="/edit/:_id" element={<ProtectedRoute><EditStuff /></ProtectedRoute>} />
