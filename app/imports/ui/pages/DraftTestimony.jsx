@@ -9,6 +9,7 @@ import { PAGE_IDS } from '../utilities/PageIDs';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import { defineMethod } from '../../api/base/BaseCollection.methods';
 import { Testimonies } from '../../api/testimony/TestimonyCollection';
+// import { SavedTestimoniesCollection } from '../../api/testimony/SavedTestimoniesCollection';
 
 /* Create schema to indicate the structure of data */
 const formSchema = new SimpleSchema({
@@ -59,7 +60,7 @@ const DraftTestimony = () => {
                 <Row className="mb-3">
                   <Col className="col-sm-1 col-form-label bold-text">Upload file: </Col>
                   <Col className="col-sm-9">
-                    <Form.Control type="file" accept="application/pdf" />
+                    <Form.Control id="saved-testimonies" type="file" accept="application/pdf" />
                   </Col>
                 </Row>
                 <SubmitField id={COMPONENT_IDS.DRAFT_TESTIMONY_FORM_SUBMIT} value="Submit" />
