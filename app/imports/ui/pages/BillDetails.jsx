@@ -65,22 +65,12 @@ const BillDetails = () => {
     // Determine if the subscription is ready
     const rdy = subscription.ready();
     // Get the document
-    const thisMeasure = Measures.find({ _id }, {}).fetch();
-    console.log(thisMeasure);
+    const measureItem = Measures.find({ _id }, {}).fetch();
     return {
-      measure: thisMeasure,
+      measure: measureItem[0],
       ready: rdy,
     };
   });
-  // eslint-disable-next-line array-callback-return
-
-  BillItem.BillData.bill_name = measure.bill_name;
-  BillItem.BillData.bill_status = measure.bill_status;
-  BillItem.BillData.bill_hearing = measure.bill_hearing;
-  BillItem.BillData.bill_number = measure.bill_number;
-  BillItem.BillData.report_title = measure.report_title;
-  BillItem.BillData.bill_name = measure.bill_name;
-  BillItem.BillData.bill_description = measure.bill_description;
 
   return ready ? (
     <Container id={PAGE_IDS.BILL_DETAILS} className="py-3">
@@ -103,7 +93,7 @@ const BillDetails = () => {
             Measure Title:
           </Col>
           <Col>
-            {BillItem.BillData.bill_name}
+            {measure.measureTitle}
           </Col>
         </Row>
         <Row className="pt-lg-0">
@@ -111,7 +101,7 @@ const BillDetails = () => {
             Report Title:
           </Col>
           <Col>
-            {BillItem.BillData.report_title}
+            {measure.reportTitle}
           </Col>
         </Row>
         <Row className="pt-lg-0">
@@ -119,7 +109,7 @@ const BillDetails = () => {
             Description:
           </Col>
           <Col>
-            {BillItem.BillData.bill_description}
+            {measure.description}
           </Col>
         </Row>
         <Row className="pt-lg-0">
@@ -127,23 +117,16 @@ const BillDetails = () => {
             Companion:
           </Col>
           <Col xs={2}>
-            {BillItem.BillData.bill_number}
+            {measure.companion ? measure.companion : 'none'}
           </Col>
         </Row>
-        <Row className="pt-lg-0">
-          <Col xs={2}>
-            Package:
-          </Col>
-          <Col>
-            None
-          </Col>
-        </Row>
+
         <Row className="pt-lg-0">
           <Col xs={2}>
             Current Referral:
           </Col>
           <Col>
-            LAT, CPC, FIN
+            {measure.currentReferral}
           </Col>
         </Row>
         <Row className="pt-lg-0">
@@ -151,7 +134,7 @@ const BillDetails = () => {
             Introducer(s):
           </Col>
           <Col>
-            KEOHOKALOLE, ACASIO, BAKER, FEVELLA, GABBARD, KEITH-AGARAN, MISALUCHA, SAN BUENAVENTURA, Dela Cruz, Ihara, Inouye, Kidani, Nishihara, Riviere, Wakai
+            {measure.introducer}
           </Col>
         </Row>
         <div className="d-grid gap-2">
@@ -168,18 +151,6 @@ const BillDetails = () => {
       <ReactDiffViewer oldValue={oldCode} newValue={newCode} extraLinesSurroundingDiff={99999} compareMethod={DiffMethod.WORDS_WITH_SPACE} />
     </Container>
   ) : <LoadingSpinner />;
-};
-
-BillItem.propTypes = {
-  billData: PropTypes.shape({
-    _id: PropTypes.string,
-    bill_name: PropTypes.string,
-    bill_status: PropTypes.string,
-    bill_hearing: PropTypes.string,
-    bill_number: PropTypes.number,
-    report_title: PropTypes.string,
-    bill_description: PropTypes.string,
-  }).isRequired,
 };
 
 export default BillDetails;
