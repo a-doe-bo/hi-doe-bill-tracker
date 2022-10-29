@@ -4,7 +4,6 @@ import { useTracker } from 'meteor/react-meteor-data';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router';
-import { Stuffs } from '../../api/stuff/StuffCollection';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import BillItem from '../components/BillItem';
@@ -66,12 +65,13 @@ const BillDetails = () => {
     // Determine if the subscription is ready
     const rdy = subscription.ready();
     // Get the document
-    const thisMeasure = Measures.findOne({ id: _id }).fetch();
+    const thisMeasure = Measures.find({ _id }, {}).fetch();
+    console.log(thisMeasure);
     return {
       measure: thisMeasure,
       ready: rdy,
     };
-  }, [_id]);
+  });
   // eslint-disable-next-line array-callback-return
 
   BillItem.BillData.bill_name = measure.bill_name;
