@@ -95,7 +95,6 @@ class RequestedAccountsCollection extends BaseCollection {
     }
     return null;
   }
-  
 
   /**
    * Returns an object representing the definition of docID in a format appropriate to the restoreOne or define function.

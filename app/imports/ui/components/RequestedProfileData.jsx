@@ -23,26 +23,28 @@ const RequestedProfileData = ({ requestedProfile: { email, firstName, lastName, 
       }
     });
   };
+  const remove = () => {
+    const collectionName = RequestedProfiles.getCollectionName();
+    const instance = _id;
+    removeItMethod.callPromise({ collectionName, instance });
+  };
   const handleAccept = () => {
     const collectionName = UserProfiles.getCollectionName();
     const definitionData = { email, firstName, lastName, office, role, employeeID, password };
-    const collectionName2 = RequestedProfiles.getCollectionName();
-    const instance2 = _id;
     swal({
       title: 'Are you sure?',
       text: 'Do you really want to add this User',
       buttons: true,
     }).then((willAccept) => {
       if (willAccept) {
-        defineMethod.callPromise({ collectionName, definitionData });
-        console.log(definitionData);
-        removeItMethod.callPromise({ collectionName2, instance2 });
+        defineMethod.callPromise({ collectionName, definitionData }).then(() => {
+          remove();
+        });
         swal('Success', 'User added successfully', 'success');
       }
     });
   };
   /* Returns a table with user information */
-  console.log('profile', email, firstName, office, lastName, role, employeeID, _id);
   return (
     <tr>
       <td>{email}</td>
