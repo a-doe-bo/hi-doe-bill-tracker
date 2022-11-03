@@ -11,8 +11,9 @@ import AssignToExpertModal from './AssignToExpertModal';
 import { ROLE } from '../../api/role/Role';
 import { removeItMethod } from '../../api/base/BaseCollection.methods';
 import { Saved } from '../../api/save/SavedBillCollection';
+import HearingBillData from './HearingBillData';
 
-const SavedBillItem = ({ billData: { bill_name, bill_status, bill_number, bill_hearing, _id } }) => {
+const SavedBillItem = ({ hearingData, billData: { bill_name, bill_status, bill_number, bill_hearing, _id } }) => {
   const [collapsableTable, setCollapsableTable] = useState(false);
   const handleToggle = (state, setState) => () => { setState(!state); };
   const onDelete = () => {
@@ -75,30 +76,7 @@ const SavedBillItem = ({ billData: { bill_name, bill_status, bill_number, bill_h
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                  </tr>
-                  <tr>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                  </tr>
-                  <tr>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                    <td>Some Data</td>
-                  </tr>
+                  {hearingData.map((data, index) => <HearingBillData key={index} hearingData={data} />)}
                 </tbody>
               </Table>
             </div>
@@ -116,7 +94,20 @@ SavedBillItem.propTypes = {
     bill_status: PropTypes.string,
     bill_hearing: PropTypes.string,
     bill_number: PropTypes.number,
+    bill_updated: PropTypes.number,
+    bill_committee: PropTypes.string,
+    measureType: PropTypes.string,
+    office: PropTypes.string,
   }).isRequired,
+  hearingData: PropTypes.arrayOf(PropTypes.shape({
+    hearingLocation: PropTypes.string,
+    dateIntroduced: PropTypes.number,
+    committeeHearing: PropTypes.string,
+    measureNum: PropTypes.number,
+    roomNumber: PropTypes.string,
+    doeStance: PropTypes.string,
+    dateTime: PropTypes.string,
+  })).isRequired,
 };
 
 export default SavedBillItem;

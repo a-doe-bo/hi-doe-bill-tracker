@@ -8,17 +8,21 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import { ROLE } from '../../api/role/Role';
 import Autocomplete from '../components/Autocomplete';
+import { Hearings } from '../../api/hearing/HearingCollection';
 import { Saved } from '../../api/save/SavedBillCollection';
 import Filter from '../components/Filter';
 
 const SavedBills = () => {
-  const { ready, savedBill } = useTracker(() => {
+  const { ready, savedBill, hearings } = useTracker(() => {
     const subscription = Saved.subscribeToSavedBill();
-    const rdy = subscription.ready();
+    const hearingBillsSubscription = Hearings.subscribeHearings();
+    const rdy = subscription.ready() && hearingBillsSubscription.ready();
     const owner = Meteor.user().username;
     const savedBillItem = Saved.find({ owner }, {}).fetch();
+    const hearingItems = Hearings.find({}).fetch();
     return {
       savedBill: savedBillItem,
+      hearings: hearingItems,
       ready: rdy,
     };
   }, []);
@@ -35,7 +39,15 @@ const SavedBills = () => {
     bill_hearing: stuff.bill_hearing,
     bill_number: stuff.bill_number,
   }));
-
+  const HearingData2 = hearings.map((hearingData) => ({
+    hearingLocation: hearingData.room,
+    dateIntroduced: hearingData.year,
+    committeeHearing: hearingData.notice,
+    measureNum: hearingData.measureNumber,
+    roomNumber: hearingData.room,
+    doeStance: hearingData.description,
+    dateTime: hearingData.datetime,
+  }));
   useEffect(() => {
     setData(BillData);
   }, [ready, savedBill]);
@@ -61,19 +73,19 @@ const SavedBills = () => {
               <Col className="text-center">
                 <h2>Upcoming Bills</h2>
               </Col>
-              <SavedBill billData={data} tableHeaders={table_headers} />
+              <SavedBill billData={data} hearingData={HearingData2} tableHeaders={table_headers} />
             </Tab>
             <Tab eventKey="bills" title="Bills">
               <Col className="text-center">
                 <h2>Bills</h2>
               </Col>
-              <SavedBill billData={data} tableHeaders={table_headers} />
+              <SavedBill billData={data} hearingData={HearingData2} tableHeaders={table_headers} />
             </Tab>
             <Tab eventKey="dead-bills" title="Dead Bills">
               <Col className="text-center">
                 <h2>Dead Bills</h2>
               </Col>
-              <SavedBill billData={data} tableHeaders={table_headers} />
+              <SavedBill billData={data} hearingData={HearingData2} tableHeaders={table_headers} />
             </Tab>
           </Tabs>
         </Col>
