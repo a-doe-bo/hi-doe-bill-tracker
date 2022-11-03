@@ -39,10 +39,10 @@ const ListBill = () => {
   const table_headers = ['Bill Details', 'Save Bill', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
   const BillData = measures.map((measureData) => ({
     _id: measureData._id,
-    bill_name: measureData.measureTitle,
-    bill_status: measureData.status,
-    bill_hearing: measureData.year,
-    bill_number: measureData.measureNumber,
+    billTitle: measureData.measureTitle,
+    billStatus: measureData.status,
+    billHearing: measureData.year,
+    billNumber: measureData.measureNumber,
     bill_updated: 1663711472,
     bill_committee: 'Agriculture & Environment',
     measureType: 'HB',
@@ -81,7 +81,7 @@ const ListBill = () => {
           <Filter tab={currentTab} data={data} handleDataFiltering={setData} />
         </Col>
         <Col md={7} className="mx-3">
-          <Autocomplete billData={data} onDataFiltering={setData} />
+          <Autocomplete billData={BillData} onDataFiltering={setData} />
           <Tabs
             defaultActiveKey="Upcoming Bills"
             id="uncontrolled-tab-example"

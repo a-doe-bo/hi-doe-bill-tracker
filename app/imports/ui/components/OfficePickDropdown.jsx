@@ -30,10 +30,10 @@ const OfficePickDropdown = ({ data }) => {
 OfficePickDropdown.propTypes = {
   data: PropTypes.shape({
     _id: PropTypes.string,
-    bill_name: PropTypes.number,
-    bill_status: PropTypes.string,
-    bill_number: PropTypes.string,
-    bill_hearing: PropTypes.number,
+    billNumber: PropTypes.number,
+    billTitle: PropTypes.string,
+    billStatus: PropTypes.string,
+    billHearing: PropTypes.number,
   }).isRequired,
 };
 

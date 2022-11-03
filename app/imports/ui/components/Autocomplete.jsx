@@ -8,10 +8,8 @@ const Autocomplete = ({ billData, onDataFiltering }) => {
   const [search, setSearch] = useState([]);
   const [ogData, setOgData] = useState([]);
   useEffect(() => {
-    if (billData.length > 1) {
-      setOgData(billData);
-    }
-  }, [billData]);
+    setOgData(billData);
+  }, []);
 
   useEffect(() => {
     const filteredData = ogData;
@@ -30,14 +28,14 @@ const Autocomplete = ({ billData, onDataFiltering }) => {
         className="w-100"
         paginate
         onChange={setSearch}
-        labelKey="bill_name"
-        filterBy={['bill_name', 'bill_number']}
+        labelKey="billTitle"
+        filterBy={['billTitle', 'billNumber']}
         options={ogData}
         placeholder="Enter a bill name or bill number"
         selected={search}
         renderMenuItemChildren={(option) => (
           <div>
-            <div>{option.bill_name} <strong>#{option.bill_number}</strong></div>
+            <div>{option.billTitle} <strong>#{option.billNumber}</strong></div>
           </div>
         )}
       />
@@ -49,13 +47,13 @@ Autocomplete.propTypes = {
   onDataFiltering: PropTypes.func.isRequired,
   billData: PropTypes.arrayOf(PropTypes.shape({
     _id: PropTypes.string,
-    bill_name: PropTypes.string,
-    bill_status: PropTypes.string,
-    bill_hearing: PropTypes.string,
-    bill_number: PropTypes.number,
-    bill_updated: PropTypes.number,
-    bill_committee: PropTypes.string,
-    measureTypes: PropTypes.string,
+    billTitle: PropTypes.string,
+    billStatus: PropTypes.string,
+    billHearing: PropTypes.string,
+    billNumber: PropTypes.number,
+    billUpdated: PropTypes.number,
+    billCommittee: PropTypes.string,
+    measureType: PropTypes.string,
     office: PropTypes.string,
   })).isRequired,
 };
