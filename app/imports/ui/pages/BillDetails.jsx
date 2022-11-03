@@ -1,13 +1,13 @@
 import React from 'react';
 import { Alert, Button, Col, Container, Row } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
-import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
-import PropTypes from 'prop-types';
 import { useParams } from 'react-router';
+import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
+import { Stuffs } from '../../api/stuff/StuffCollection';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
+import PropTypes from 'prop-types';
 import BillItem from '../components/BillItem';
-import { Measures } from '../../api/measure/MeasureCollection';
 
 const oldCode = `
 THE SENATE
@@ -54,23 +54,21 @@ BE IT ENACTED BY THE LEGISLATURE OF THE STATE OF HAWAII:
 `;
 
 /* Renders the EditStuff page for editing a single document. */
-const BillDetails = () => {
+const BillDetails = ({ billData: { bill_name, bill_status, bill_number, bill_hearing, report_title, bill_description, _id } }) => {
 
   // useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
-  const { _id } = useParams();
-
-  const { ready, measure } = useTracker(() => {
+  const { ready } = useTracker(() => {
     // Get access to Stuff documents.
-    const subscription = Measures.subscribeMeasures();
+    const subscription = Stuffs.subscribeStuff();
     // Determine if the subscription is ready
     const rdy = subscription.ready();
     // Get the document
-    const measureItem = Measures.find({ _id }, {}).fetch();
+    const document = Stuffs.findDoc(_id);
     return {
-      measure: measureItem[0],
+      doc: document,
       ready: rdy,
     };
-  });
+  }, [_id]);
 
   return ready ? (
     <Container id={PAGE_IDS.BILL_DETAILS} className="py-3">
@@ -93,7 +91,7 @@ const BillDetails = () => {
             Measure Title:
           </Col>
           <Col>
-            {measure.measureTitle}
+            {bill_name}
           </Col>
         </Row>
         <Row className="pt-lg-0">
@@ -101,7 +99,7 @@ const BillDetails = () => {
             Report Title:
           </Col>
           <Col>
-            {measure.reportTitle}
+            {report_title}
           </Col>
         </Row>
         <Row className="pt-lg-0">
@@ -109,7 +107,7 @@ const BillDetails = () => {
             Description:
           </Col>
           <Col>
-            {measure.description}
+            {bill_description}
           </Col>
         </Row>
         <Row className="pt-lg-0">
@@ -117,16 +115,23 @@ const BillDetails = () => {
             Companion:
           </Col>
           <Col xs={2}>
-            {measure.companion ? measure.companion : 'none'}
+            {bill_number}
           </Col>
         </Row>
-
+        <Row className="pt-lg-0">
+          <Col xs={2}>
+            Package:
+          </Col>
+          <Col>
+            None
+          </Col>
+        </Row>
         <Row className="pt-lg-0">
           <Col xs={2}>
             Current Referral:
           </Col>
           <Col>
-            {measure.currentReferral}
+            LAT, CPC, FIN
           </Col>
         </Row>
         <Row className="pt-lg-0">
@@ -134,7 +139,7 @@ const BillDetails = () => {
             Introducer(s):
           </Col>
           <Col>
-            {measure.introducer}
+            KEOHOKALOLE, ACASIO, BAKER, FEVELLA, GABBARD, KEITH-AGARAN, MISALUCHA, SAN BUENAVENTURA, Dela Cruz, Ihara, Inouye, Kidani, Nishihara, Riviere, Wakai
           </Col>
         </Row>
         <div className="d-grid gap-2">
@@ -151,6 +156,18 @@ const BillDetails = () => {
       <ReactDiffViewer oldValue={oldCode} newValue={newCode} extraLinesSurroundingDiff={99999} compareMethod={DiffMethod.WORDS_WITH_SPACE} />
     </Container>
   ) : <LoadingSpinner />;
+};
+
+BillItem.propTypes = {
+  billData: PropTypes.shape({
+    _id: PropTypes.string,
+    bill_name: PropTypes.string,
+    bill_status: PropTypes.string,
+    bill_hearing: PropTypes.string,
+    bill_number: PropTypes.number,
+    report_title: PropTypes.string,
+    bill_description: PropTypes.string,
+  }).isRequired,
 };
 
 export default BillDetails;
