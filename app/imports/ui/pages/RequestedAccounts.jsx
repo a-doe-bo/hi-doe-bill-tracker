@@ -1,5 +1,4 @@
 import React from 'react';
-import { Meteor } from 'meteor/meteor';
 import { Col, Container, Row, Table } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
 import { PAGE_IDS } from '../utilities/PageIDs';

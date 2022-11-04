@@ -1,13 +1,13 @@
 import React from 'react';
 import { Alert, Button, Col, Container, Row } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
-import { useParams } from 'react-router';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
-import { Stuffs } from '../../api/stuff/StuffCollection';
+import PropTypes from 'prop-types';
+import { useParams } from 'react-router';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
-import PropTypes from 'prop-types';
 import BillItem from '../components/BillItem';
+import { Measures } from '../../api/measure/MeasureCollection';
 
 const oldCode = `
 THE SENATE
@@ -54,21 +54,21 @@ BE IT ENACTED BY THE LEGISLATURE OF THE STATE OF HAWAII:
 `;
 
 /* Renders the EditStuff page for editing a single document. */
-const BillDetails = ({ billData: { bill_name, bill_status, bill_number, bill_hearing, report_title, bill_description, _id } }) => {
-
+const BillDetails = () => {
   // useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
-  const { ready } = useTracker(() => {
+  const { _id } = useParams();
+  const { ready, measure } = useTracker(() => {
     // Get access to Stuff documents.
-    const subscription = Stuffs.subscribeStuff();
+    const subscription = Measures.subscribeMeasures();
     // Determine if the subscription is ready
     const rdy = subscription.ready();
     // Get the document
-    const document = Stuffs.findDoc(_id);
+    const measureItem = Measures.find({ _id }, {}).fetch();
     return {
-      doc: document,
+      measure: measureItem[0],
       ready: rdy,
     };
-  }, [_id]);
+  });
 
   return ready ? (
     <Container id={PAGE_IDS.BILL_DETAILS} className="py-3">
@@ -91,7 +91,7 @@ const BillDetails = ({ billData: { bill_name, bill_status, bill_number, bill_hea
             Measure Title:
           </Col>
           <Col>
-            {bill_name}
+            {measure.measureTitle}
           </Col>
         </Row>
         <Row className="pt-lg-0">
@@ -99,7 +99,7 @@ const BillDetails = ({ billData: { bill_name, bill_status, bill_number, bill_hea
             Report Title:
           </Col>
           <Col>
-            {report_title}
+            {measure.reportTitle}
           </Col>
         </Row>
         <Row className="pt-lg-0">
@@ -107,7 +107,7 @@ const BillDetails = ({ billData: { bill_name, bill_status, bill_number, bill_hea
             Description:
           </Col>
           <Col>
-            {bill_description}
+            {measure.description}
           </Col>
         </Row>
         <Row className="pt-lg-0">
@@ -115,15 +115,7 @@ const BillDetails = ({ billData: { bill_name, bill_status, bill_number, bill_hea
             Companion:
           </Col>
           <Col xs={2}>
-            {bill_number}
-          </Col>
-        </Row>
-        <Row className="pt-lg-0">
-          <Col xs={2}>
-            Package:
-          </Col>
-          <Col>
-            None
+            {measure.companion ? measure.companion : 'none'}
           </Col>
         </Row>
         <Row className="pt-lg-0">
@@ -131,7 +123,7 @@ const BillDetails = ({ billData: { bill_name, bill_status, bill_number, bill_hea
             Current Referral:
           </Col>
           <Col>
-            LAT, CPC, FIN
+            {measure.currentReferral}
           </Col>
         </Row>
         <Row className="pt-lg-0">
@@ -139,7 +131,7 @@ const BillDetails = ({ billData: { bill_name, bill_status, bill_number, bill_hea
             Introducer(s):
           </Col>
           <Col>
-            KEOHOKALOLE, ACASIO, BAKER, FEVELLA, GABBARD, KEITH-AGARAN, MISALUCHA, SAN BUENAVENTURA, Dela Cruz, Ihara, Inouye, Kidani, Nishihara, Riviere, Wakai
+            {measure.introducer}
           </Col>
         </Row>
         <div className="d-grid gap-2">
