@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import swal from 'sweetalert';
-import { Meteor } from 'meteor/meteor';
-import { Stuffs } from '../../api/stuff/StuffCollection';
+import PropTypes from 'prop-types';
 import { defineMethod } from '../../api/base/BaseCollection.methods';
 import { Experts } from '../../api/expert/ExpertCollection';
 
-const AssignToExpertModal = ({billData: { bill_number, bill_name, bill_status, bill_hearing }}) => {
+const AssignToExpertModal = ({ billData: { bill_number, bill_name, bill_status, bill_hearing } }) => {
   const [show, setShow] = useState(false);
   const [recipients, setRecipients] = useState('');
   const handleClose = () => setShow(false);
@@ -52,5 +51,17 @@ const AssignToExpertModal = ({billData: { bill_number, bill_name, bill_status, b
     </>
   );
 };
-
+AssignToExpertModal.propTypes = {
+  billData: PropTypes.shape({
+    _id: PropTypes.string,
+    bill_name: PropTypes.string,
+    bill_status: PropTypes.string,
+    bill_hearing: PropTypes.string,
+    bill_number: PropTypes.number,
+    bill_updated: PropTypes.number,
+    bill_committee: PropTypes.string,
+    measureType: PropTypes.string,
+    office: PropTypes.string,
+  }).isRequired,
+};
 export default AssignToExpertModal;
