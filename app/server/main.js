@@ -7,20 +7,22 @@ import '../imports/api/user/UserProfileCollection.methods';
 import { Meteor } from 'meteor/meteor';
 import nodemailer from 'nodemailer';
 
+// eslint-disable-next-line global-require
+const ck = require('ckey');
+
 const smtpconfig = {
   host: 'smtp-relay.sendinblue.com',
   port: 587,
   auth: {
-    user: 'thanemluna@gmail.com',
-    pass: 'ADGLIJWn2FdXgZz8',
+    user: ck.REACT_APP_EMAIL,
+    pass: ck.REACT_APP_PASSWORD,
   },
 };
 
 const transporter = nodemailer.createTransport(smtpconfig);
-
-const toAddress = "";
-const titleOfBill = "";
-const numberOfBill = "";
+// const toAddress = "";
+// const titleOfBill = "";
+// const numberOfBill = "";
 
 const hearingMailOptions = { // feed in things from client side code like the toaddress and the text
   from: '"A-DOE-BO" <noreply.adoebo.tracker@gmail.com>',
@@ -38,7 +40,7 @@ const verificationMailOptions = {
 
 Meteor.methods({
   // eslint-disable-next-line meteor/audit-argument-checks,no-unused-vars
-  sendEmail(recipient, billInfo) {
+  sendEmail() {
     transporter.sendMail(hearingMailOptions, (err) => {
       if (err) {
         return console.log(err);
