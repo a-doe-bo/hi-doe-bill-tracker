@@ -28,12 +28,12 @@ const SavedBills = () => {
     ['', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Assign', 'Remove'] :
     ['', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Remove'];
 
-  const BillData = savedBill.map((stuff) => ({
-    _id: stuff._id,
-    bill_name: stuff.bill_name,
-    bill_status: stuff.bill_status,
-    bill_hearing: stuff.bill_hearing,
-    bill_number: stuff.bill_number,
+  const BillData = savedBill.map((save) => ({
+    _id: save._id,
+    bill_name: save.bill_name,
+    bill_status: save.bill_status,
+    bill_hearing: save.bill_hearing,
+    bill_number: save.bill_number,
   }));
 
   useEffect(() => {
