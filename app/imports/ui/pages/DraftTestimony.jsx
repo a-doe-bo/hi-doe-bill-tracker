@@ -17,14 +17,12 @@ import { Experts } from '../../api/expert/ExpertCollection';
 
 /* Create schema to indicate the structure of data */
 const formSchema = new SimpleSchema({
-  bill_number: {
-    type: Number,
-    allowedValues: [],
-  },
+  bill_number: Number,
   firstName: String,
   lastName: String,
   position: {
     type: String,
+    defaultValue: 'Support',
     allowedValues: ['Support', 'Oppose', 'Comments Only'],
   },
 });
@@ -78,12 +76,14 @@ const DraftTestimony = () => {
             <Card.Body>
               {/* Allowed values will be all the bills that are assigned to you */}
               <SelectField name="bill_number" placeholder="Select a bill to write a testimony for" allowedValues={arr} />
-              <SelectField name="position" />
+              <SelectField name="position" appearance="toggle" />
               <TextField name="firstName" placeholder="Enter First Name" />
               <TextField name="lastName" placeholder="Enter Last Name" />
-              <div className="text-center">
-                {/* onClick we want to be able to attach a pdf */}
-                <Button className="btn btn-primary pull-right">UPLOAD PDF</Button>
+              {/* onClick we want to be able to attach a pdf */}
+              <Button variant="outline-primary" className="mt-3">UPLOAD PDF</Button>
+              <div className="mt-3">
+                {/* Check if button was changed at all */}
+                <SubmitField value="Submit Testimony" />
               </div>
               <ErrorsField />
             </Card.Body>
