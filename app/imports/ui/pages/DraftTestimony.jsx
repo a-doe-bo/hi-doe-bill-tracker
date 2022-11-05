@@ -79,8 +79,8 @@ const DraftTestimony = () => {
               {/* Allowed values will be all the bills that are assigned to you */}
               <SelectField name="bill_number" placeholder="Select a bill to write a testimony for" allowedValues={arr} />
               <SelectField name="position" />
-              <TextField name="firstName" placeholder='Enter First Name' />
-              <TextField name="lastName" placeholder='Enter Last Name' />
+              <TextField name="firstName" placeholder="Enter First Name" />
+              <TextField name="lastName" placeholder="Enter Last Name" />
               <div className="text-center">
                 {/* onClick we want to be able to attach a pdf */}
                 <Button className="btn btn-primary pull-right">UPLOAD PDF</Button>
