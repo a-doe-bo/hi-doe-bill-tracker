@@ -49,6 +49,7 @@ export const COMPONENT_IDS = {
   DRAFT_TESTIMONY_FORM_FIRST_NAME: 'draft-testimony-form-first-name',
   DRAFT_TESTIMONY_FORM_LAST_NAME: 'draft-testimony-form-last-name',
   DRAFT_TESTIMONY_FORM_POSITION: 'draft-testimony-form-position',
+  DRAFT_TESTIMONY_FORM_BILL_NUMBER: 'draft-testimony-form-bill-number',
   NAVBAR_DRAFT_TESTIMONY: 'navbar-draft-testimony',
   NAVBAR_ASSIGNED_BILLS: 'navbar-assigned-bills',
 };
