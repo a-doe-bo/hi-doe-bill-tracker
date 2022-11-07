@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import swal from 'sweetalert';
 import { Button } from 'react-bootstrap';
-import { UserProfiles } from '../../api/user/UserProfileCollection';
 import { removeItMethod } from '../../api/base/BaseCollection.methods';
 import { RequestedProfiles } from '../../api/user/RequestedAccountsCollection';
 
@@ -23,6 +22,7 @@ const RequestedProfileData = ({ requestedProfile: { email, firstName, lastName, 
       }
     });
   };
+  // eslint-disable-next-line no-unused-vars
   const handleAccept = () => {
     const collectionName = RequestedProfiles.getCollectionName();
     const instance = _id;

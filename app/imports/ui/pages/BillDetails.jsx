@@ -55,10 +55,8 @@ BE IT ENACTED BY THE LEGISLATURE OF THE STATE OF HAWAII:
 
 /* Renders the EditStuff page for editing a single document. */
 const BillDetails = () => {
-
   // useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
   const { _id } = useParams();
-
   const { ready, measure } = useTracker(() => {
     // Get access to Stuff documents.
     const subscription = Measures.subscribeMeasures();
@@ -120,7 +118,6 @@ const BillDetails = () => {
             {measure.companion ? measure.companion : 'none'}
           </Col>
         </Row>
-
         <Row className="pt-lg-0">
           <Col xs={2}>
             Current Referral:
@@ -151,6 +148,18 @@ const BillDetails = () => {
       <ReactDiffViewer oldValue={oldCode} newValue={newCode} extraLinesSurroundingDiff={99999} compareMethod={DiffMethod.WORDS_WITH_SPACE} />
     </Container>
   ) : <LoadingSpinner />;
+};
+
+BillItem.propTypes = {
+  billData: PropTypes.shape({
+    _id: PropTypes.string,
+    bill_name: PropTypes.string,
+    bill_status: PropTypes.string,
+    bill_hearing: PropTypes.string,
+    bill_number: PropTypes.number,
+    report_title: PropTypes.string,
+    bill_description: PropTypes.string,
+  }).isRequired,
 };
 
 export default BillDetails;
