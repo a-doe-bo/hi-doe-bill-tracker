@@ -25,6 +25,7 @@ class PrimaryOfficeCollection extends BaseCollection {
       throw new Meteor.Error(`${office} is an invalid PrimaryOffice Type.`);
     }
     const docID = this._collection.insert({ code, measureNumber, office });
+    console.log(`Successfully added ${docID}`);
     return docID;
   }
 

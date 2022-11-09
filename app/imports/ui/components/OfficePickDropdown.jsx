@@ -9,10 +9,13 @@ const OfficePickDropdown = ({ data }) => {
   const [office, setOffice] = useState([]);
   const updateDatabase = (e) => {
     // Hearing collection
-    setOffice(e);
+    setOffice(e.target.value);
     const collectionName = PrimaryOffice.getCollectionName();
+    console.log(collectionName);
     const definitionData = {
       measureNumber: data.bill_number,
+      code: 'HB124 HD1 SD1',
+      office: 'OCID',
     };
     defineMethod.callPromise({ collectionName, definitionData })
       .catch((error) => {
@@ -33,9 +36,9 @@ const OfficePickDropdown = ({ data }) => {
 OfficePickDropdown.propTypes = {
   data: PropTypes.shape({
     _id: PropTypes.string,
-    bill_name: PropTypes.number,
+    bill_name: PropTypes.string,
     bill_status: PropTypes.string,
-    bill_number: PropTypes.string,
+    bill_number: PropTypes.number,
     bill_hearing: PropTypes.number,
     office_primary: PropTypes.bool,
   }).isRequired,
