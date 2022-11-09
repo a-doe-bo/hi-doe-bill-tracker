@@ -15,7 +15,7 @@ const SavedBills = () => {
   const { ready, savedBill } = useTracker(() => {
     const subscription = Saved.subscribeToSavedBill();
     const rdy = subscription.ready();
-    const owner = Meteor.user().username;
+    const owner = Meteor.userId();
     const savedBillItem = Saved.find({ owner }, {}).fetch();
     return {
       savedBill: savedBillItem,

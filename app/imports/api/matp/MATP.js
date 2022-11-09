@@ -8,6 +8,7 @@ import { Filters } from '../filter/FilterCollection';
 import { RequestedProfiles } from '../user/RequestedAccountsCollection';
 import { Experts } from '../expert/ExpertCollection';
 import { Saved } from '../save/SavedBillCollection';
+import { Testimonies } from '../testimony/TestimonyCollection';
 
 class MATPClass {
   collections;
@@ -28,6 +29,7 @@ class MATPClass {
       Saved,
       RequestedProfiles,
       Filters,
+      Testimonies,
     ];
     /*
      * A list of collection class instances in the order required for them to be sequentially loaded from a file.
