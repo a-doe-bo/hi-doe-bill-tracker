@@ -88,11 +88,16 @@ const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_stat
             <Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/bill/${_id}`}>Assign</Link>
           </td>
         )}
-        {(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) && (
+        {(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) ? (
           <td style={{ width: '150px' }}>
-            <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, _id }} />
+            <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, _id, office_primary: true }} />
           </td>
-        )}
+        ) : <td>N/A</td>}
+        {(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) ? (
+          <td style={{ width: '150px' }}>
+            <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, _id, office_primary: false }} />
+          </td>
+        ) : <td>N/A</td>}
         <td style={{ width: '150px' }}>
           <AddToCalendar data={{ bill_name, bill_status, bill_number, bill_hearing, _id }} />
         </td>

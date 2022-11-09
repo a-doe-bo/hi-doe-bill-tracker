@@ -1,13 +1,15 @@
 import _ from 'lodash';
 
+// 'Deputy', 'OCID', 'OFO', 'OFS', 'OITS', 'OSIP', 'OSSS', 'OTM'
 export const officeTypes = {
-  HB: 'hb',
-  SB: 'sb',
-  HR: 'hr',
-  SR: 'sr',
-  HCR: 'hcr',
-  SCR: 'scr',
-  GM: 'gm',
+  DEPUTY: 'Deputy',
+  OCID: 'OCID',
+  OFO: 'OFO',
+  OFS: 'OFS',
+  OITS: 'OITS',
+  OSIP: 'OSIP',
+  OSSS: 'OSSS',
+  OTM: 'OTM',
 };
 
 export const isValidOfficeType = (type) => _.includes(officeTypes, type);

@@ -1,22 +1,25 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { MultiSelect } from 'react-multi-select-component';
-import { Stuffs } from '../../api/stuff/StuffCollection';
+import swal from 'sweetalert';
 import { defineMethod } from '../../api/base/BaseCollection.methods';
+import { PrimaryOffice } from '../../api/office/PrimaryOfficeMeasure';
 
 const OfficePickDropdown = ({ data }) => {
   const [office, setOffice] = useState([]);
   const updateDatabase = (e) => {
     // Hearing collection
     setOffice(e);
-    const collectionName = Stuffs.getCollectionName();
-    const definitionData = { ...data, office };
+    const collectionName = PrimaryOffice.getCollectionName();
+    const definitionData = {
+      measureNumber: data.bill_number,
+    };
     defineMethod.callPromise({ collectionName, definitionData })
-      .catch(() => {
-        console.log('error');
+      .catch((error) => {
+        swal('Error', error.message, 'error');
       })
       .then(() => {
-        console.log('database updated');
+        swal('Success', 'Item added successfully', 'success');
       });
   };
   const options = ['Deputy', 'OCID', 'OFO', 'OFS', 'OITS', 'OSIP', 'OSSS', 'OTM'].map((officeOptions) => (
@@ -34,6 +37,7 @@ OfficePickDropdown.propTypes = {
     bill_status: PropTypes.string,
     bill_number: PropTypes.string,
     bill_hearing: PropTypes.number,
+    office_primary: PropTypes.bool,
   }).isRequired,
 };
 

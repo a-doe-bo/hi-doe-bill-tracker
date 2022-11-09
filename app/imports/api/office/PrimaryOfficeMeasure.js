@@ -1,13 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
-import { Roles } from 'meteor/alanning:roles';
 import BaseCollection from '../base/BaseCollection';
-import { ROLE } from '../role/Role';
-import { isValidPrimaryOfficeType } from '../legislature/PrimaryOfficeTypes';
+import { isValidOfficeType } from '../legislature/officeTypes';
 
 export const PrimaryOfficePublications = {
   PrimaryOffice: 'PrimaryOffice',
-  PrimaryOfficeAdmin: 'PrimaryOfficeAdmin', // not sure if we need this.
 };
 
 class PrimaryOfficeCollection extends BaseCollection {
@@ -24,7 +21,7 @@ class PrimaryOfficeCollection extends BaseCollection {
     if (this.isDefined({ code, measureNumber, office })) {
       return this.findDoc({ code, measureNumber, office })._id;
     }
-    if (!isValidPrimaryOfficeType(office)) {
+    if (!isValidOfficeType(office)) {
       throw new Meteor.Error(`${office} is an invalid PrimaryOffice Type.`);
     }
     const docID = this._collection.insert({ code, measureNumber, office });
@@ -55,12 +52,6 @@ class PrimaryOfficeCollection extends BaseCollection {
         }
         return this.ready();
       });
-      Meteor.publish(PrimaryOfficePublications.PrimaryOfficeAdmin, function publish() {
-        if (this.userId && Roles.userIsInRole(this.userId, ROLE.ADMIN)) {
-          return instance._collection.find();
-        }
-        return this.ready();
-      });
     }
   }
 
@@ -71,31 +62,12 @@ class PrimaryOfficeCollection extends BaseCollection {
     return null;
   }
 
-  subscribePrimaryOfficeAdmin() {
-    if (Meteor.isClient) {
-      return Meteor.subscribe(PrimaryOfficePublications.PrimaryOfficeAdmin);
-    }
-    return null;
-  }
-
   dumpOne(docID) {
     const doc = this.findDoc(docID);
-    const year = doc.year;
-    const PrimaryOfficeType = doc.PrimaryOfficeType;
-    const PrimaryOfficeNumber = doc.PrimaryOfficeNumber;
-    const lastUpdated = doc.lastUpdated;
+    const measureNumber = doc.measureNumber;
     const code = doc.code;
-    const PrimaryOfficePdfUrl = doc.PrimaryOfficePdfUrl;
-    const PrimaryOfficeArchiveUrl = doc.PrimaryOfficeArchiveUrl;
-    const PrimaryOfficeTitle = doc.PrimaryOfficeTitle;
-    const reportTitle = doc.reportTitle;
-    const bitAppropriation = doc.bitAppropriation;
-    const description = doc.description;
-    const status = doc.status;
-    const introducer = doc.introducer;
-    const currentReferral = doc.currentReferral;
-    const companion = doc.companion;
-    return { year, PrimaryOfficeType, PrimaryOfficeNumber, lastUpdated, code, PrimaryOfficePdfUrl, PrimaryOfficeArchiveUrl, PrimaryOfficeTitle, reportTitle, bitAppropriation, description, status, introducer, currentReferral, companion };
+    const office = doc.office;
+    return { measureNumber, code, office };
   }
 }
 
