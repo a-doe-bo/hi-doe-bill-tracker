@@ -17,15 +17,7 @@ class PrimaryOfficeCollection extends BaseCollection {
   }
 
   define({ measureNumber, code, office }) {
-    // PRIMARY KEY (year, PrimaryOfficeType, PrimaryOfficeNumber) so they are unique
-    if (this.isDefined({ code, measureNumber, office })) {
-      return this.findDoc({ code, measureNumber, office })._id;
-    }
-    if (!isValidOfficeType(office)) {
-      throw new Meteor.Error(`${office} is an invalid PrimaryOffice Type.`);
-    }
     const docID = this._collection.insert({ code, measureNumber, office });
-    console.log(`Successfully added ${docID}`);
     return docID;
   }
 

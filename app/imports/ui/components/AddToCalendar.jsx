@@ -27,7 +27,7 @@ const AddToCalendar = ({ data }) => (
 AddToCalendar.propTypes = {
   data: PropTypes.shape({
     _id: PropTypes.string,
-    bill_name: PropTypes.number,
+    bill_name: PropTypes.string,
     bill_status: PropTypes.string,
     bill_number: PropTypes.string,
     bill_hearing: PropTypes.number,

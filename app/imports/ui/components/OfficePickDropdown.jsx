@@ -9,9 +9,8 @@ const OfficePickDropdown = ({ data }) => {
   const [office, setOffice] = useState([]);
   const updateDatabase = (e) => {
     // Hearing collection
-    setOffice(e.target.value);
+    setOffice(e);
     const collectionName = PrimaryOffice.getCollectionName();
-    console.log(collectionName);
     const definitionData = {
       measureNumber: data.bill_number,
       code: 'HB124 HD1 SD1',
