@@ -93,9 +93,6 @@ const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_stat
             <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, _id }} />
           </td>
         )}
-        <td style={{ width: '150px' }}>
-          <AddToCalendar data={{ bill_name, bill_status, bill_number, bill_hearing, _id }} />
-        </td>
       </tr>
       <tr>
         <td style={{ padding: 0 }} colSpan={10}>
