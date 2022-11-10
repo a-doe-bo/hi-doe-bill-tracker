@@ -1,46 +1,63 @@
 import React from 'react';
-import { Container, Col, Row, Table } from 'react-bootstrap';
-import { useTracker } from 'meteor/react-meteor-data';
-import LoadingSpinner from '../components/LoadingSpinner';
-import { PAGE_IDS } from '../utilities/PageIDs';
-import TestimonyItem from '../components/TestimonyItem';
-import { Testimonies } from '../../api/testimony/TestimonyCollection';
+import { FilesCollection } from 'meteor/ostrio:files';
+import SimpleSchema from 'simpl-schema';
+import { SavedTestimoniesCollection } from '../../api/testimony/SavedTestimoniescollection';
 
-const TestimonyList = () => {
-  const { ready, testimonies } = useTracker(() => {
-    const subscription = Testimonies.subscribeTestimony();
-    const rdy = subscription.ready();
-    const testimonyItems = Testimonies.find({}, { sort: { lastName: 1 } }).fetch();
-    return {
-      testimonies: testimonyItems,
-      ready: rdy,
-    };
-  }, []);
-
-  const style = { width: '100%', margin: 0 };
-
-  return ready ? (
-    <Container id={PAGE_IDS.LIST_TESTIMONY} className="py-3">
-      <Row className="justify-content-center" style={style}>
-        <Col md={7} style={style}>
-          <Table striped bordered hover style={style}>
-            <thead>
-              <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Position</th>
-                <th>Testimony</th>
-                <th>Edit</th>
-              </tr>
-            </thead>
-            <tbody>
-              {testimonies.map((testimony) => (<TestimonyItem key={testimony.id} testimony={testimony} />))}
-            </tbody>
-          </Table>
-        </Col>
-      </Row>
-    </Container>
-  ) : <LoadingSpinner message="Loading Testimonies" />;
+const mySchema = {
+  ...FilesCollection.schema,
+  // billName: String,
 };
 
-export default TestimonyList;
+const TestimonyList = new FilesCollection({
+  schema: mySchema,
+  storagePath: 'assets/app/uploads/SavedTestimoniesCollection',
+  downloadRoute: '/files/SavedTestimonies',
+  collectionName: 'TestimonyList',
+  permissions: 0o755,
+  allowClientCode: false,
+  cacheControl: 'public, max-age=31536000',
+  // Read more about cacheControl: https://devcenter.heroku.com/articles/increasing-application-performance-with-http-cache-headers
+  onbeforeunloadMessage() {
+    console.log('Upload is still in progress! Upload will be aborted if you leave this page!');
+  },
+  onBeforeUpload(file) {
+    // Allow upload files under 10MB, and only in png/jpg/pdfjpeg formats
+    // Note: You should never trust to extension and mime-type here
+    // as this data comes from client and can be easily substitute
+    // to check file's "magic-numbers" use `mmmagic` or `file-type` package
+    // real extension and mime-type can be checked on client (untrusted side)
+    // and on server at `onAfterUpload` hook (trusted side)
+    if (file.size <= 10485760 && /pdf/i.test(file.ext)) {
+      return true;
+    }
+    console.log('Please upload pdf, with size equal or less than 10MB');
+    return false;
+  },
+  downloadCallback(fileObj) {
+    if (this.params.query.download === 'true') {
+      // Increment downloads counter
+      SavedTestimoniesCollection.update(fileObj._id, { $inc: { 'meta.downloads': 1 } });
+    }
+    // Must return true to continue download
+    return true;
+  },
+});
+
+if (Meteor.isServer) {
+  Meteor.publish('testimony_files', function () {
+    return SavedTestimoniesCollection.find().cursor;
+  });
+}
+
+/**
+ * Subscription method for stuff owned by the current user.
+ */
+const subscribeTestimonyList = () => {
+  if (Meteor.isClient) {
+    return Meteor.subscribe('testimony_files');
+  }
+  return null;
+};
+
+TestimonyList.collection.attachSchema(new SimpleSchema(mySchema));
+export { TestimonyList, subscribeTestimonyList };
