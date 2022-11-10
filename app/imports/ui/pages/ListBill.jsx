@@ -36,16 +36,16 @@ const ListBill = () => {
   }, []);
   const [currentTab, setCurrentTab] = useState('Upcoming Bills');
   // TODO: Object with { header: '', component: ''}
-  const table_headers = ['Bill Details', 'Save Bill', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill'];
+  const table_headers = ['Bill Details', 'Save Bill', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Primary Office', 'Secondary Office', ''];
   const BillData = measures.map((measureData) => ({
     _id: measureData._id,
     bill_name: measureData.measureTitle,
     bill_status: measureData.status,
     bill_hearing: measureData.year,
     bill_number: measureData.measureNumber,
-    bill_updated: 1663711472,
-    bill_committee: 'Agriculture & Environment',
-    measureType: 'HB',
+    bill_updated: measureData.lastUpdated,
+    bill_committee: measureData.committeeHearing,
+    measureType: measureData.measureType,
     office: 'office1',
   }));
   const HearingData2 = hearings.map((hearingData) => ({

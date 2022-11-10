@@ -11,7 +11,6 @@ import { ROLE } from '../../api/role/Role';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import { ROUTE_PATHS } from '../utilities/RoutePaths';
 import OfficePickDropdown from './OfficePickDropdown';
-import AddToCalendar from './AddToCalendar';
 import HearingBillData from './HearingBillData';
 import { Saved } from '../../api/save/SavedBillCollection';
 import { defineMethod, removeItMethod } from '../../api/base/BaseCollection.methods';
@@ -88,14 +87,16 @@ const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_stat
             <Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/bill/${_id}`}>Assign</Link>
           </td>
         )}
-        {(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) && (
+        {(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) ? (
           <td style={{ width: '150px' }}>
-            <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, _id }} />
+            <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, _id, office_primary: true }} />
           </td>
-        )}
-        <td style={{ width: '150px' }}>
-          <AddToCalendar data={{ bill_name, bill_status, bill_number, bill_hearing, _id }} />
-        </td>
+        ) : <td>N/A</td>}
+        {(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) ? (
+          <td style={{ width: '150px' }}>
+            <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, _id, office_primary: false }} />
+          </td>
+        ) : <td>N/A</td>}
       </tr>
       <tr>
         <td style={{ padding: 0 }} colSpan={10}>

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import AddToCalendar from './AddToCalendar';
 
 const HearingBillData = ({ hearingData }) => (
   <tr>
@@ -9,6 +10,9 @@ const HearingBillData = ({ hearingData }) => (
     <td>{hearingData.roomNumber}</td>
     <td>{hearingData.doeStance}</td>
     <td>{hearingData.dateTime}</td>
+    <td style={{ width: '150px' }}>
+      <AddToCalendar hearingData={hearingData} />
+    </td>
   </tr>
 );
 
