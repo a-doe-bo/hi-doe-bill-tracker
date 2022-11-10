@@ -17,6 +17,7 @@ class TestimonyCollection extends BaseCollection {
         allowedValues: ['Support', 'Oppose', 'Comments Only'],
       },
       testimony: String,
+      owner: String,
     }));
   }
 
@@ -28,12 +29,13 @@ class TestimonyCollection extends BaseCollection {
    * @param testimony .
    * @return {String} the docID of the new document.
    */
-  define({ firstName, lastName, position, testimony }) {
+  define({ firstName, lastName, position, testimony, owner }) {
     const docID = this._collection.insert({
       firstName,
       lastName,
       position,
       testimony,
+      owner,
     });
     return docID;
   }

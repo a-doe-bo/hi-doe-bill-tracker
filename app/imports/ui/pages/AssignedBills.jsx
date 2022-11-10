@@ -34,7 +34,7 @@ const AssignedBills = () => {
     const owner = Meteor.user().username;
     const expertSubscription = Experts.subscribeToExpert();
     const rdy = expertSubscription.ready();
-    const expertItems = Experts.find({recipient: owner}, {}).fetch();
+    const expertItems = Experts.find({ recipient: owner }, {}).fetch();
     return {
       experts: expertItems,
       ready2: rdy,

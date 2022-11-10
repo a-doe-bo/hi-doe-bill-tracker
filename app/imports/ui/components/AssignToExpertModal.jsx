@@ -6,7 +6,7 @@ import { Stuffs } from '../../api/stuff/StuffCollection';
 import { defineMethod } from '../../api/base/BaseCollection.methods';
 import { Experts } from '../../api/expert/ExpertCollection';
 
-const AssignToExpertModal = ({billData: { bill_number, bill_name, bill_status, bill_hearing }}) => {
+const AssignToExpertModal = ({ billData: { bill_number, bill_name, bill_status, bill_hearing } }) => {
   const [show, setShow] = useState(false);
   const [recipients, setRecipients] = useState('');
   const handleClose = () => setShow(false);
