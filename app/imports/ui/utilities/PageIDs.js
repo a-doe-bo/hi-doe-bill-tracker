@@ -22,5 +22,5 @@ export const PAGE_IDS = {
   REQUESTED_ACCOUNTS_FORM: 'request-accounts-form',
   DRAFT_TESTIMONY: 'draft-testimony',
   ASSIGNED_BILLS: 'assigned-bills',
-  LIST_TESTIMONY: 'list-testimony',
+  TESTIMONY_LIST: 'testimony-list',
 };

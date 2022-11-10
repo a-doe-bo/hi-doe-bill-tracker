@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Container, Card, Col, Row, Form, Spinner } from 'react-bootstrap';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
@@ -27,9 +27,11 @@ const formSchema = new SimpleSchema({
 const bridge = new SimpleSchema2Bridge(formSchema);
 
 const DraftTestimony = () => {
+  /*
   const [measureNo, setMeasureNo] = useState('');
   const [uploadFile, setUploadFile] = useState({});
   const [hasFile, setHasFile] = useState(false);
+  */
 
   const { measureName, ready } = useTracker(() => {
     const subscription = Measures.subscribeMeasures();
@@ -56,8 +58,10 @@ const DraftTestimony = () => {
       });
 
     const uploadInstance = SavedTestimoniesCollection.insert({
+      // eslint-disable-next-line no-undef
       file: uploadFile,
       meta: {
+        // eslint-disable-next-line no-undef
         measureNo,
       },
     }, false);
@@ -66,14 +70,16 @@ const DraftTestimony = () => {
   };
 
   const measureSelected = (e) => {
+    // eslint-disable-next-line no-undef
     setMeasureNo(e.target.value);
   };
-
+  /*
   const changed = (e) => {
     const file = e.target.files[0];
     setUploadFile(file);
     setHasFile(true);
   };
+   */
 
   let fRef = null;
   const checkboxStyle = { margin: '5px' };
