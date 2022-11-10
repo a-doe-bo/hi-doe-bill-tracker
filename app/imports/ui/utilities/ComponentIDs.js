@@ -51,4 +51,6 @@ export const COMPONENT_IDS = {
   DRAFT_TESTIMONY_FORM_POSITION: 'draft-testimony-form-position',
   NAVBAR_DRAFT_TESTIMONY: 'navbar-draft-testimony',
   NAVBAR_ASSIGNED_BILLS: 'navbar-assigned-bills',
+  SUBMIT_TESTIMONY_FORM_RELEVANT_MEASURE: 'testimony-relevant-measure',
+
 };
