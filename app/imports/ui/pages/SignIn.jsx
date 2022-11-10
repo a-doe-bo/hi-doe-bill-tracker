@@ -28,6 +28,15 @@ const SignIn = () => {
         setError(err.reason);
       } else {
         setRedirect(true);
+        Meteor.call('sendEmail', (verificationError) => {
+          if (verificationError) {
+            // eslint-disable-next-line no-console
+            console.log('err');
+          } else {
+            // eslint-disable-next-line no-console
+            console.log('no err');
+          }
+        });
       }
     });
   };
