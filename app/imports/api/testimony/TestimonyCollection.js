@@ -17,6 +17,7 @@ class TestimonyCollection extends BaseCollection {
         allowedValues: ['Support', 'Oppose', 'Comments Only'],
       },
       testimony: String,
+      owner: String,
     }));
   }
 
@@ -28,12 +29,13 @@ class TestimonyCollection extends BaseCollection {
    * @param testimony .
    * @return {String} the docID of the new document.
    */
-  define({ firstName, lastName, position, testimony }) {
+  define({ firstName, lastName, position, testimony, owner }) {
     const docID = this._collection.insert({
       firstName,
       lastName,
       position,
       testimony,
+      owner,
     });
     return docID;
   }
@@ -89,13 +91,13 @@ class TestimonyCollection extends BaseCollection {
   }
 
   /**
-   * Default implementation of assertValidRoleForMethod. Asserts that userId is logged in as an Admin or User.
+   * Default implementation of assertValidRoleForMethod. Asserts that userId is logged in as an Admin or User, Writer.
    * This is used in the define, update, and removeIt Meteor methods associated with each class.
    * @param userId The userId of the logged in user. Can be null or undefined
    * @throws { Meteor.Error } If there is no logged in user, or the user is not an Admin or User.
    */
   assertValidRoleForMethod(userId) {
-    this.assertRole(userId, [ROLE.ADMIN, ROLE.USER]);
+    this.assertRole(userId, [ROLE.ADMIN, ROLE.USER, ROLE.WRITER]);
   }
 }
 

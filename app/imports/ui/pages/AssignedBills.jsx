@@ -24,6 +24,17 @@ const AssignedBills = () => {
     return {
       savedBill: savedBillItems,
       hearings: hearingItems,
+      expertsBills: expertItems,
+      ready: rdy,
+    };
+  }, []);
+
+  const { ready2, experts } = useTracker(() => {
+    const owner = Meteor.user().username;
+    const expertSubscription = Experts.subscribeToExpert();
+    const rdy = expertSubscription.ready();
+    const expertItems = Experts.find({ recipient: owner }, {}).fetch();
+    return {
       experts: expertItems,
       ready: rdy,
     };

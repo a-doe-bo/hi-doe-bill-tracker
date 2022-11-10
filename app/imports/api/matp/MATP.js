@@ -10,6 +10,7 @@ import { Experts } from '../expert/ExpertCollection';
 import { Saved } from '../save/SavedBillCollection';
 import { PrimaryOffice } from '../office/PrimaryOfficeMeasure';
 import { SecondaryOffice } from '../office/SecondaryOfficeMeasure';
+import { Testimonies } from '../testimony/TestimonyCollection';
 
 class MATPClass {
   collections;
@@ -32,6 +33,7 @@ class MATPClass {
       SecondaryOffice,
       RequestedProfiles,
       Filters,
+      Testimonies,
     ];
     /*
      * A list of collection class instances in the order required for them to be sequentially loaded from a file.
