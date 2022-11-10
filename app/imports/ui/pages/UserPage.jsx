@@ -6,7 +6,6 @@ import { useTracker } from 'meteor/react-meteor-data';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import { UserProfiles } from '../../api/user/UserProfileCollection';
 import LoadingSpinner from '../components/LoadingSpinner';
-import userProfileData from '../components/UserProfileData';
 
 const UserPage = () => {
   const _id = Meteor.userId();
@@ -18,7 +17,6 @@ const UserPage = () => {
     const rdy = subscription.ready();
     // Get the document
     const profileItem = UserProfiles.find({ userID: _id }, {}).fetch();
-    console.log(profileItem);
 
     return {
       data: profileItem[0],
