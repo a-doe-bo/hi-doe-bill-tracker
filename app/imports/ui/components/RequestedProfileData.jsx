@@ -23,6 +23,7 @@ const RequestedProfileData = ({ requestedProfile: { email, firstName, lastName, 
       }
     });
   };
+
   const remove = () => {
     const collectionName = RequestedProfiles.getCollectionName();
     const instance = _id;

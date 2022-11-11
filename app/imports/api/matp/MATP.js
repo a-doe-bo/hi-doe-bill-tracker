@@ -8,6 +8,8 @@ import { Filters } from '../filter/FilterCollection';
 import { RequestedProfiles } from '../user/RequestedAccountsCollection';
 import { Experts } from '../expert/ExpertCollection';
 import { Saved } from '../save/SavedBillCollection';
+import { PrimaryOffice } from '../office/PrimaryOfficeMeasure';
+import { SecondaryOffice } from '../office/SecondaryOfficeMeasure';
 import { Testimonies } from '../testimony/TestimonyCollection';
 
 class MATPClass {
@@ -27,6 +29,8 @@ class MATPClass {
       UserProfiles,
       Experts,
       Saved,
+      PrimaryOffice,
+      SecondaryOffice,
       RequestedProfiles,
       Filters,
       Testimonies,
@@ -40,6 +44,7 @@ class MATPClass {
       Stuffs,
       Experts,
       Saved,
+      PrimaryOffice,
     ];
 
     /*
