@@ -43,7 +43,9 @@ const UserPage = () => {
     <Container id={PAGE_IDS.USER_PROFILE} className="py-3">
       <Row className="justify-content-center">
         <Col xs={10}>
-          <Col><h2>Edit Account</h2></Col>
+          <Col>
+            <h2>User Profile</h2>
+          </Col>
           <AutoForm schema={bridge} onSubmit={data => submit(data)} model={doc}>
             <Card>
               <Card.Body>
