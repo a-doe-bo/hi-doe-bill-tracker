@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 const TestimonyItem = ({ testimony }) => (
   <tr>
@@ -8,7 +7,6 @@ const TestimonyItem = ({ testimony }) => (
     <td>{testimony.lastName}</td>
     <td>{testimony.position}</td>
     <td>{testimony.testimony}</td>
-    <td><Link id="testimony-view" to={`/edittestimony/${testimony._id}`}>Edit</Link></td>
   </tr>
 );
 

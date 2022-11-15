@@ -42,7 +42,7 @@ const SavedTestimoniesCollection = new FilesCollection({
 });
 
 if (Meteor.isServer) {
-  Meteor.publish('saved_testimonmies', function () {
+  Meteor.publish('saved_testimonies', function () {
     return SavedTestimoniesCollection.find().cursor;
   });
 }

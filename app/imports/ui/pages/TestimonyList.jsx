@@ -16,13 +16,9 @@ const TestimonyList = () => {
       ready: rdy,
     };
   }, []);
-  // const componentRef = useRef();
-  // const handlePrint = useReactToPrint({
-  // content: () => componentRef.current,
-  // });
 
   const style = { width: '100%', margin: 0 };
-  // TO DO make it so that you can only edit testimony you made
+
   return ready ? (
     <Container id={PAGE_IDS.TESTIMONY_LIST} className="py-3">
       <Row className="justify-content-center" style={style}>
@@ -36,7 +32,6 @@ const TestimonyList = () => {
                 <th>Position</th>
                 <th>Testimony</th>
                 <th>PDF</th>
-                <th>Edit</th>
               </tr>
             </thead>
             <tbody>

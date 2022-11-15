@@ -52,5 +52,5 @@ export const COMPONENT_IDS = {
   NAVBAR_DRAFT_TESTIMONY: 'navbar-draft-testimony',
   NAVBAR_ASSIGNED_BILLS: 'navbar-assigned-bills',
   SUBMIT_TESTIMONY_FORM_RELEVANT_MEASURE: 'testimony-relevant-measure',
-
+  DRAFT_TESTIMONY_CREATE: 'draft-testimony-create',
 };
