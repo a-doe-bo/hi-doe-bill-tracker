@@ -16,6 +16,7 @@ const OfficePickDropdown = ({ data }) => {
       code: 'HB124 HD1 SD1',
       office: 'OCID',
     };
+    console.log("Defining office: ", collectionName, definitionData);
     defineMethod.callPromise({ collectionName, definitionData })
       .catch((error) => {
         swal('Error', error.message, 'error');
