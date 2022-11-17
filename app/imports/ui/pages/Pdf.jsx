@@ -90,7 +90,7 @@ class Pdf extends Component {
       <Container className="py-3">
         <Row className="justify-content-center">
           <Col xs={12}>
-            <Col className="text-center"><h2>Draft Testimony</h2></Col>
+            <Col className="text-center"><h2>Testimony PDF Generator</h2></Col>
             <AutoForm schema={bridge} onSubmit={this.pdfGenerate}>
               <Card>
                 <Card.Body>
