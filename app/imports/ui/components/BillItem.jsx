@@ -15,7 +15,7 @@ import HearingBillData from './HearingBillData';
 import { Saved } from '../../api/save/SavedBillCollection';
 import { defineMethod, removeItMethod } from '../../api/base/BaseCollection.methods';
 
-const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_status, bill_hearing, bill_number, _id } }) => {
+const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_status, bill_hearing, bill_number, bill_code, _id } }) => {
   const collectionName = Saved.getCollectionName();
   const save = () => {
     // insert the data into the collection
@@ -89,12 +89,12 @@ const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_stat
         )}
         {(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) ? (
           <td style={{ width: '150px' }}>
-            <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, _id, office_primary: true }} />
+            <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, bill_code, _id, office_primary: true }} officeType="Primary" />
           </td>
         ) : <td>N/A</td>}
         {(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) ? (
           <td style={{ width: '150px' }}>
-            <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, _id, office_primary: false }} />
+            <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, bill_code, _id, office_primary: false }} officeType="Secondary" />
           </td>
         ) : <td>N/A</td>}
       </tr>

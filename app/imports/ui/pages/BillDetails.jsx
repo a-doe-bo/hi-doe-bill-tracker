@@ -156,6 +156,7 @@ BillItem.propTypes = {
     bill_name: PropTypes.string,
     bill_status: PropTypes.string,
     bill_hearing: PropTypes.string,
+    bill_code: PropTypes.string,
     bill_number: PropTypes.number,
     report_title: PropTypes.string,
     bill_description: PropTypes.string,

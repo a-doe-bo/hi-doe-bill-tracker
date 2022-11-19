@@ -1,35 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { MultiSelect } from 'react-multi-select-component';
 import swal from 'sweetalert';
 import { defineMethod } from '../../api/base/BaseCollection.methods';
 import { PrimaryOffice } from '../../api/office/PrimaryOfficeMeasure';
+import { useIsMount } from '../utilities/useIsMount';
+import { SecondaryOffice } from '../../api/office/SecondaryOfficeMeasure';
 
-const OfficePickDropdown = ({ data }) => {
+const OfficePickDropdown = ({ data, officeType }) => {
+  const isMount = useIsMount();
   const [office, setOffice] = useState([]);
-  const updateDatabase = (e) => {
-    // Hearing collection
-    setOffice(e);
-    const collectionName = PrimaryOffice.getCollectionName();
-    const definitionData = {
-      measureNumber: data.bill_number,
-      code: data.bill_code,
-      office,
-    };
-    console.log('Defining office: ', collectionName, definitionData);
-    defineMethod.callPromise({ collectionName, definitionData })
-      .catch((error) => {
-        swal('Error', error.message, 'error');
-      })
-      .then(() => {
-        swal('Success', 'Item added successfully', 'success');
-      });
-  };
+  /* Will update the office everytime our office changes */
+  useEffect(() => {
+    if (!isMount) {
+      const collectionName = officeType === 'Primary' ? PrimaryOffice.getCollectionName() : SecondaryOffice.getCollectionName();
+      const definitionData = {
+        measureNumber: data.bill_number,
+        code: data.bill_code,
+        office,
+      };
+      console.log('Defining office: ', collectionName, definitionData);
+      defineMethod.callPromise({ collectionName, definitionData })
+        .catch((error) => {
+          swal('Error', error.message, 'error');
+        })
+        .then(() => {
+          swal('Success', 'Item added successfully', 'success');
+        });
+    }
+  }, [office]);
+
   const options = ['Deputy', 'OCID', 'OFO', 'OFS', 'OITS', 'OSIP', 'OSSS', 'OTM'].map((officeOptions) => (
     { label: officeOptions, value: officeOptions }
   ));
   return (
-    <MultiSelect options={options} value={office} onChange={(e) => (updateDatabase(e))} labelledBy="Select" hasSelectAll={false} />
+    <MultiSelect options={options} value={office} onChange={setOffice} labelledBy="Select" hasSelectAll={false} />
   );
 };
 
@@ -43,6 +48,7 @@ OfficePickDropdown.propTypes = {
     bill_hearing: PropTypes.number,
     office_primary: PropTypes.bool,
   }).isRequired,
+  officeType: PropTypes.string.isRequired,
 };
 
 export default OfficePickDropdown;

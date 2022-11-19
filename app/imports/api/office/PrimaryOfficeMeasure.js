@@ -12,7 +12,8 @@ class PrimaryOfficeCollection extends BaseCollection {
     super('PrimaryOffice', new SimpleSchema({
       measureNumber: Number,
       code: { type: String },
-      office: { type: String },
+      office: { type: Array },
+      'office.$': Object,
     }));
   }
 
