@@ -45,6 +45,7 @@ const ListBill = () => {
     bill_number: measureData.measureNumber,
     bill_updated: measureData.lastUpdated,
     bill_committee: measureData.committeeHearing,
+    bill_code: measureData.code,
     measureType: measureData.measureType,
     office: 'office1',
   }));
