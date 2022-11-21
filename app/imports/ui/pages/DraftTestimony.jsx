@@ -3,9 +3,10 @@ import { Container, Card, Col, Row, Form, Button, DropdownButton, Dropdown } fro
 import { useTracker } from 'meteor/react-meteor-data';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
-import { AutoForm, ErrorsField, LongTextField, SelectField, SubmitField, TextField } from 'uniforms-bootstrap5';
+  import { AutoForm, ErrorsField, LongTextField, SelectField, SubmitField, TextField } from 'uniforms-bootstrap5';
 import { Meteor } from 'meteor/meteor';
 import swal from 'sweetalert';
+import DropboxChooser from 'react-dropbox-chooser';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import { defineMethod } from '../../api/base/BaseCollection.methods';
@@ -14,6 +15,7 @@ import { Measures } from '../../api/measure/MeasureCollection';
 import { Saved } from '../../api/save/SavedBillCollection';
 import { Hearings } from '../../api/hearing/HearingCollection';
 import { Experts } from '../../api/expert/ExpertCollection';
+import SingleFileUpload from '../components/SingleFileUpload';
 
 /* Create schema to indicate the structure of data */
 const formSchema = new SimpleSchema({
@@ -64,32 +66,12 @@ const DraftTestimony = () => {
       });
   };
 
-  let fRef = null;
   return (
     <Container id={PAGE_IDS.DRAFT_TESTIMONY} className="py-3">
-      <Row className="justify-content-center">
-        <AutoForm ref={ref => { fRef = ref; }} schema={bridge} onSubmit={data => submit(data, fRef)}>
-          <Col xs={12}>
-            <Col className="text-center mb-4"><h2>Draft Testimony</h2></Col>
-          </Col>
-          <Card>
-            <Card.Body>
-              {/* Allowed values will be all the bills that are assigned to you */}
-              <SelectField name="bill_number" placeholder="Select a bill to write a testimony for" allowedValues={arr} />
-              <SelectField name="position" appearance="toggle" />
-              <TextField name="firstName" placeholder="Enter First Name" />
-              <TextField name="lastName" placeholder="Enter Last Name" />
-              {/* onClick we want to be able to attach a pdf */}
-              <Button variant="outline-primary" className="mt-3">UPLOAD PDF</Button>
-              <div className="mt-3">
-                {/* Check if button was changed at all */}
-                <SubmitField value="Submit Testimony" />
-              </div>
-              <ErrorsField />
-            </Card.Body>
-          </Card>
-        </AutoForm>
-      </Row>
+      <Col xs={12}>
+        <Col className="text-center mb-4"><h2>Draft Testimony</h2></Col>
+      </Col>
+      <SingleFileUpload currBills={arr} />
     </Container>
   );
 };

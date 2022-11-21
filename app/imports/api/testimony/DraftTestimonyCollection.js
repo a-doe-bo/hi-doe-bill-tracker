@@ -11,12 +11,16 @@ class DraftTestimonyCollection extends BaseCollection {
   constructor() {
     super('Testimonies', new SimpleSchema({
       bill_number: Number,
-      firstName: String,
-      lastName: String,
       position: {
         type: String,
         allowedValues: ['Support', 'Oppose', 'Comments Only'],
       },
+      pdfFile: String,
+      status: {
+        type: String,
+        allowedValues: 'Draft',
+      },
+      owner: String,
     }));
   }
 
@@ -27,12 +31,13 @@ class DraftTestimonyCollection extends BaseCollection {
    * @param position .
    * @return {String} the docID of the new document.
    */
-  define({ bill_number, firstName, lastName, position }) {
+  define({ bill_number, position, pdfFile, status, owner }) {
     const docID = this._collection.insert({
       bill_number,
-      firstName,
-      lastName,
       position,
+      pdfFile,
+      status,
+      owner,
     });
     return docID;
   }
