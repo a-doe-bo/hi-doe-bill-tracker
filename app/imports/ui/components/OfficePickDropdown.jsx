@@ -10,6 +10,7 @@ import { SecondaryOffice } from '../../api/office/SecondaryOfficeMeasure';
 const OfficePickDropdown = ({ data, officeType }) => {
   const isMount = useIsMount();
   const [office, setOffice] = useState([]);
+  console.log(data);
   /* Will update the office everytime our office changes */
   useEffect(() => {
     if (!isMount) {
@@ -45,10 +46,22 @@ OfficePickDropdown.propTypes = {
     _id: PropTypes.string,
     bill_name: PropTypes.string,
     bill_status: PropTypes.string,
+    bill_hearing: PropTypes.number,
     bill_number: PropTypes.number,
     bill_code: PropTypes.string,
-    bill_hearing: PropTypes.number,
-    office_primary: PropTypes.bool,
+    bill_updated: PropTypes.number,
+    bill_committee: PropTypes.string,
+    measureType: PropTypes.string,
+    primaryOffice: PropTypes.arrayOf(PropTypes.shape({
+      label: PropTypes.string,
+      value: PropTypes.string,
+    })),
+    primaryOfficeId: PropTypes.string,
+    secondaryOffice: PropTypes.arrayOf(PropTypes.shape({
+      label: PropTypes.string,
+      value: PropTypes.string,
+    })),
+    secondaryOfficeId: PropTypes.string,
   }).isRequired,
   officeType: PropTypes.string.isRequired,
 };

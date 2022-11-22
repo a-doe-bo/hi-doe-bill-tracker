@@ -70,8 +70,8 @@ const ListBill = () => {
         bill_committee: '',
         bill_code: '',
         measureType: '',
-        primaryOffice: '',
-        secondaryOffice: '',
+        primaryOffice: [],
+        secondaryOffice: [],
         primaryOfficeId: '',
         secondaryOfficeId: '',
       };
@@ -101,9 +101,6 @@ const ListBill = () => {
     return returnArr;
   };
 
-  for (let i = 0; i < 1; i++) {
-    console.log(BillDataer()[i]);
-  }
   const HearingData2 = hearings.map((hearingData) => ({
     hearingLocation: hearingData.room,
     dateIntroduced: hearingData.year,

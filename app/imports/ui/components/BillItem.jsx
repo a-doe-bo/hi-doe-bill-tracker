@@ -15,7 +15,7 @@ import HearingBillData from './HearingBillData';
 import { Saved } from '../../api/save/SavedBillCollection';
 import { defineMethod, removeItMethod } from '../../api/base/BaseCollection.methods';
 
-const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_status, bill_hearing, bill_number, bill_code, _id } }) => {
+const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_status, bill_hearing, bill_number, bill_code, primaryOffice, secondaryOffice, primaryOfficeId, secondaryOfficeId, _id } }) => {
   const collectionName = Saved.getCollectionName();
   const save = () => {
     // insert the data into the collection
@@ -89,12 +89,12 @@ const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_stat
         )}
         {(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) ? (
           <td style={{ width: '150px' }}>
-            <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, bill_code, _id, office_primary: true }} officeType="Primary" />
+            <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, bill_code, _id, primaryOfficeId, primaryOffice }} officeType="Primary" />
           </td>
         ) : <td>N/A</td>}
         {(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) ? (
           <td style={{ width: '150px' }}>
-            <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, bill_code, _id, office_primary: false }} officeType="Secondary" />
+            <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, bill_code, _id, secondaryOfficeId, secondaryOffice }} officeType="Secondary" />
           </td>
         ) : <td>N/A</td>}
       </tr>
@@ -130,13 +130,22 @@ BillItem.propTypes = {
     _id: PropTypes.string,
     bill_name: PropTypes.string,
     bill_status: PropTypes.string,
-    bill_hearing: PropTypes.string,
+    bill_hearing: PropTypes.number,
     bill_number: PropTypes.number,
     bill_code: PropTypes.string,
     bill_updated: PropTypes.number,
     bill_committee: PropTypes.string,
     measureType: PropTypes.string,
-    office: PropTypes.string,
+    primaryOffice: PropTypes.arrayOf(PropTypes.shape({
+      label: PropTypes.string,
+      value: PropTypes.string,
+    })),
+    primaryOfficeId: PropTypes.string,
+    secondaryOffice: PropTypes.arrayOf(PropTypes.shape({
+      label: PropTypes.string,
+      value: PropTypes.string,
+    })),
+    secondaryOfficeId: PropTypes.string,
   }).isRequired,
   hearingData: PropTypes.arrayOf(PropTypes.shape({
     hearingLocation: PropTypes.string,
