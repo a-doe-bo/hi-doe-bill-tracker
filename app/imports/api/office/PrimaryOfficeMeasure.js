@@ -26,7 +26,6 @@ class PrimaryOfficeCollection extends BaseCollection {
       code,
       office,
     };
-    console.log('Inserting values: ', data);
     const docID = this._collection.insert(data);
     return docID;
   }

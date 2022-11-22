@@ -13,19 +13,21 @@ class SecondaryOfficeCollection extends BaseCollection {
     super('SecondaryOffice', new SimpleSchema({
       measureNumber: Number,
       code: { type: String },
-      office: { type: String },
+      office: Array,
+      'office.$': {
+        type: Object,
+        blackbox: true,
+      },
     }));
   }
 
   define({ measureNumber, code, office }) {
-    // PRIMARY KEY (year, SecondaryOfficeType, SecondaryOfficeNumber) so they are unique
-    if (this.isDefined({ code, measureNumber, office })) {
-      return this.findDoc({ code, measureNumber, office })._id;
-    }
-    if (!isValidOfficeType(office)) {
-      throw new Meteor.Error(`${office} is an invalid SecondaryOffice Type.`);
-    }
-    const docID = this._collection.insert({ code, measureNumber, office });
+    const data = {
+      measureNumber,
+      code,
+      office,
+    };
+    const docID = this._collection.insert(data);
     return docID;
   }
 
