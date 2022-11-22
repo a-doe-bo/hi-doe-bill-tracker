@@ -30,10 +30,10 @@ const formSchema = new SimpleSchema({
 const bridge = new SimpleSchema2Bridge(formSchema);
 
 const SingleFileUpload = ({ currBills }) => {
-  const [pdfFile, setPDF] = useState([]);
+  const [pdfFile, setPDF] = useState(null);
 
   const uploadPDF = () => {
-    if (pdfFile == null) {
+    if (pdfFile === null) {
       alert('NO PDF FILE CHOSEN');
       return;
     }
@@ -51,6 +51,7 @@ const SingleFileUpload = ({ currBills }) => {
       .catch(error => swal('Error', error.message, 'error'))
       .then(() => {
         swal('Success', 'Testimony successfully submitted', 'success');
+        uploadPDF();
         formRef.reset();
       });
   };
@@ -70,9 +71,7 @@ const SingleFileUpload = ({ currBills }) => {
           onChangeCapture={(event) => { setPDF(event.target.files[0])}}
         />
         <TextField name="status" hidden={true} />
-        <div className="py-3">
-          <SubmitField onClick={uploadPDF}/>
-        </div>
+        <SubmitField />
         <ErrorsField  />
       </AutoForm>
     </Container>
