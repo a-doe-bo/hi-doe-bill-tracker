@@ -8,6 +8,7 @@ import { Filters } from '../filter/FilterCollection';
 import { RequestedProfiles } from '../user/RequestedAccountsCollection';
 import { Experts } from '../expert/ExpertCollection';
 import { Saved } from '../save/SavedBillCollection';
+import { DraftATestimony } from '../testimony/DraftTestimonyCollection';
 import { PrimaryOffice } from '../office/PrimaryOfficeMeasure';
 import { SecondaryOffice } from '../office/SecondaryOfficeMeasure';
 
@@ -32,6 +33,7 @@ class MATPClass {
       SecondaryOffice,
       RequestedProfiles,
       Filters,
+      DraftATestimony,
     ];
     /*
      * A list of collection class instances in the order required for them to be sequentially loaded from a file.
@@ -42,6 +44,7 @@ class MATPClass {
       Stuffs,
       Experts,
       Saved,
+      DraftATestimony,
       PrimaryOffice,
     ];
 
