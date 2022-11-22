@@ -49,6 +49,12 @@ const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_stat
     }
   }, [savedBillData]);
 
+  const convertOfficeToString = (offices) => {
+    let officeStrings = [];
+    officeStrings = offices.map((office) => office.label);
+    return officeStrings.join(', ');
+  };
+
   const handleSave = (state, setState) => () => {
     setState(!state);
     if (!state) {
@@ -91,10 +97,20 @@ const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_stat
           <td style={{ width: '150px' }}>
             <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, bill_code, _id, primaryOfficeId, primaryOffice }} officeType="Primary" />
           </td>
-        ) : <td>N/A</td>}
+        ) : ''}
         {(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) ? (
           <td style={{ width: '150px' }}>
             <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, bill_code, _id, secondaryOfficeId, secondaryOffice }} officeType="Secondary" />
+          </td>
+        ) : ''}
+        {!(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) && primaryOffice.length > 0 ? (
+          <td style={{ width: '150px' }}>
+            {convertOfficeToString(primaryOffice)}
+          </td>
+        ) : <td>N/A</td>}
+        {!(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) && secondaryOffice.length > 0 ? (
+          <td style={{ width: '150px' }}>
+            {convertOfficeToString(secondaryOffice)}
           </td>
         ) : <td>N/A</td>}
       </tr>
