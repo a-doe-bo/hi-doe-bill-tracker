@@ -24,10 +24,6 @@ const DraftTestimony = () => {
   assignedBills.map((bill) => (
     arr.push(bill.bill_number)
   ));
-  const [setData] = useState([]);
-  useEffect(() => {
-    setData(assignedBillData);
-  }, [ready, assignedBills]);
 
   return (
     <Container id={PAGE_IDS.DRAFT_TESTIMONY} className="py-3">
