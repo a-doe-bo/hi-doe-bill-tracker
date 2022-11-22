@@ -24,7 +24,7 @@ const DraftTestimony = () => {
   assignedBills.map((bill) => (
     arr.push(bill.bill_number)
   ));
-  const [billData, setData] = useState([]);
+  const [setData] = useState([]);
   useEffect(() => {
     setData(assignedBillData);
   }, [ready, assignedBills]);
