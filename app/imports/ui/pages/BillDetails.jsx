@@ -72,15 +72,8 @@ const BillDetails = () => {
 
   return ready ? (
     <Container id={PAGE_IDS.BILL_DETAILS} className="py-3">
-      <Alert key="warning" variant="warning">
-        A hearing has been schedueled for 01/01/2022 00:00:00 HST
-      </Alert>
-      <Alert key="danger" variant="danger">
-        This bill is now dead as it has not passed its hearing.
-      </Alert>
       <h2 style={{ paddingTop: '10px', paddingBottom: '15px' }}>
         SB2035 SD2
-        <span style={{ backgroundColor: 'red', borderRadius: '50%', padding: '15px', marginLeft: '20px' }}>Died</span>
       </h2>
       <div style={{ backgroundColor: '#F5F5F5', borderRadius: '30px', padding: '20px' }}>
         <Row className="justify-content-center">
@@ -134,12 +127,6 @@ const BillDetails = () => {
             {measure.introducer}
           </Col>
         </Row>
-        <div className="d-grid gap-2">
-          <Button style={{ marginTop: '10px' }}>Advanced Options</Button>
-          <Button variant="danger">Bill History</Button>{' '}
-          <Button variant="success">Comments</Button>{' '}
-          <Button variant="warning">Testimony</Button>{' '}
-        </div>
       </div>
 
       <h4 style={{ marginTop: '30px' }}>
