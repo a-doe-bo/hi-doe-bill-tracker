@@ -1,57 +1,65 @@
 import React from 'react';
+import '/client/style.css';
+import { Card, Row, Col } from 'react-bootstrap';
+import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
-import swal from 'sweetalert';
-import { Button } from 'react-bootstrap';
+import { Meteor } from 'meteor/meteor';
+import LoadingSpinner from './LoadingSpinner';
 import { UserProfiles } from '../../api/user/UserProfileCollection';
-import { removeItMethod } from '../../api/base/BaseCollection.methods';
 
-/** Renders a single row in the List Stuff (Admin) table. See pages/ListStuffAdmin.jsx. */
-const UserProfileData = ({ userProfile: { email, firstName, lastName, role, employeeID, _id } }) => {
-  const handleRemove = () => {
-    const collectionName = UserProfiles.getCollectionName();
-    const instance = _id;
-    swal({
-      title: 'Are you sure?',
-      text: 'Once deleted, this action cannot be undone',
-      icon: 'warning',
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        removeItMethod.callPromise({ collectionName, instance });
-      }
-    });
-  };
-  /* Returns a table with user information */
-  return (
-    <tr>
-      <td>{email}</td>
-      <td>{firstName}</td>
-      <td>{lastName}</td>
-      <td>{role}</td>
-      <td>{employeeID}</td>
-      <td className="text-center">
-        <Button
-          variant="danger"
-          onClick={() => { handleRemove(); }}
-        >Remove
-        </Button>
-      </td>
-    </tr>
-  );
-};
+const UserProfileData = ({ user, ready }) => ((ready) ? (
+  <Card>
+    <Card.Body>
+      <Row>
+        <Col md="5" className="align-middle text-center">
+          <Card.Img
+            src={user.img}
+            className="rounded-circle img-fluid img-thumbnail"
+            style={{ width: '12rem' }}
+          />
+        </Col>
+        <Col md="7">
+          <Card.Text className="user-profile-main-card">
+            <dl className="row">
+              <dt className="col-sm-auto">First Name:</dt>
+              <dd className="col-sm-7">{user.firstName}</dd>
 
-// Require a document to be passed to this component.
+              <dt className="col-sm-auto">last Name:</dt>
+              <dd className="col-sm-7">{user.lastName}</dd>
+
+              <dt className="col-sm-auto">Email:</dt>
+              <dd className="col-sm-7">{user.email}</dd>
+
+              <dt className="col-sm-auto">Phone:</dt>
+              <dd className="col-sm-7">{user.phone}</dd>
+
+              <dt className="col-sm-auto">Office:</dt>
+              <dd className="col-sm-8">{user.office}</dd>
+
+              <dt className="col-sm-auto">Role:</dt>
+              <dd className="col-sm-7">{user.role}</dd>
+            </dl>
+          </Card.Text>
+        </Col>
+      </Row>
+    </Card.Body>
+  </Card>
+
+) : <LoadingSpinner />);
+
 UserProfileData.propTypes = {
-  userProfile: PropTypes.shape({
-    email: PropTypes.string,
-    firstName: PropTypes.string,
-    lastName: PropTypes.string,
-    _id: PropTypes.string,
-    role: PropTypes.string,
-    userID: PropTypes.string,
-    employeeID: PropTypes.string,
-  }).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types,react/require-default-props
+  user: PropTypes.object,
+  ready: PropTypes.bool.isRequired,
 };
 
-export default UserProfileData;
+export default withTracker(() => {
+  const userID = Meteor.user() ? Meteor.user()._id : ' ';
+  const subscription = UserProfiles.subscribe();
+  const ready = subscription.ready();
+  const user = ready ? UserProfiles.findDoc({ userID }) : undefined;
+  return {
+    user,
+    ready,
+  };
+})(UserProfileData);

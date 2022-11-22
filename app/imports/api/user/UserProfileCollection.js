@@ -1,5 +1,7 @@
 import SimpleSchema from 'simpl-schema';
 import { Meteor } from 'meteor/meteor';
+import { ZipZap } from 'meteor/udondan:zipzap';
+import { Roles } from 'meteor/alanning:roles';
 import BaseProfileCollection from './BaseProfileCollection';
 import { ROLE } from '../role/Role';
 import { Users } from './UserCollection';
@@ -19,7 +21,7 @@ class UserProfileCollection extends BaseProfileCollection {
    * @param firstName The first name.
    * @param lastName The last name.
    * @param role The role of the user.
-   * @param employeeID The employeeID of the user.
+   * @param assignedOffice The office of the user.
    */
   define({ email, firstName, lastName, password, position, assignedOffice }) {
     if (Meteor.isServer) {
@@ -42,6 +44,8 @@ class UserProfileCollection extends BaseProfileCollection {
    * @param docID the id of the UserProfile
    * @param firstName new first name (optional).
    * @param lastName new last name (optional).
+   * @param position The position.
+   * @param assignedOffice The assigned office.
    */
   update(docID, { firstName, lastName, position, assignedOffice }) {
     this.assertDefined(docID);
@@ -116,6 +120,23 @@ class UserProfileCollection extends BaseProfileCollection {
   }
 
   /**
+   * Exports all user information in a JSON file as backup. Password set to changeme.
+   *
+   */
+  dumpAll() {
+    const zip = new ZipZap();
+    const db = [];
+    this.find().forEach((doc) => {
+      if (doc.role === ROLE.USER) {
+        db.push({ email: `${doc.email}`, password: 'changeme', firstName: `${doc.firstName}`, lastName: `${doc.lastName}`, position: `${doc.position}`, assignedOffice: `${doc.assignedOffice}` });
+      }
+    });
+    zip.file('test.json', JSON.stringify(db));
+    zip.saveAs('test.json');
+    return db;
+  }
+
+  /**
    * Subscription method for stuff owned by the current user.
    */
   subscribeUser() {
@@ -131,9 +152,16 @@ class UserProfileCollection extends BaseProfileCollection {
    */
   publish() {
     if (Meteor.isServer) {
+      // get the UserProfileCollection instance.
       const instance = this;
-      Meteor.publish(userPublications.users, function publish() {
-        return instance._collection.find();
+      Meteor.publish('UserProfile', function publish() {
+        if (this.userId && Roles.userIsInRole(this.userId, ROLE.ADMIN)) {
+          return instance._collection.find();
+        }
+        if (this.userId && Roles.userIsInRole(this.userId, ROLE.USER)) {
+          return instance._collection.find({ userID: this.userId });
+        }
+        return this.ready();
       });
     }
   }
