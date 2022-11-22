@@ -1,11 +1,11 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { v4 } from 'uuid';
 import PropTypes from 'prop-types';
-import { Button, Container } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import { ref, uploadBytes } from 'firebase/storage';
 import swal from 'sweetalert';
-import { AutoForm, AutoField, SelectField, TextField, HiddenField, ErrorsField, SubmitField } from 'uniforms-bootstrap5';
+import { AutoForm, SelectField, TextField, ErrorsField, SubmitField } from 'uniforms-bootstrap5';
 import SimpleSchema from 'simpl-schema';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import { storage } from '../../api/firebase/firebase';

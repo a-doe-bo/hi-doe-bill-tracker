@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Col } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
-import { Meteor } from 'meteor/meteor';
-import swal from 'sweetalert';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
-import { defineMethod } from '../../api/base/BaseCollection.methods';
-import { DraftATestimony } from '../../api/testimony/DraftTestimonyCollection';
 import { Experts } from '../../api/expert/ExpertCollection';
 import SingleFileUpload from '../components/SingleFileUpload';
 
@@ -28,7 +24,7 @@ const DraftTestimony = () => {
   assignedBills.map((bill) => (
     arr.push(bill.bill_number)
   ));
-  const [billData, setData] = useState([]);
+  const [setData] = useState([]);
   useEffect(() => {
     setData(assignedBillData);
   }, [ready, assignedBills]);
