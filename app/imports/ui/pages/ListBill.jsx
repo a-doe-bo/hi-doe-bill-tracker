@@ -16,21 +16,29 @@ import Autocomplete from '../components/Autocomplete';
 import { Measures } from '../../api/measure/MeasureCollection';
 import { Hearings } from '../../api/hearing/HearingCollection';
 import { Saved } from '../../api/save/SavedBillCollection';
+import { PrimaryOffice } from '../../api/office/PrimaryOfficeMeasure';
+import { SecondaryOffice } from '../../api/office/SecondaryOfficeMeasure';
 
 const ListBill = () => {
-  const { ready, measures, savedBills, hearings } = useTracker(() => {
+  const { ready, measures, savedBills, hearings, primaryOffice, secondaryOffice } = useTracker(() => {
     const owner = Meteor.user().username;
     const subscription = Measures.subscribeMeasures();
     const savedBillsSubscription = Saved.subscribeToSavedBill();
     const hearingBillsSubscription = Hearings.subscribeHearings();
-    const rdy = subscription.ready() && savedBillsSubscription.ready() && hearingBillsSubscription.ready();
+    const primaryOfficeSubscription = PrimaryOffice.subscribePrimaryOffice();
+    const secondaryOfficeSubscription = SecondaryOffice.subscribeSecondaryOffice();
+    const rdy = subscription.ready() && savedBillsSubscription.ready() && hearingBillsSubscription.ready() && primaryOfficeSubscription.ready() && secondaryOfficeSubscription.ready();
     const measuresItems = Measures.find({}, {}).fetch();
     const savedBillItems = Saved.find({ owner }, {}).fetch();
-    const hearingItems = Hearings.find({}).fetch();
+    const hearingItems = Hearings.find({}, {}).fetch();
+    const primaryOfficeItems = PrimaryOffice.find({}, {}).fetch();
+    const secondaryOfficeItems = SecondaryOffice.find({}, {}).fetch();
     return {
       measures: measuresItems,
       savedBills: savedBillItems,
       hearings: hearingItems,
+      primaryOffice: primaryOfficeItems,
+      secondaryOffice: secondaryOfficeItems,
       ready: rdy,
     };
   }, []);
@@ -47,8 +55,55 @@ const ListBill = () => {
     bill_committee: measureData.committeeHearing,
     bill_code: measureData.code,
     measureType: measureData.measureType,
-    office: 'office1',
   }));
+  const BillDataer = () => {
+    let BillInformation = {};
+    const returnArr = [];
+    measures.forEach((measureData) => {
+      BillInformation = {
+        _id: '',
+        bill_name: '',
+        bill_status: '',
+        bill_hearing: '',
+        bill_number: '',
+        bill_updated: '',
+        bill_committee: '',
+        bill_code: '',
+        measureType: '',
+        primaryOffice: '',
+        secondaryOffice: '',
+        primaryOfficeId: '',
+        secondaryOfficeId: '',
+      };
+      BillInformation._id = measureData._id;
+      BillInformation.bill_name = measureData.measureTitle;
+      BillInformation.bill_status = measureData.status;
+      BillInformation.bill_hearing = measureData.year;
+      BillInformation.bill_number = measureData.measureNumber;
+      BillInformation.bill_updated = measureData.lastUpdated;
+      BillInformation.bill_committee = measureData.committeeHearing;
+      BillInformation.bill_code = measureData.code;
+      BillInformation.measureType = measureData.measureType;
+      primaryOffice.forEach((office) => {
+        if (measureData.code === office.code && measureData.measureNumber === office.measureNumber) {
+          BillInformation.primaryOffice = office.office;
+          BillInformation.primaryOfficeId = office._id;
+        }
+      });
+      secondaryOffice.forEach((office) => {
+        if (measureData.code === office.code && measureData.measureNumber === office.measureNumber) {
+          BillInformation.secondaryOffice = office.office;
+          BillInformation.secondaryOfficeId = office._id;
+        }
+      });
+      returnArr.push(BillInformation);
+    });
+    return returnArr;
+  };
+
+  for (let i = 0; i < 1; i++) {
+    console.log(BillDataer()[i]);
+  }
   const HearingData2 = hearings.map((hearingData) => ({
     hearingLocation: hearingData.room,
     dateIntroduced: hearingData.year,

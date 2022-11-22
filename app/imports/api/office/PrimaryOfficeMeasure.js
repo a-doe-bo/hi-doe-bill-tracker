@@ -12,13 +12,22 @@ class PrimaryOfficeCollection extends BaseCollection {
     super('PrimaryOffice', new SimpleSchema({
       measureNumber: Number,
       code: { type: String },
-      office: { type: Array },
-      'office.$': Object,
+      office: Array,
+      'office.$': {
+        type: Object,
+        blackbox: true,
+      },
     }));
   }
 
   define({ measureNumber, code, office }) {
-    const docID = this._collection.insert({ code, measureNumber, office });
+    const data = {
+      measureNumber,
+      code,
+      office,
+    };
+    console.log('Inserting values: ', data);
+    const docID = this._collection.insert(data);
     return docID;
   }
 

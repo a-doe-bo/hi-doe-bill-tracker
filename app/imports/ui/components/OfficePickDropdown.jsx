@@ -13,6 +13,7 @@ const OfficePickDropdown = ({ data, officeType }) => {
   /* Will update the office everytime our office changes */
   useEffect(() => {
     if (!isMount) {
+      // if the office is null we can define the office
       const collectionName = officeType === 'Primary' ? PrimaryOffice.getCollectionName() : SecondaryOffice.getCollectionName();
       const definitionData = {
         measureNumber: data.bill_number,
@@ -28,6 +29,7 @@ const OfficePickDropdown = ({ data, officeType }) => {
           swal('Success', 'Item added successfully', 'success');
         });
     }
+    // set the office to the value
   }, [office]);
 
   const options = ['Deputy', 'OCID', 'OFO', 'OFS', 'OITS', 'OSIP', 'OSSS', 'OTM'].map((officeOptions) => (
