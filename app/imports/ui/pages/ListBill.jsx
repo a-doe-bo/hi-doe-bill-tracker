@@ -45,18 +45,7 @@ const ListBill = () => {
   const [currentTab, setCurrentTab] = useState('Upcoming Bills');
   // TODO: Object with { header: '', component: ''}
   const table_headers = ['Bill Details', 'Save Bill', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Primary Office', 'Secondary Office'];
-  const BillData = measures.map((measureData) => ({
-    _id: measureData._id,
-    bill_name: measureData.measureTitle,
-    bill_status: measureData.status,
-    bill_hearing: measureData.year,
-    bill_number: measureData.measureNumber,
-    bill_updated: measureData.lastUpdated,
-    bill_committee: measureData.committeeHearing,
-    bill_code: measureData.code,
-    measureType: measureData.measureType,
-  }));
-  const BillDataer = () => {
+  const BillData = () => {
     let BillInformation = {};
     const returnArr = [];
     measures.forEach((measureData) => {
@@ -121,7 +110,7 @@ const ListBill = () => {
   const [data, setData] = useState([]);
   // TODO: Remove this once we have our API set up and split the Bill data into (upcoming bills, dead bills, bills)
   useEffect(() => {
-    setData(BillData);
+    setData(BillData());
   }, [ready]);
   const handleCurrentTab = (tabName) => {
     setCurrentTab(tabName);
