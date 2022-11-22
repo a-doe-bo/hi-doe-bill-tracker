@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Button, Container } from 'react-bootstrap';
 import { ref, uploadBytes } from 'firebase/storage';
 import swal from 'sweetalert';
-import { AutoForm, SelectField, TextField, ErrorsField, SubmitField } from 'uniforms-bootstrap5';
+import { AutoForm, AutoField, SelectField, TextField, HiddenField, ErrorsField, SubmitField } from 'uniforms-bootstrap5';
 import SimpleSchema from 'simpl-schema';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import { storage } from '../../api/firebase/firebase';
@@ -58,23 +58,22 @@ const SingleFileUpload = ({ currBills }) => {
   let fRef = null;
   return (
     <Container>
-      <AutoForm ref={refr => { fRef = refr; }} schema={bridge} onSubmit={data => submit(data, fRef)}>
+      <AutoForm ref={refr => { fRef = refr; }} schema={bridge} onSubmit={(data) => submit(data, fRef)}>
         <SelectField name="bill_number" placeholder="Select a bill to write a testimony for" allowedValues={currBills} />
         <SelectField name="position" />
         {/* eslint-disable */}
-        <TextField type="file" accept="application/pdf" name="pdfFile" label="Testimony PDF">
-          <input
+        <TextField
+          accept="application/pdf"
           name="pdfFile"
           type="file"
-          onChange={(event) => { setPDF(event.target.files[0])}}
-          required="required"
-          />
-        </TextField>
-        <SelectField name="status" hidden={true} />
-        <SubmitField>
-          <Button onClick={uploadPDF}>Submit</Button>
-        </SubmitField>
-        <ErrorsField />
+          onInput={(event) => {return}}
+          onChangeCapture={(event) => { setPDF(event.target.files[0])}}
+        />
+        <TextField name="status" hidden={true} />
+        <div className="py-3">
+          <SubmitField onClick={uploadPDF}/>
+        </div>
+        <ErrorsField  />
       </AutoForm>
     </Container>
   );

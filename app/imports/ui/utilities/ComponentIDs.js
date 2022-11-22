@@ -52,4 +52,5 @@ export const COMPONENT_IDS = {
   DRAFT_TESTIMONY_FORM_BILL_NUMBER: 'draft-testimony-form-bill-number',
   NAVBAR_DRAFT_TESTIMONY: 'navbar-draft-testimony',
   NAVBAR_ASSIGNED_BILLS: 'navbar-assigned-bills',
+  DRAFT_TESTIMONY_FILE_UPLOAD: 'draft-testimony-file-upload',
 };

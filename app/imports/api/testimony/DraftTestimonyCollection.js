@@ -15,11 +15,11 @@ class DraftTestimonyCollection extends BaseCollection {
         type: String,
         allowedValues: ['Support', 'Oppose', 'Comments Only'],
       },
-      pdfFile: String,
       status: {
         type: String,
         allowedValues: 'Draft',
       },
+      pdfFile: String,
       owner: String,
     }));
   }
@@ -31,12 +31,12 @@ class DraftTestimonyCollection extends BaseCollection {
    * @param position .
    * @return {String} the docID of the new document.
    */
-  define({ bill_number, position, pdfFile, status, owner }) {
+  define({ bill_number, position, status, pdfFile, owner }) {
     const docID = this._collection.insert({
       bill_number,
       position,
-      pdfFile,
       status,
+      pdfFile,
       owner,
     });
     return docID;
@@ -50,7 +50,7 @@ class DraftTestimonyCollection extends BaseCollection {
    * @param position (optional).
    * @param testimony (optional).
    */
-  update(docID, { bill_number, firstName, lastName }) {
+  update(docID, { bill_number, firstName, lastName, pdfFile }) {
     const updateData = {};
     if (bill_number) {
       updateData.bill_number = bill_number;
@@ -60,6 +60,9 @@ class DraftTestimonyCollection extends BaseCollection {
     }
     if (lastName) {
       updateData.lastName = lastName;
+    }
+    if (pdfFile) {
+      updateData.pdfFile = pdfFile;
     }
     this._collection.update(docID, { $set: updateData });
   }
