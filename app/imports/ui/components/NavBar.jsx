@@ -83,7 +83,7 @@ const NavBar = () => {
               <NavDropdown id={COMPONENT_IDS.NAVBAR_CURRENT_USER} title={currentUser}>
                 {isAdmin === false ? (
                   <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_USER_PAGE} as={NavLink} to="/userPage"><BoxArrowRight /> Profile</NavDropdown.Item>
-                ) : (<NavDropdown.Item> Admin </NavDropdown.Item>) }
+                ) : (<NavDropdown.Item> Admin Status </NavDropdown.Item>) }
 
                 <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_SIGN_OUT} as={NavLink} to="/signout"><BoxArrowRight /> Sign out</NavDropdown.Item>
               </NavDropdown>
