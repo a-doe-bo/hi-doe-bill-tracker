@@ -10,7 +10,7 @@ import SimpleSchema from 'simpl-schema';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import { storage } from '../../api/firebase/firebase';
 import { DraftATestimony } from '../../api/testimony/DraftTestimonyCollection';
-import { defineMethod } from '../../api/base/BaseCollection.methods';
+import { defineMethod, updateMethod } from '../../api/base/BaseCollection.methods';
 import { ApproverFlows } from '../../api/approverflow/approverflow';
 
 const formSchema = new SimpleSchema({

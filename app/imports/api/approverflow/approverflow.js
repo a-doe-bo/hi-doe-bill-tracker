@@ -17,12 +17,12 @@ class ApproverFlowCollection extends BaseCollection {
       officeApproved: { type: Boolean, required: false },
       officeApprovedDate: { type: Date, required: false },
       officeText: { type: String, required: false },
-      pipeApproved: Boolean,
-      pipeApprovedDate: Date,
-      pipeText: String,
-      finalApproved: Boolean,
-      finalApprovedDate: Date,
-      finalText: String,
+      pipeApproved: { type: Boolean, required: false },
+      pipeApprovedDate: { type: Date, required: false },
+      pipeText: { type: String, required: false },
+      finalApproved: { type: Boolean, required: false },
+      finalApprovedDate: { type: Date, required: false },
+      finalText: { type: String, required: false },
     }));
   }
 
@@ -31,10 +31,10 @@ class ApproverFlowCollection extends BaseCollection {
    * @param name the name of the item.
    * @return {String} the docID of the new document.
    */
-  define({ originalText, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText }) {
+  define({ billNumber, originalText, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText }) {
     console.log('Printing approver flow item: ', { originalText, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText });
     const docID = this._collection.insert({
-      originalText, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText,
+      billNumber, originalText, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText,
     });
     return docID;
   }
@@ -46,15 +46,18 @@ class ApproverFlowCollection extends BaseCollection {
    * @param quantity the new quantity (optional).
    * @param condition the new condition (optional).
    */
-  update(docID, { originalText, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText }) {
+  update(docID, { billNumber, originalText, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText }) {
     const updateData = {};
+    if (billNumber) {
+      updateData.billNumber = billNumber;
+    }
     if (originalText) {
       updateData.originalText = originalText;
     }
     if (originalWriteDate) {
       updateData.originalWriteDate = originalWriteDate;
     }
-    if (officeApproved) {
+    if (officeApproved != null) {
       updateData.officeApproved = officeApproved;
     }
     if (officeApprovedDate) {
@@ -63,7 +66,7 @@ class ApproverFlowCollection extends BaseCollection {
     if (officeText) {
       updateData.officeText = officeText;
     }
-    if (pipeApproved) {
+    if (pipeApproved != null) {
       updateData.pipeApproved = pipeApproved;
     }
     if (pipeApprovedDate) {
@@ -72,7 +75,7 @@ class ApproverFlowCollection extends BaseCollection {
     if (pipeText) {
       updateData.pipeText = pipeText;
     }
-    if (finalApproved) {
+    if (finalApproved != null) {
       updateData.finalApproved = finalApproved;
     }
     if (finalApprovedDate) {
@@ -81,6 +84,7 @@ class ApproverFlowCollection extends BaseCollection {
     if (finalText) {
       updateData.finalText = finalText;
     }
+    console.log('Updating method for ', updateData);
     this._collection.update(docID, { $set: updateData });
   }
 
