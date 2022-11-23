@@ -11,34 +11,79 @@ import Autocomplete from '../components/Autocomplete';
 import { Hearings } from '../../api/hearing/HearingCollection';
 import { Saved } from '../../api/save/SavedBillCollection';
 import Filter from '../components/Filter';
+import { PrimaryOffice } from '../../api/office/PrimaryOfficeMeasure';
+import { SecondaryOffice } from '../../api/office/SecondaryOfficeMeasure';
 
 const SavedBills = () => {
-  const { ready, savedBill, hearings } = useTracker(() => {
+  const { ready, savedBill, hearings, primaryOffice, secondaryOffice } = useTracker(() => {
     const subscription = Saved.subscribeToSavedBill();
     const hearingBillsSubscription = Hearings.subscribeHearings();
-    const rdy = subscription.ready() && hearingBillsSubscription.ready();
+    const primaryOfficeSubscription = PrimaryOffice.subscribePrimaryOffice();
+    const secondaryOfficeSubscription = SecondaryOffice.subscribeSecondaryOffice();
+    const rdy = subscription.ready() && hearingBillsSubscription.ready() && primaryOfficeSubscription.ready() && secondaryOfficeSubscription.ready();
     const owner = Meteor.user().username;
     const savedBillItem = Saved.find({ owner }, {}).fetch();
     const hearingItems = Hearings.find({}).fetch();
+    const primaryOfficeItems = PrimaryOffice.find({}, {}).fetch();
+    const secondaryOfficeItems = SecondaryOffice.find({}, {}).fetch();
     return {
       savedBill: savedBillItem,
       hearings: hearingItems,
+      primaryOffice: primaryOfficeItems,
+      secondaryOffice: secondaryOfficeItems,
       ready: rdy,
     };
   }, []);
   const [data, setData] = useState([]);
 
   const table_headers = Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY]) ?
-    ['', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Assign', 'Remove'] :
-    ['', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Remove'];
+    ['', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Primary Office', 'Secondary Office', 'Assign', 'Remove'] :
+    ['', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Primary Office', 'Secondary Office', 'Remove'];
 
-  const BillData = savedBill.map((save) => ({
-    _id: save._id,
-    bill_name: save.bill_name,
-    bill_status: save.bill_status,
-    bill_hearing: save.bill_hearing,
-    bill_number: save.bill_number,
-  }));
+  const BillData = () => {
+    let BillInformation = {};
+    const returnArr = [];
+    savedBill.forEach((measureData) => {
+      BillInformation = {
+        _id: '',
+        bill_name: '',
+        bill_status: '',
+        bill_hearing: '',
+        bill_number: '',
+        bill_updated: '',
+        bill_committee: '',
+        bill_code: '',
+        measureType: '',
+        primaryOffice: [],
+        secondaryOffice: [],
+        primaryOfficeId: '',
+        secondaryOfficeId: '',
+      };
+      BillInformation._id = measureData._id;
+      BillInformation.bill_name = measureData.bill_name;
+      BillInformation.bill_status = measureData.bill_status;
+      BillInformation.bill_hearing = measureData.bill_hearing;
+      BillInformation.bill_number = measureData.bill_number;
+      BillInformation.bill_updated = measureData.bill_updated;
+      BillInformation.bill_committee = measureData.bill_committee;
+      BillInformation.bill_code = measureData.bill_code;
+      BillInformation.measureType = measureData.measureType;
+      primaryOffice.forEach((office) => {
+        if (measureData.code === office.code && measureData.measureNumber === office.measureNumber) {
+          BillInformation.primaryOffice = office.office;
+          BillInformation.primaryOfficeId = office._id;
+        }
+      });
+      secondaryOffice.forEach((office) => {
+        if (measureData.code === office.code && measureData.measureNumber === office.measureNumber) {
+          BillInformation.secondaryOffice = office.office;
+          BillInformation.secondaryOfficeId = office._id;
+        }
+      });
+      returnArr.push(BillInformation);
+    });
+    return returnArr;
+  };
   const HearingData2 = hearings.map((hearingData) => ({
     hearingLocation: hearingData.room,
     dateIntroduced: hearingData.year,
@@ -49,7 +94,7 @@ const SavedBills = () => {
     dateTime: hearingData.datetime,
   }));
   useEffect(() => {
-    setData(BillData);
+    setData(BillData());
   }, [ready, savedBill]);
   const [currentTab, setCurrentTab] = useState('Upcoming Bills');
   const handleCurrentTab = (tabName) => {
