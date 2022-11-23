@@ -224,7 +224,7 @@ BillFilter.propTypes = {
     bill_status: PropTypes.string,
     bill_hearing: PropTypes.number,
     bill_number: PropTypes.number,
-    bill_updated: PropTypes.number,
+    bill_updated: PropTypes.string,
     bill_committee: PropTypes.string,
     measureTypes: PropTypes.string,
     office: PropTypes.string,
