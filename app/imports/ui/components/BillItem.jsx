@@ -63,6 +63,28 @@ const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_stat
       save();
     }
   };
+  const displayOffice = (type) => {
+    if (Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) {
+      return '';
+    }
+    if (type === 'PrimaryOffice') {
+      if (primaryOffice.length > 0) {
+        return (
+          <td>{convertOfficeToString(primaryOffice)}</td>
+        );
+      }
+    }
+    if (type === 'SecondaryOffice') {
+      if (secondaryOffice.length > 0) {
+        return (
+          <td>{convertOfficeToString(secondaryOffice)}</td>
+        );
+      }
+    }
+    return (
+      <td>N/A</td>
+    );
+  };
   return (
     <>
       <tr>
@@ -103,16 +125,8 @@ const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_stat
             <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, bill_code, _id, secondaryOfficeId, secondaryOffice }} officeType="Secondary" />
           </td>
         ) : ''}
-        {!(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) && primaryOffice.length > 0 ? (
-          <td style={{ width: '150px' }}>
-            {convertOfficeToString(primaryOffice)}
-          </td>
-        ) : <td>N/A</td>}
-        {!(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) && secondaryOffice.length > 0 ? (
-          <td style={{ width: '150px' }}>
-            {convertOfficeToString(secondaryOffice)}
-          </td>
-        ) : <td>N/A</td>}
+        {displayOffice('PrimaryOffice')}
+        {displayOffice('SecondaryOffice')}
       </tr>
       <tr>
         <td style={{ padding: 0 }} colSpan={10}>
