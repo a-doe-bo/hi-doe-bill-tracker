@@ -34,12 +34,10 @@ const SingleFileUpload = ({ currBills }) => {
 
   const uploadPDF = () => {
     if (pdfFile === null) {
-      alert('NO PDF FILE CHOSEN');
       return;
     }
     const pdfRef = ref(storage, `testimonyPdf/${pdfFile.name + v4()}`);
     uploadBytes(pdfRef, pdfFile).then(() => {
-      alert('PDF file uploaded');
     });
   };
 
@@ -47,6 +45,14 @@ const SingleFileUpload = ({ currBills }) => {
     const owner = Meteor.user().username;
     const collectionName = DraftATestimony.getCollectionName();
     const definitionData = { ...data, owner };
+    // TODO: this should update in our collection
+    defineMethod.callPromise({ collectionName, definitionData })
+      .catch(error => swal('Error', error.message, 'error'))
+      .then(() => {
+        swal('Success', 'Testimony successfully submitted', 'success');
+        uploadPDF();
+        formRef.reset();
+      });
     defineMethod.callPromise({ collectionName, definitionData })
       .catch(error => swal('Error', error.message, 'error'))
       .then(() => {
