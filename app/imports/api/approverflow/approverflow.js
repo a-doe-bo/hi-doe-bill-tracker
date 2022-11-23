@@ -1,20 +1,22 @@
 import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 import { check } from 'meteor/check';
-import { _ } from 'meteor/underscore';
-import { Roles } from 'meteor/alanning:roles';
 import BaseCollection from '../base/BaseCollection';
 import { ROLE } from '../role/Role';
 
-class StuffCollection extends BaseCollection {
+export const ApproverFlowPublications = {
+  approverFlow: 'ApproverFlow',
+};
+
+class ApproverFlowCollection extends BaseCollection {
   constructor() {
     super('ApproverFlow', new SimpleSchema({
       billNumber: Number,
       originalText: String,
       originalWriteDate: Date,
-      officeApproved: Boolean,
-      officeApprovedDate: Date,
-      officeText: String,
+      officeApproved: { type: Boolean, required: false },
+      officeApprovedDate: { type: Date, required: false },
+      officeText: { type: String, required: false },
       pipeApproved: Boolean,
       pipeApprovedDate: Date,
       pipeText: String,
@@ -25,14 +27,12 @@ class StuffCollection extends BaseCollection {
   }
 
   /**
-   * Defines a new Stuff item.
+   * Defines a new ApproverFlow item.
    * @param name the name of the item.
-   * @param quantity how many.
-   * @param owner the owner of the item.
-   * @param condition the condition of the item.
    * @return {String} the docID of the new document.
    */
   define({ originalText, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText }) {
+    console.log('Printing approver flow item: ', { originalText, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText });
     const docID = this._collection.insert({
       originalText, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText,
     });
@@ -51,14 +51,35 @@ class StuffCollection extends BaseCollection {
     if (originalText) {
       updateData.originalText = originalText;
     }
-    if (originalText) {
-      updateData.originalText = originalText;
+    if (originalWriteDate) {
+      updateData.originalWriteDate = originalWriteDate;
     }
-    if (originalText) {
-      updateData.originalText = originalText;
+    if (officeApproved) {
+      updateData.officeApproved = officeApproved;
     }
-    if (originalText) {
-      updateData.originalText = originalText;
+    if (officeApprovedDate) {
+      updateData.officeApprovedDate = officeApprovedDate;
+    }
+    if (officeText) {
+      updateData.officeText = officeText;
+    }
+    if (pipeApproved) {
+      updateData.pipeApproved = pipeApproved;
+    }
+    if (pipeApprovedDate) {
+      updateData.pipeApprovedDate = pipeApprovedDate;
+    }
+    if (pipeText) {
+      updateData.pipeText = pipeText;
+    }
+    if (finalApproved) {
+      updateData.finalApproved = finalApproved;
+    }
+    if (finalApprovedDate) {
+      updateData.finalApprovedDate = finalApprovedDate;
+    }
+    if (finalText) {
+      updateData.finalText = finalText;
     }
     this._collection.update(docID, { $set: updateData });
   }
@@ -77,48 +98,29 @@ class StuffCollection extends BaseCollection {
 
   /**
    * Default publication method for entities.
-   * It publishes the entire collection for admin and just the stuff associated to an owner.
+   * It publishes the entire collection for admin and just the ApproverFlow associated to an owner.
    */
   publish() {
     if (Meteor.isServer) {
-      // get the StuffCollection instance.
+      // get the ApproverFlowCollection instance.
       const instance = this;
       /** This subscription publishes only the documents associated with the logged in user */
-      Meteor.publish(stuffPublications.stuff, function publish() {
+      Meteor.publish(ApproverFlowPublications.approverFlow, function publish() {
         if (this.userId) {
           const username = Meteor.users.findOne(this.userId).username;
           return instance._collection.find({ owner: username });
         }
         return this.ready();
       });
-
-      /** This subscription publishes all documents regardless of user, but only if the logged in user is the Admin. */
-      Meteor.publish(stuffPublications.stuffAdmin, function publish() {
-        if (this.userId && Roles.userIsInRole(this.userId, ROLE.ADMIN)) {
-          return instance._collection.find();
-        }
-        return this.ready();
-      });
     }
   }
 
   /**
-   * Subscription method for stuff owned by the current user.
+   * Subscription method for ApproverFlow owned by the current user.
    */
-  subscribeStuff() {
+  subscribeApproverFlow() {
     if (Meteor.isClient) {
-      return Meteor.subscribe(stuffPublications.stuff);
-    }
-    return null;
-  }
-
-  /**
-   * Subscription method for admin users.
-   * It subscribes to the entire collection.
-   */
-  subscribeStuffAdmin() {
-    if (Meteor.isClient) {
-      return Meteor.subscribe(stuffPublications.stuffAdmin);
+      return Meteor.subscribe(ApproverFlowPublications.approverFlow);
     }
     return null;
   }
@@ -130,7 +132,7 @@ class StuffCollection extends BaseCollection {
    * @throws { Meteor.Error } If there is no logged in user, or the user is not an Admin or User.
    */
   assertValidRoleForMethod(userId) {
-    this.assertRole(userId, [ROLE.ADMIN, ROLE.USER]);
+    this.assertRole(userId, [ROLE.WRITER, ROLE.FINAL_APPROVER, ROLE.PIPE_APPROVER, ROLE.OFFICE_APPROVER]);
   }
 
   /**
@@ -151,4 +153,4 @@ class StuffCollection extends BaseCollection {
 /**
  * Provides the singleton instance of this class to all other entities.
  */
-export const Stuffs = new StuffCollection();
+export const ApproverFlows = new ApproverFlowCollection();

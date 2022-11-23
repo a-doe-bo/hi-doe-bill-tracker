@@ -11,6 +11,7 @@ import { Saved } from '../save/SavedBillCollection';
 import { DraftATestimony } from '../testimony/DraftTestimonyCollection';
 import { PrimaryOffice } from '../office/PrimaryOfficeMeasure';
 import { SecondaryOffice } from '../office/SecondaryOfficeMeasure';
+import { ApproverFlows } from '../approverflow/approverflow';
 
 class MATPClass {
   collections;
@@ -34,6 +35,7 @@ class MATPClass {
       RequestedProfiles,
       Filters,
       DraftATestimony,
+      ApproverFlows,
     ];
     /*
      * A list of collection class instances in the order required for them to be sequentially loaded from a file.

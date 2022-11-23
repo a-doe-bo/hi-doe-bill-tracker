@@ -11,6 +11,7 @@ import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import { storage } from '../../api/firebase/firebase';
 import { DraftATestimony } from '../../api/testimony/DraftTestimonyCollection';
 import { defineMethod } from '../../api/base/BaseCollection.methods';
+import { ApproverFlows } from '../../api/approverflow/approverflow';
 
 const formSchema = new SimpleSchema({
   bill_number: Number,
@@ -44,15 +45,16 @@ const SingleFileUpload = ({ currBills }) => {
   const submit = (data, formRef) => {
     const owner = Meteor.user().username;
     const collectionName = DraftATestimony.getCollectionName();
+    const approverFlowData = {
+      collectionName: ApproverFlows.getCollectionName(),
+      definitionData: {
+        billNumber: data.bill_number,
+        originalText: data.pdfFile,
+        originalWriteDate: new Date(),
+      },
+    };
+    defineMethod.callPromise(approverFlowData);
     const definitionData = { ...data, owner };
-    // TODO: this should update in our collection
-    defineMethod.callPromise({ collectionName, definitionData })
-      .catch(error => swal('Error', error.message, 'error'))
-      .then(() => {
-        swal('Success', 'Testimony successfully submitted', 'success');
-        uploadPDF();
-        formRef.reset();
-      });
     defineMethod.callPromise({ collectionName, definitionData })
       .catch(error => swal('Error', error.message, 'error'))
       .then(() => {
