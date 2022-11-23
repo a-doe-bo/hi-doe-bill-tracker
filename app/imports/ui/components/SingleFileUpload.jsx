@@ -1,11 +1,9 @@
-import { Meteor } from 'meteor/meteor';
-import React, { useState, useEffect } from 'react';
-import { v4 } from 'uuid';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Container } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import { ref, uploadBytes } from 'firebase/storage';
 import swal from 'sweetalert';
-import { AutoForm, AutoField, SelectField, TextField, HiddenField, ErrorsField, SubmitField } from 'uniforms-bootstrap5';
+import { AutoForm, DateField, SelectField, TextField, ErrorsField, SubmitField } from 'uniforms-bootstrap5';
 import SimpleSchema from 'simpl-schema';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import { storage } from '../../api/firebase/firebase';
@@ -14,6 +12,7 @@ import { defineMethod } from '../../api/base/BaseCollection.methods';
 
 const formSchema = new SimpleSchema({
   bill_number: Number,
+  draftDate: Date,
   position: {
     type: String,
     defaultValue: 'Support',
@@ -25,32 +24,32 @@ const formSchema = new SimpleSchema({
     allowedValues: ['Draft'],
   },
   pdfFile: String,
+  // Parse it from the last \ of the string to find the name of the pdf
 });
 
 const bridge = new SimpleSchema2Bridge(formSchema);
 
 const SingleFileUpload = ({ currBills }) => {
-  const [pdfFile, setPDF] = useState([]);
-
+  const [pdfFile, setPDF] = useState('');
   const uploadPDF = () => {
-    if (pdfFile == null) {
+    if (pdfFile === '') {
       alert('NO PDF FILE CHOSEN');
       return;
     }
-    const pdfRef = ref(storage, `testimonyPdf/${pdfFile.name + v4()}`);
+    const pdfRef = ref(storage, `testimonyPdf/${pdfFile.name}`);
     uploadBytes(pdfRef, pdfFile).then(() => {
-      alert('PDF file uploaded');
+      // pdf uploaded
     });
   };
-
   const submit = (data, formRef) => {
-    const owner = Meteor.user().username;
+    const owner = 'pipeapprover@foo.com';
     const collectionName = DraftATestimony.getCollectionName();
     const definitionData = { ...data, owner };
     defineMethod.callPromise({ collectionName, definitionData })
       .catch(error => swal('Error', error.message, 'error'))
       .then(() => {
         swal('Success', 'Testimony successfully submitted', 'success');
+        uploadPDF();
         formRef.reset();
       });
   };
@@ -60,6 +59,7 @@ const SingleFileUpload = ({ currBills }) => {
     <Container>
       <AutoForm ref={refr => { fRef = refr; }} schema={bridge} onSubmit={(data) => submit(data, fRef)}>
         <SelectField name="bill_number" placeholder="Select a bill to write a testimony for" allowedValues={currBills} />
+        <DateField name="draftDate" />
         <SelectField name="position" />
         {/* eslint-disable */}
         <TextField
@@ -71,7 +71,7 @@ const SingleFileUpload = ({ currBills }) => {
         />
         <TextField name="status" hidden={true} />
         <div className="py-3">
-          <SubmitField onClick={uploadPDF}/>
+          <SubmitField />
         </div>
         <ErrorsField  />
       </AutoForm>

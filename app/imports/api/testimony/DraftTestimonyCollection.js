@@ -11,6 +11,7 @@ class DraftTestimonyCollection extends BaseCollection {
   constructor() {
     super('Testimonies', new SimpleSchema({
       bill_number: Number,
+      draftDate: Date,
       position: {
         type: String,
         allowedValues: ['Support', 'Oppose', 'Comments Only'],
@@ -31,9 +32,10 @@ class DraftTestimonyCollection extends BaseCollection {
    * @param position .
    * @return {String} the docID of the new document.
    */
-  define({ bill_number, position, status, pdfFile, owner }) {
+  define({ bill_number, draftDate, position, status, pdfFile, owner }) {
     const docID = this._collection.insert({
       bill_number,
+      draftDate,
       position,
       status,
       pdfFile,
@@ -47,22 +49,13 @@ class DraftTestimonyCollection extends BaseCollection {
    * @param docID the id of the document to update.
    * @param firstName the first name of the testifier (optional).
    * @param lastName the last name of the testifier (optional).
-   * @param position (optional).
-   * @param testimony (optional).
+   * @param pdfFile the file uploaded
+   * @param pdfNameOfFile the name of the file uploaded
    */
-  update(docID, { bill_number, firstName, lastName, pdfFile }) {
+  update(docID, { draftDate }) {
     const updateData = {};
-    if (bill_number) {
-      updateData.bill_number = bill_number;
-    }
-    if (firstName) {
-      updateData.firstName = firstName;
-    }
-    if (lastName) {
-      updateData.lastName = lastName;
-    }
-    if (pdfFile) {
-      updateData.pdfFile = pdfFile;
+    if (draftDate) {
+      updateData.draftDate = draftDate;
     }
     this._collection.update(docID, { $set: updateData });
   }
