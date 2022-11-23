@@ -21,8 +21,8 @@ const smtpconfig = {
 
 const transporter = nodemailer.createTransport(smtpconfig);
 // const toAddress = "";
-let numberOfBill = '';
-let theRecipient = '';
+// let numberOfBill = '';
+// let theRecipient = '';
 
 const mailOptions = (recipient, billNumber) => ({ // feed in things from client side code like the toaddress and the text
   from: '"A-DOE-BO" <noreply.adoebo.tracker@gmail.com>',
@@ -34,15 +34,11 @@ const mailOptions = (recipient, billNumber) => ({ // feed in things from client 
 Meteor.methods({
   // eslint-disable-next-line meteor/audit-argument-checks,no-unused-vars
   sendEmail(recipient, billNumber) {
-    theRecipient = recipient;
-    numberOfBill = billNumber;
     // eslint-disable-next-line consistent-return
-    transporter.sendMail(mailOptions(recipient,billNumber), (err) => {
+    transporter.sendMail(mailOptions(recipient, billNumber), (err) => {
       if (err) {
-        return console.log(err);
+        // An error occurred
       }
-      console.log(`email sent to ${theRecipient}`);
-      console.log(`bill number is ${numberOfBill}`);
     });
   },
 });
