@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
 import { Button, Col, Container, InputGroup, Row, Form, Tabs, Tab, Table } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
-import { Stuffs } from '../../api/stuff/StuffCollection';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import AwaitingReviewsItem from '../components/AwaitingReviewsItem';
+import { ApproverFlows } from '../../api/approverflow/approverflow';
+import { Measures } from '../../api/measure/MeasureCollection';
 
 const ListAwaitingReviews = () => {
-  const { ready, stuffs } = useTracker(() => {
-    const subscription = Stuffs.subscribeStuff();
-    const rdy = subscription.ready();
-    const stuffItems = Stuffs.find({}, { sort: { name: 1 } }).fetch();
+  const { ready, approverFlow, measure } = useTracker(() => {
+    const subscription = ApproverFlows.subscribeApproverFlow();
+    const measureSubscription = Measures.subscribeMeasures();
+    const rdy = subscription.ready() && measureSubscription.ready();
+    const ApproverFlowsItems = ApproverFlows.find({}, {}).fetch();
+    const measureItems = Measures.find({}, {}).fetch();
+    const mapWithValues = ApproverFlowsItems.map((d) => d.billNumber);
+    const filterMeasureItem = measureItems.filter((d) => (mapWithValues.includes(d.measureNumber)));
     return {
-      stuffs: stuffItems,
+      approverFlow: ApproverFlowsItems,
+      measure: filterMeasureItem,
       ready: rdy,
     };
   }, []);
@@ -21,7 +27,9 @@ const ListAwaitingReviews = () => {
     const { value } = e.target;
     setSearchInput(value);
   };
-  const DraftsAwaitingReviews = stuffs.map((stuff, index) => ({
+  console.log('This is the approver flow', approverFlow);
+  console.log('This is the measure', measure);
+  const DraftsAwaitingReviews = approverFlow.map((stuff, index) => ({
     _id: stuff._id,
     bill_name: `Bill ${index}`,
     bill_number: index,
@@ -34,7 +42,7 @@ const ListAwaitingReviews = () => {
     commentsOnBill: '12123123123',
     submitted_review: false,
   }));
-  const SubmittedReviews = stuffs.map((stuff, index) => ({
+  const SubmittedReviews = approverFlow.map((stuff, index) => ({
     _id: stuff._id,
     bill_name: `Bill ${index}`,
     bill_number: index,

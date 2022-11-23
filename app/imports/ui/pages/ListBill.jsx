@@ -108,7 +108,6 @@ const ListBill = () => {
     owner: save.owner,
   }));
   const [data, setData] = useState([]);
-  // TODO: Remove this once we have our API set up and split the Bill data into (upcoming bills, dead bills, bills)
   useEffect(() => {
     setData(BillData());
   }, [ready]);

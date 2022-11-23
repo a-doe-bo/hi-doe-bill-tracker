@@ -12,8 +12,11 @@ class ApproverFlowCollection extends BaseCollection {
   constructor() {
     super('ApproverFlow', new SimpleSchema({
       billNumber: Number,
+      billHearing: String,
+      billStatus: String,
       originalText: String,
       originalWriteDate: Date,
+      writerSubmission: { type: Boolean },
       officeApproved: { type: Boolean, required: false },
       officeApprovedDate: { type: Date, required: false },
       officeText: { type: String, required: false },
@@ -31,10 +34,10 @@ class ApproverFlowCollection extends BaseCollection {
    * @param name the name of the item.
    * @return {String} the docID of the new document.
    */
-  define({ billNumber, originalText, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText }) {
+  define({ billNumber, writerSubmission, originalText, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText }) {
     console.log('Printing approver flow item: ', { originalText, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText });
     const docID = this._collection.insert({
-      billNumber, originalText, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText,
+      billNumber, originalText, originalWriteDate, writerSubmission, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText,
     });
     return docID;
   }
@@ -46,7 +49,7 @@ class ApproverFlowCollection extends BaseCollection {
    * @param quantity the new quantity (optional).
    * @param condition the new condition (optional).
    */
-  update(docID, { billNumber, originalText, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText }) {
+  update(docID, { billNumber, originalText, writerSubmission, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText }) {
     const updateData = {};
     if (billNumber) {
       updateData.billNumber = billNumber;
@@ -56,6 +59,9 @@ class ApproverFlowCollection extends BaseCollection {
     }
     if (originalWriteDate) {
       updateData.originalWriteDate = originalWriteDate;
+    }
+    if (writerSubmission != null) {
+      updateData.writerSubmission = writerSubmission;
     }
     if (officeApproved != null) {
       updateData.officeApproved = officeApproved;
@@ -111,8 +117,7 @@ class ApproverFlowCollection extends BaseCollection {
       /** This subscription publishes only the documents associated with the logged in user */
       Meteor.publish(ApproverFlowPublications.approverFlow, function publish() {
         if (this.userId) {
-          const username = Meteor.users.findOne(this.userId).username;
-          return instance._collection.find({ owner: username });
+          return instance._collection.find({ });
         }
         return this.ready();
       });

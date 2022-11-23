@@ -16,19 +16,13 @@ const DraftTestimony = () => {
       ready: rdy,
     };
   }, []);
-  const assignedBillData = assignedBills.map((bill) => ({
-    _id: bill._id,
-    bill_number: bill.bill_number,
-  }));
   const arr = [];
-  assignedBills.map((bill) => (
-    arr.push(bill.bill_number)
-  ));
-  const [billData, setData] = useState([]);
-  useEffect(() => {
-    setData(assignedBillData);
-  }, [ready, assignedBills]);
-
+  assignedBills.forEach((bill) => {
+    arr.push(bill.bill_number);
+    arr.push(bill.bill_hearing);
+    arr.push(bill.bill_status);
+  });
+  console.log(arr);
   return (
     <Container id={PAGE_IDS.DRAFT_TESTIMONY} className="py-3">
       <Col xs={12}>

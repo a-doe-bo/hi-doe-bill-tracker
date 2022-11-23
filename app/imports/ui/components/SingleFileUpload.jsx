@@ -10,7 +10,7 @@ import SimpleSchema from 'simpl-schema';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import { storage } from '../../api/firebase/firebase';
 import { DraftATestimony } from '../../api/testimony/DraftTestimonyCollection';
-import { defineMethod, updateMethod } from '../../api/base/BaseCollection.methods';
+import { defineMethod } from '../../api/base/BaseCollection.methods';
 import { ApproverFlows } from '../../api/approverflow/approverflow';
 
 const formSchema = new SimpleSchema({
@@ -49,8 +49,11 @@ const SingleFileUpload = ({ currBills }) => {
       collectionName: ApproverFlows.getCollectionName(),
       definitionData: {
         billNumber: data.bill_number,
+        billHearing: data.bill_hearing,
+        billStatus: data.bill_status,
         originalText: data.pdfFile,
         originalWriteDate: new Date(),
+        writerSubmission: true,
       },
     };
     defineMethod.callPromise(approverFlowData);
@@ -87,7 +90,11 @@ const SingleFileUpload = ({ currBills }) => {
 };
 
 SingleFileUpload.propTypes = {
-  currBills: PropTypes.arrayOf(PropTypes.number).isRequired,
+  currBills: PropTypes.arrayOf(PropTypes.shape({
+    bill_number: PropTypes.number,
+    bill_hearing: PropTypes.string,
+    bill_status: PropTypes.string,
+  })).isRequired,
 };
 
 export default SingleFileUpload;
