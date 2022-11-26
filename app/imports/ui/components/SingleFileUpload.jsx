@@ -41,7 +41,6 @@ const SingleFileUpload = ({ currBills, billData }) => {
     uploadBytes(pdfRef, pdfFile).then(() => {
     });
   };
-  console.log(billData);
   const submit = (data, formRef) => {
     const owner = Meteor.user().username;
     const collectionName = DraftATestimony.getCollectionName();
