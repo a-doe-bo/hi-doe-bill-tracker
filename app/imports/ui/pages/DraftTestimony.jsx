@@ -16,19 +16,27 @@ const DraftTestimony = () => {
       ready: rdy,
     };
   }, []);
+  const assignedBillData = assignedBills.map((bill) => ({
+    _id: bill._id,
+    bill_number: bill.bill_number,
+    bill_hearing: bill.bill_hearing,
+    bill_status: bill.bill_status,
+  }));
   const arr = [];
-  assignedBills.forEach((bill) => {
+  assignedBills.map((bill) => {
     arr.push(bill.bill_number);
-    arr.push(bill.bill_hearing);
-    arr.push(bill.bill_status);
   });
-  console.log(arr);
+  const [billData, setData] = useState([]);
+  useEffect(() => {
+    setData(assignedBillData);
+  }, [ready]);
+
   return (
     <Container id={PAGE_IDS.DRAFT_TESTIMONY} className="py-3">
       <Col xs={12}>
         <Col className="text-center mb-4"><h2>Draft Testimony</h2></Col>
       </Col>
-      <SingleFileUpload id={COMPONENT_IDS.DRAFT_TESTIMONY_FILE_UPLOAD} currBills={arr} />
+      <SingleFileUpload id={COMPONENT_IDS.DRAFT_TESTIMONY_FILE_UPLOAD} currBills={arr} billData={billData} />
     </Container>
   );
 };

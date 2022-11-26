@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState } from 'react';
 import { v4 } from 'uuid';
-import PropTypes from 'prop-types';
+import PropTypes, { number } from 'prop-types';
 import { Container } from 'react-bootstrap';
 import { ref, uploadBytes } from 'firebase/storage';
 import swal from 'sweetalert';
@@ -30,7 +30,7 @@ const formSchema = new SimpleSchema({
 
 const bridge = new SimpleSchema2Bridge(formSchema);
 
-const SingleFileUpload = ({ currBills }) => {
+const SingleFileUpload = ({ currBills, billData }) => {
   const [pdfFile, setPDF] = useState(null);
 
   const uploadPDF = () => {
@@ -41,16 +41,17 @@ const SingleFileUpload = ({ currBills }) => {
     uploadBytes(pdfRef, pdfFile).then(() => {
     });
   };
-
+  console.log(billData);
   const submit = (data, formRef) => {
     const owner = Meteor.user().username;
     const collectionName = DraftATestimony.getCollectionName();
+    const b = billData.filter((d) => (d.bill_number == data.bill_number));
     const approverFlowData = {
       collectionName: ApproverFlows.getCollectionName(),
       definitionData: {
-        billNumber: data.bill_number,
-        billHearing: data.bill_hearing,
-        billStatus: data.bill_status,
+        billNumber: parseInt(b[0].bill_number, 10),
+        billHearing: b[0].bill_hearing,
+        billStatus: b[0].bill_status,
         originalText: data.pdfFile,
         originalWriteDate: new Date(),
         writerSubmission: true,
@@ -90,11 +91,12 @@ const SingleFileUpload = ({ currBills }) => {
 };
 
 SingleFileUpload.propTypes = {
-  currBills: PropTypes.arrayOf(PropTypes.shape({
+  billData: PropTypes.arrayOf(PropTypes.shape({
     bill_number: PropTypes.number,
     bill_hearing: PropTypes.string,
     bill_status: PropTypes.string,
   })).isRequired,
+  currBills: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 export default SingleFileUpload;

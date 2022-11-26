@@ -34,10 +34,9 @@ class ApproverFlowCollection extends BaseCollection {
    * @param name the name of the item.
    * @return {String} the docID of the new document.
    */
-  define({ billNumber, writerSubmission, originalText, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText }) {
-    console.log('Printing approver flow item: ', { originalText, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText });
+  define({ billNumber, billHearing, billStatus, writerSubmission, originalText, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText }) {
     const docID = this._collection.insert({
-      billNumber, originalText, originalWriteDate, writerSubmission, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText,
+      billNumber, originalText, originalWriteDate, billHearing, billStatus, writerSubmission, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText,
     });
     return docID;
   }
