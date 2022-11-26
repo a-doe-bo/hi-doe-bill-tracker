@@ -8,7 +8,7 @@ import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import { ROLE } from '../../api/role/Role';
 
 /** Renders a single row in the List Stuff table. See pages/ListStuff.jsx. */
-const AwaitingReviewsItem = ({ awaitingReviews: { bill_name, bill_number, drafter_name, drafter_submitted_date, office, _id }, createComment, editComment, accept, reject }) => {
+const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, editComment, accept, reject }) => {
   const handleAccept = () => {
     console.log('Draft Accepted');
   };
@@ -21,27 +21,24 @@ const AwaitingReviewsItem = ({ awaitingReviews: { bill_name, bill_number, drafte
   const handleSendToSecretary = () => {
     console.log('Downloaded File');
   };
+  const matchMeasureTitle = () => measureData.filter((m) => awaitingReviews.billStatus === m.status && awaitingReviews.billNumber === m.measureNumber)[0];
   return (
     <tr>
-      <td>{drafter_name}</td>
-      <td>{drafter_submitted_date}</td>
-      <td>{bill_name}</td>
-      <td>{bill_number}</td>
-      <td>{office}</td>
+      <td>{awaitingReviews.writerName}</td>
+      <td>{new Date(awaitingReviews.originalWriteDate).toUTCString()}</td>
+      <td>{matchMeasureTitle().measureTitle}</td>
+      <td>{awaitingReviews.billNumber}</td>
       <td>
-        <Link className={COMPONENT_IDS.VIEW_BILL} to={`/bill/${_id}`}>View Bill</Link>
+        <Link className={COMPONENT_IDS.VIEW_BILL} to={`/bill/${matchMeasureTitle()._id}`}>View Bill</Link>
       </td>
-      {/* TODO: Look into cleaning this up. */}
-      {/* TODO: Add link to App.jsx and Navbar.jsx */}
       {createComment && (
         <td>
-          <Link className={COMPONENT_IDS.CREATE_COMMENT} to={`/createComment/${_id}`}>Create Comment</Link>
+          <Link className={COMPONENT_IDS.CREATE_COMMENT} to={`/createComment/${matchMeasureTitle()._id}`}>Create Comment</Link>
         </td>
       )}
-      {/* TODO: Add link to App.jsx and Navbar.jsx */}
       {editComment && (
         <td>
-          <Link className={COMPONENT_IDS.EDIT_COMMENT} to={`/editComment/${_id}`}>Edit Comment</Link>
+          <Link className={COMPONENT_IDS.EDIT_COMMENT} to={`/editComment/${matchMeasureTitle()._id}`}>Edit Comment</Link>
         </td>
       )}
       {accept && (
@@ -70,17 +67,33 @@ const AwaitingReviewsItem = ({ awaitingReviews: { bill_name, bill_number, drafte
 
 // Require a document to be passed to this component.
 AwaitingReviewsItem.propTypes = {
-  awaitingReviews: PropTypes.shape({
-    bill_name: PropTypes.string,
-    bill_number: PropTypes.number,
-    bill_id: PropTypes.string,
-    drafter_name: PropTypes.string,
-    drafter_submitted_date: PropTypes.string,
-    office: PropTypes.string,
-    comments_on_bill: PropTypes.string,
-    submitted_review: PropTypes.bool,
+  awaitingReviews: PropTypes.arrayOf(PropTypes.shape({
     _id: PropTypes.string,
-  }).isRequired,
+    billHearing: PropTypes.string,
+    billNumber: PropTypes.number,
+    billStatus: PropTypes.string,
+    originalText: PropTypes.string,
+    originalWriteDate: PropTypes.instanceOf(Date),
+    writerName: PropTypes.string,
+    writerSubmission: PropTypes.bool,
+  })).isRequired,
+  measureData: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.string,
+    bitAppropriation: PropTypes.number,
+    code: PropTypes.string,
+    currentReferral: PropTypes.string,
+    description: PropTypes.string,
+    introducer: PropTypes.string,
+    lastUpdated: PropTypes.instanceOf(Date),
+    measureArchiveUrl: PropTypes.string,
+    measureNumber: PropTypes.number,
+    measurePdfUrl: PropTypes.string,
+    measureTitle: PropTypes.string,
+    measureType: PropTypes.string,
+    reportTitle: PropTypes.string,
+    status: PropTypes.string,
+    year: PropTypes.number,
+  })).isRequired,
   // eslint-disable-next-line react/require-default-props
   editComment: PropTypes.bool,
   // eslint-disable-next-line react/require-default-props
