@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Col, Container, InputGroup, Row, Form, Tabs, Tab, Table } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
+import _ from 'underscore';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import AwaitingReviewsItem from '../components/AwaitingReviewsItem';
@@ -14,21 +15,33 @@ const ListAwaitingReviews = () => {
     const rdy = subscription.ready() && measureSubscription.ready();
     const ApproverFlowsItems = ApproverFlows.find({}, {}).fetch();
     const measureItems = Measures.find({}, {}).fetch();
-    const mapWithValues = ApproverFlowsItems.map((d) => d.billNumber);
-    const filterMeasureItem = measureItems.filter((d) => (mapWithValues.includes(d.measureNumber)));
+    const mapWithValues = ApproverFlowsItems.map((d) => ({ billNumber: d.billNumber, billStatus: d.billStatus }));
+    const filterMeasureData = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const T of measureItems) {
+      const s = {};
+      s.billNumber = T.measureNumber;
+      s.billStatus = T.status;
+      // eslint-disable-next-line no-restricted-syntax
+      for (const m of mapWithValues) {
+        if (_.isEqual(s, m)) {
+          filterMeasureData.push(T);
+        }
+      }
+    }
     return {
       approverFlow: ApproverFlowsItems,
-      measure: filterMeasureItem,
+      measure: filterMeasureData,
       ready: rdy,
     };
   }, []);
+  console.log('this is the measuredata: ', measure);
   const [searchInput, setSearchInput] = useState('');
   const handleSearchInput = (e) => {
     const { value } = e.target;
     setSearchInput(value);
   };
-  console.log('This is the approver flow', approverFlow);
-  console.log('This is the measure', measure);
+
   const DraftsAwaitingReviews = approverFlow.map((stuff, index) => ({
     _id: stuff._id,
     bill_name: `Bill ${index}`,

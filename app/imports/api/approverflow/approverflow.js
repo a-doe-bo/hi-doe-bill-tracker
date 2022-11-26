@@ -16,15 +16,19 @@ class ApproverFlowCollection extends BaseCollection {
       billStatus: String,
       originalText: String,
       originalWriteDate: Date,
+      writerName: String,
       writerSubmission: { type: Boolean },
       officeApproved: { type: Boolean, required: false },
       officeApprovedDate: { type: Date, required: false },
+      officeApproverName: { type: String, required: false },
       officeText: { type: String, required: false },
       pipeApproved: { type: Boolean, required: false },
       pipeApprovedDate: { type: Date, required: false },
+      pipeApproverName: { type: String, required: false },
       pipeText: { type: String, required: false },
       finalApproved: { type: Boolean, required: false },
       finalApprovedDate: { type: Date, required: false },
+      finalApproverName: { type: String, required: false },
       finalText: { type: String, required: false },
     }));
   }
@@ -34,9 +38,14 @@ class ApproverFlowCollection extends BaseCollection {
    * @param name the name of the item.
    * @return {String} the docID of the new document.
    */
-  define({ billNumber, billHearing, billStatus, writerSubmission, originalText, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText }) {
+  define({ writerName, officeApproverName, pipeApproverName, finalApproverName, billNumber,
+    billHearing, billStatus, writerSubmission, originalText, originalWriteDate, officeApproved,
+    officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved,
+    finalApprovedDate, finalText }) {
     const docID = this._collection.insert({
-      billNumber, originalText, originalWriteDate, billHearing, billStatus, writerSubmission, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText,
+      writerName, officeApproverName, pipeApproverName, finalApproverName, billNumber, originalText, originalWriteDate, billHearing, billStatus, writerSubmission,
+      officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate,
+      pipeText, finalApproved, finalApprovedDate, finalText,
     });
     return docID;
   }
@@ -48,8 +57,22 @@ class ApproverFlowCollection extends BaseCollection {
    * @param quantity the new quantity (optional).
    * @param condition the new condition (optional).
    */
-  update(docID, { billNumber, billHearing, billStatus, writerSubmission, originalText, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText }) {
+  update(docID, { writerName, officeApproverName, pipeApproverName, finalApproverName, billNumber, billHearing,
+    billStatus, writerSubmission, originalText, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved,
+    pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText }) {
     const updateData = {};
+    if (writerName) {
+      updateData.writerName = writerName;
+    }
+    if (officeApproverName) {
+      updateData.officeApproverName = officeApproverName;
+    }
+    if (pipeApproverName) {
+      updateData.pipeApproverName = pipeApproverName;
+    }
+    if (finalApproverName) {
+      updateData.finalApproverName = finalApproverName;
+    }
     if (billNumber) {
       updateData.billNumber = billNumber;
     }

@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { v4 } from 'uuid';
-import PropTypes, { number } from 'prop-types';
+import PropTypes from 'prop-types';
 import { Container } from 'react-bootstrap';
 import { ref, uploadBytes } from 'firebase/storage';
 import swal from 'sweetalert';
@@ -32,7 +32,6 @@ const bridge = new SimpleSchema2Bridge(formSchema);
 
 const SingleFileUpload = ({ currBills, billData }) => {
   const [pdfFile, setPDF] = useState(null);
-
   const uploadPDF = () => {
     if (pdfFile === null) {
       return;
@@ -41,6 +40,7 @@ const SingleFileUpload = ({ currBills, billData }) => {
     uploadBytes(pdfRef, pdfFile).then(() => {
     });
   };
+
   const submit = (data, formRef) => {
     const owner = Meteor.user().username;
     const collectionName = DraftATestimony.getCollectionName();
@@ -54,6 +54,7 @@ const SingleFileUpload = ({ currBills, billData }) => {
         originalText: data.pdfFile,
         originalWriteDate: new Date(),
         writerSubmission: true,
+        writerName: owner,
       },
     };
     defineMethod.callPromise(approverFlowData);
