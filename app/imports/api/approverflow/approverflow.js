@@ -48,13 +48,19 @@ class ApproverFlowCollection extends BaseCollection {
    * @param quantity the new quantity (optional).
    * @param condition the new condition (optional).
    */
-  update(docID, { billNumber, originalText, writerSubmission, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText }) {
+  update(docID, { billNumber, billHearing, billStatus, writerSubmission, originalText, originalWriteDate, officeApproved, officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved, finalApprovedDate, finalText }) {
     const updateData = {};
     if (billNumber) {
       updateData.billNumber = billNumber;
     }
     if (originalText) {
       updateData.originalText = originalText;
+    }
+    if (billHearing) {
+      updateData.billHearing = billHearing;
+    }
+    if (billStatus) {
+      updateData.billStatus = billStatus;
     }
     if (originalWriteDate) {
       updateData.originalWriteDate = originalWriteDate;
