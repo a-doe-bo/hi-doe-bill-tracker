@@ -1,4 +1,5 @@
 import React from 'react';
+import swal from 'sweetalert';
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import PropTypes from 'prop-types';
@@ -6,13 +7,78 @@ import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import { ROLE } from '../../api/role/Role';
+import { updateMethod } from '../../api/base/BaseCollection.methods';
+import { ApproverFlows } from '../../api/approverflow/approverflow';
 
 /** Renders a single row in the List Stuff table. See pages/ListStuff.jsx. */
 const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, editComment, accept, reject }) => {
+  const collectionName = ApproverFlows.getCollectionName();
+  const dataUpdate = (option) => {
+    const approverName = Meteor.user().username;
+    const { _id, writerName, officeApproverName, pipeApproverName, finalApproverName, billNumber,
+      billHearing, billStatus, writerSubmission, originalText, originalWriteDate, officeApproved,
+      officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved,
+      finalApprovedDate, finalText } = awaitingReviews;
+    // update method
+    const updateData = {
+      id: _id,
+      billNumber,
+      billHearing,
+      billStatus,
+      originalText,
+      originalWriteDate,
+      writerName,
+      writerSubmission,
+      officeApproved,
+      officeApprovedDate,
+      officeApproverName,
+      officeText,
+      pipeApproved,
+      pipeApprovedDate,
+      pipeApproverName,
+      pipeText,
+      finalApproved,
+      finalApprovedDate,
+      finalApproverName,
+      finalText,
+    };
+    if (option) {
+      if (Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) {
+        updateData.officeApproved = true;
+        updateData.officeApprovedDate = new Date();
+        updateData.officeApproverName = approverName;
+      } else if (Roles.userIsInRole(Meteor.userId(), [ROLE.PIPE_APPROVER])) {
+        updateData.pipeApproved = true;
+        updateData.pipeApprovedDate = new Date();
+        updateData.pipeApproverName = approverName;
+      } else if (Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER])) {
+        updateData.finalApproved = true;
+        updateData.finalApprovedDate = new Date();
+        updateData.finalApproverName = approverName;
+      }
+    } else if (Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) {
+      updateData.writerSubmission = false;
+      updateData.officeApproved = false;
+    } else if (Roles.userIsInRole(Meteor.userId(), [ROLE.PIPE_APPROVER])) {
+      updateData.writerSubmission = false;
+      updateData.officeApproved = false;
+      updateData.pipeApproved = false;
+    } else if (Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER])) {
+      updateData.writerSubmission = false;
+      updateData.officeApproved = false;
+      updateData.pipeApproved = false;
+      updateData.finalApproved = false;
+    }
+    updateMethod.callPromise(({ collectionName, updateData }))
+      .catch((err) => swal('Error', err.message, 'error'))
+      .then(() => swal('Success', 'Status updated successfully', 'success'));
+  };
   const handleAccept = () => {
+    dataUpdate(true);
     console.log('Draft Accepted');
   };
   const handleReject = () => {
+    dataUpdate(false);
     console.log('Draft Rejected');
   };
   const handleDownload = () => {
@@ -21,7 +87,13 @@ const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, edit
   const handleSendToSecretary = () => {
     console.log('Downloaded File');
   };
-  const matchMeasureTitle = () => measureData.filter((m) => awaitingReviews.billStatus === m.status && awaitingReviews.billNumber === m.measureNumber)[0];
+  const matchMeasureTitle = () => {
+    let measureItem = {};
+    if (measureData.length > 1) {
+      measureItem = measureData.filter((m) => awaitingReviews.billStatus === m.status && awaitingReviews.billNumber === m.measureNumber);
+    }
+    return measureItem.length > 0 ? measureItem[0] : { measureTitle: 'some title', _id: '111111111111' };
+  };
   return (
     <tr>
       <td>{awaitingReviews.writerName}</td>
@@ -67,7 +139,7 @@ const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, edit
 
 // Require a document to be passed to this component.
 AwaitingReviewsItem.propTypes = {
-  awaitingReviews: PropTypes.arrayOf(PropTypes.shape({
+  awaitingReviews: PropTypes.shape({
     _id: PropTypes.string,
     billHearing: PropTypes.string,
     billNumber: PropTypes.number,
@@ -76,7 +148,19 @@ AwaitingReviewsItem.propTypes = {
     originalWriteDate: PropTypes.instanceOf(Date),
     writerName: PropTypes.string,
     writerSubmission: PropTypes.bool,
-  })).isRequired,
+    officeApproved: PropTypes.bool,
+    officeApprovedDate: PropTypes.instanceOf(Date),
+    officeApproverName: PropTypes.string,
+    officeText: PropTypes.string,
+    pipeApproved: PropTypes.bool,
+    pipeApprovedDate: PropTypes.instanceOf(Date),
+    pipeApproverName: PropTypes.string,
+    pipeText: PropTypes.string,
+    finalApproved: PropTypes.bool,
+    finalApprovedDate: PropTypes.instanceOf(Date),
+    finalApproverName: PropTypes.string,
+    finalText: PropTypes.string,
+  }).isRequired,
   measureData: PropTypes.arrayOf(PropTypes.shape({
     _id: PropTypes.string,
     bitAppropriation: PropTypes.number,

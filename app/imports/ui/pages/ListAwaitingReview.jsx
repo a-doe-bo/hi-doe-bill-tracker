@@ -68,9 +68,7 @@ const ListAwaitingReviews = () => {
     }
   }, [approverFlow, measure, ready]);
 
-  console.log('SubmittedReviews', submittedReviews);
-  console.log('AwaitingReviews', awaitingReviews);
-
+  console.log(awaitingReviews);
   return (ready ? (
     <Container id={PAGE_IDS.AWAITING_REVIEWS} className="py-3" style={{ minWidth: '1500px' }}>
       <Row className="justify-content-center">
