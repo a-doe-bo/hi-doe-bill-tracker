@@ -122,7 +122,7 @@ const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, edit
         </td>
       )}
       {
-        Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER]) && (
+        (!awaitingReviews.finalApproved && Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER])) && (
           <td>
             <Button className={COMPONENT_IDS.SEND_TO_SECRETARY} variant="warning" onClick={handleSendToSecretary}>Send to secretary</Button>
           </td>
