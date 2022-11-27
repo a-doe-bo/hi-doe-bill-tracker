@@ -50,25 +50,24 @@ const ListAwaitingReviews = () => {
     let filteredAwaitingReviews = [];
     if (Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) {
       filteredSubmittedReviews = approverFlow.filter((bill) => bill.officeApproved === true);
-      filteredAwaitingReviews = approverFlow.filter((bill) => (bill.officeApproved === false || bill.officeApproved == null));
+      filteredAwaitingReviews = approverFlow.filter((bill) => (bill.officeApproved == null && bill.writerSubmission === true));
       setSubmittedReviews(filteredSubmittedReviews);
       setAwaitingReviews(filteredAwaitingReviews);
     }
     if (Roles.userIsInRole(Meteor.userId(), [ROLE.PIPE_APPROVER])) {
       filteredSubmittedReviews = approverFlow.filter((bill) => bill.pipeApproved === true);
-      filteredAwaitingReviews = approverFlow.filter((bill) => (bill.pipeApproved === false || bill.pipeApproved == null));
+      filteredAwaitingReviews = approverFlow.filter((bill) => ((bill.pipeApproved == null && bill.officeApproved && bill.writerSubmission === true)));
       setSubmittedReviews(filteredSubmittedReviews);
       setAwaitingReviews(filteredAwaitingReviews);
     }
     if (Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER])) {
       filteredSubmittedReviews = approverFlow.filter((bill) => bill.finalApproved === true);
-      filteredAwaitingReviews = approverFlow.filter((bill) => (bill.finalApproved === false || bill.finalApproved == null));
+      filteredAwaitingReviews = approverFlow.filter((bill) => ((bill.finalApproved == null && bill.officeApproved && bill.pipeApproved && bill.writerSubmission === true)));
       setSubmittedReviews(filteredSubmittedReviews);
       setAwaitingReviews(filteredAwaitingReviews);
     }
   }, [approverFlow, measure, ready]);
 
-  console.log(awaitingReviews);
   return (ready ? (
     <Container id={PAGE_IDS.AWAITING_REVIEWS} className="py-3" style={{ minWidth: '1500px' }}>
       <Row className="justify-content-center">
@@ -132,7 +131,7 @@ const ListAwaitingReviews = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {submittedReviews.map((r) => <AwaitingReviewsItem key={r._id} measureData={measure} awaitingReviews={submittedReviews} editComment />)}
+                  {submittedReviews.map((r) => <AwaitingReviewsItem key={r._id} measureData={measure} awaitingReviews={r} editComment />)}
                 </tbody>
               </Table>
             </Tab>

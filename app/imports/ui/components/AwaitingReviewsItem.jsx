@@ -137,7 +137,7 @@ const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, edit
 
 // Require a document to be passed to this component.
 AwaitingReviewsItem.propTypes = {
-  awaitingReviews: PropTypes.arrayOf(PropTypes.shape({
+  awaitingReviews: PropTypes.shape({
     _id: PropTypes.string,
     billHearing: PropTypes.string,
     billNumber: PropTypes.number,
@@ -158,7 +158,7 @@ AwaitingReviewsItem.propTypes = {
     finalApprovedDate: PropTypes.instanceOf(Date),
     finalApproverName: PropTypes.string,
     finalText: PropTypes.string,
-  })).isRequired,
+  }).isRequired,
   measureData: PropTypes.arrayOf(PropTypes.shape({
     _id: PropTypes.string,
     bitAppropriation: PropTypes.number,
