@@ -111,7 +111,14 @@ const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, edit
           <Link className={COMPONENT_IDS.EDIT_COMMENT} to={`/editComment/${matchMeasureTitle()._id}`}>Edit Comment</Link>
         </td>
       )}
-      {accept && (
+      {
+        (!awaitingReviews.finalApproved && Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER])) && (
+          <td>
+            <Button className={COMPONENT_IDS.SEND_TO_SECRETARY} variant="warning" onClick={handleAccept}>Send to secretary</Button>
+          </td>
+        )
+      }
+      {(accept && !Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER])) && (
         <td>
           <Button className={COMPONENT_IDS.ACCEPT_DRAFT} variant="success" onClick={handleAccept}>Accept</Button>
         </td>
@@ -121,13 +128,6 @@ const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, edit
           <Button className={COMPONENT_IDS.REJECT_DRAFT} variant="danger" onClick={handleReject}>Reject</Button>
         </td>
       )}
-      {
-        (!awaitingReviews.finalApproved && Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER])) && (
-          <td>
-            <Button className={COMPONENT_IDS.SEND_TO_SECRETARY} variant="warning" onClick={handleSendToSecretary}>Send to secretary</Button>
-          </td>
-        )
-      }
       <td>
         <Button className={COMPONENT_IDS.DOWNLOAD} variant="secondary" onClick={handleDownload}>Download</Button>
       </td>
