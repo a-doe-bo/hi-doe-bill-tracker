@@ -21,39 +21,24 @@ const smtpconfig = {
 
 const transporter = nodemailer.createTransport(smtpconfig);
 // const toAddress = "";
-// const titleOfBill = "";
-// const numberOfBill = "";
+// let numberOfBill = '';
+// let theRecipient = '';
 
-const hearingMailOptions = { // feed in things from client side code like the toaddress and the text
+const mailOptions = (recipient, billNumber) => ({ // feed in things from client side code like the toaddress and the text
   from: '"A-DOE-BO" <noreply.adoebo.tracker@gmail.com>',
-  to: 'thanemluna@gmail.com', // will be a json object of user(s)
-  subject: 'Public Hearing Notice',
-  text: 'Hello',
-};
-
-const verificationMailOptions = {
-  from: '"Example Team" <from@example.com>', // will be user that is currently logged in
-  to: 'user1@example.com, user2@example.com', // will be a json object of user(s)
-  subject: 'DOE Account Verification',
-  text: 'You are receiving this email because your account has been successfully created',
-};
+  to: 'noreply.adoebo.tracker@gmail.com', // will be a json object of user(s)
+  subject: 'Notification For Saved Bill',
+  text: `Saved Bill Number ${billNumber}`,
+});
 
 Meteor.methods({
   // eslint-disable-next-line meteor/audit-argument-checks,no-unused-vars
-  sendEmail() {
-    transporter.sendMail(hearingMailOptions, (err) => {
+  sendEmail(recipient, billNumber) {
+    // eslint-disable-next-line consistent-return
+    transporter.sendMail(mailOptions(recipient, billNumber), (err) => {
       if (err) {
-        return console.log(err);
+        // An error occurred
       }
-      console.log(`email sent to ${recipient}`);
-    });
-  },
-  verificationEmail() {
-    transporter.sendMail(verificationMailOptions, (err) => {
-      if (err) {
-        return console.log(err);
-      }
-      console.log('email sent');
     });
   },
 });
