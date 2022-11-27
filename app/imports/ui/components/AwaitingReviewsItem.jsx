@@ -75,11 +75,9 @@ const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, edit
   };
   const handleAccept = () => {
     dataUpdate(true);
-    console.log('Draft Accepted');
   };
   const handleReject = () => {
     dataUpdate(false);
-    console.log('Draft Rejected');
   };
   const handleDownload = () => {
     console.log('Downloaded File');
@@ -139,7 +137,7 @@ const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, edit
 
 // Require a document to be passed to this component.
 AwaitingReviewsItem.propTypes = {
-  awaitingReviews: PropTypes.shape({
+  awaitingReviews: PropTypes.arrayOf(PropTypes.shape({
     _id: PropTypes.string,
     billHearing: PropTypes.string,
     billNumber: PropTypes.number,
@@ -160,7 +158,7 @@ AwaitingReviewsItem.propTypes = {
     finalApprovedDate: PropTypes.instanceOf(Date),
     finalApproverName: PropTypes.string,
     finalText: PropTypes.string,
-  }).isRequired,
+  })).isRequired,
   measureData: PropTypes.arrayOf(PropTypes.shape({
     _id: PropTypes.string,
     bitAppropriation: PropTypes.number,
