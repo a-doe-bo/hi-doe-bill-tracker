@@ -108,7 +108,7 @@ const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, edit
       )}
       {editComment && (
         <td>
-          <Link className={COMPONENT_IDS.EDIT_COMMENT} to={`/editComment/${matchMeasureTitle()._id}`}>Edit Comment</Link>
+          <Link className={COMPONENT_IDS.EDIT_COMMENT} to={`/editComment/${awaitingReviews._id}`}>Edit Comment</Link>
         </td>
       )}
       {
