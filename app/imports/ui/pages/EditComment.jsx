@@ -15,7 +15,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { ROLE } from '../../api/role/Role';
 import { updateMethod } from '../../api/base/BaseCollection.methods';
 
-const CreateComment = () => {
+const EditComment = () => {
   const { _id } = useParams();
   const { ready, reviewInformation } = useTracker(() => {
     const subscription = ApproverFlows.subscribeApproverFlow();
@@ -104,4 +104,4 @@ const CreateComment = () => {
   ) : <LoadingSpinner />;
 };
 
-export default CreateComment;
+export default EditComment;
