@@ -2,12 +2,12 @@
   "defaultAccounts": [
     { "email": "admin@foo.com", "password": "changeme", "role": "ADMIN", "firstName": "Admin", "lastName": "MATRP", "employeeID": "123556"},
     { "email": "admin2@foo.com", "password": "changeme", "role": "ADMIN", "firstName": "Admin2", "lastName": "MATRP2", "employeeID": "123556"},
-    { "email": "john@foo.com", "password": "changeme", "role": "SECRETARY" , "firstName": "John", "lastName": "Doe", "employeeID": "123456" },
-    { "email": "secretary@foo.com", "password": "changeme", "role": "SECRETARY" , "firstName": "John", "lastName": "Doe", "employeeID": "123456" },
-    { "email": "writer@foo.com", "password": "changeme", "role": "WRITER" , "firstName": "John", "lastName": "Doe", "employeeID": "123456" },
-    { "email": "officeapprover@foo.com", "password": "changeme", "role": "OFFICE APPROVER" , "firstName": "John", "lastName": "Doe", "employeeID": "123456" },
-    { "email": "pipeapprover@foo.com", "password": "changeme", "role": "PIPE APPROVER" , "firstName": "John", "lastName": "Doe", "employeeID": "123456" },
-    { "email": "finalapprover@foo.com", "password": "changeme", "role": "FINAL APPROVER" , "firstName": "John", "lastName": "Doe", "employeeID": "123456" }
+    { "email": "john@foo.com", "password": "changeme", "role": "SECRETARY" , "firstName": "Kevin", "lastName": "Clark", "employeeID": "123456" },
+    { "email": "secretary@foo.com", "password": "changeme", "role": "SECRETARY" , "firstName": "Bob", "lastName": "Johnson", "employeeID": "123456" },
+    { "email": "writer@foo.com", "password": "changeme", "role": "WRITER" , "firstName": "William", "lastName": "Smith", "employeeID": "123456" },
+    { "email": "officeapprover@foo.com", "password": "changeme", "role": "OFFICE APPROVER" , "firstName": "Martin", "lastName": "Rodriquez", "employeeID": "123456" },
+    { "email": "pipeapprover@foo.com", "password": "changeme", "role": "PIPE APPROVER" , "firstName": "Kim", "lastName": "Lopez", "employeeID": "123456" },
+    { "email": "finalapprover@foo.com", "password": "changeme", "role": "FINAL APPROVER" , "firstName": "Jason", "lastName": "Lee", "employeeID": "123456" }
   ],
 
   "defaultData": [
