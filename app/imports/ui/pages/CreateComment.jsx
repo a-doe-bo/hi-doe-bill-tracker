@@ -1,86 +1,103 @@
 import React, { useState } from 'react';
 import SimpleSchema from 'simpl-schema';
-import { Alert, Card, Col, Container, Form, Row } from 'react-bootstrap';
-import { AutoForm, ErrorsField, LongTextField, SubmitField, TextField } from 'uniforms-bootstrap5';
+import { Alert, Card, Container } from 'react-bootstrap';
+import { AutoForm, ErrorsField, LongTextField, SubmitField } from 'uniforms-bootstrap5';
+import { Meteor } from 'meteor/meteor';
+import { useParams } from 'react-router';
+import { useTracker } from 'meteor/react-meteor-data';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
+import swal from 'sweetalert';
+import { Roles } from 'meteor/alanning:roles';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
+import { ApproverFlows } from '../../api/approverflow/approverflow';
+import LoadingSpinner from '../components/LoadingSpinner';
+import { ROLE } from '../../api/role/Role';
+import { updateMethod } from '../../api/base/BaseCollection.methods';
 
 const CreateComment = () => {
   // TODO: Implement a userTracker for the bills component it should retrieve the bill info based on the _id
-
+  const { _id } = useParams();
+  const { ready, reviewInformation } = useTracker(() => {
+    const subscription = ApproverFlows.subscribeApproverFlow();
+    const rdy = subscription.ready();
+    const document = ApproverFlows.findDoc(_id);
+    return {
+      reviewInformation: document,
+      ready: rdy,
+    };
+  }, [_id]);
   // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState('');
-  const [lineNumber, setLineNumber] = useState([]);
   const schema = new SimpleSchema({
-    reviewer_email: String,
-    reviewer_name: String,
-    date_comment_created: Date,
-    draft_id: String,
     comment: String,
-    line_number: String,
   });
   const bridge = new SimpleSchema2Bridge(schema);
 
   // eslint-disable-next-line
   const submit = (doc, formRef) => {
-    // TODO: submit should submit to collection with draft id information.
-    console.log('submit');
-  };
-  const fileContent = [];
-  for (let i = 0; i < 100; i++) {
-    fileContent.push(`File Content ${i}`);
-  }
-  const handleLineChange = (event, index) => {
-    const { checked } = event.target;
-    return checked ? setLineNumber((prevState) => ([...prevState, index + 1])) :
-      setLineNumber((prevState) => (prevState.filter((lineValue) => (lineValue !== index + 1))));
+    const collectionName = ApproverFlows.getCollectionName();
+    const { comment } = doc;
+    // eslint-disable-next-line no-shadow
+    const { _id, writerName, officeApproverName, pipeApproverName, finalApproverName, billNumber,
+      billHearing, billStatus, writerSubmission, originalText, originalWriteDate, officeApproved,
+      officeApprovedDate, officeText, pipeApproved, pipeApprovedDate, pipeText, finalApproved,
+      finalApprovedDate, finalText } = reviewInformation;
+    const updateData = {
+      id: _id,
+      billNumber,
+      billHearing,
+      billStatus,
+      originalText,
+      originalWriteDate,
+      writerName,
+      writerSubmission,
+      officeApproved,
+      officeApprovedDate,
+      officeApproverName,
+      officeText,
+      pipeApproved,
+      pipeApprovedDate,
+      pipeApproverName,
+      pipeText,
+      finalApproved,
+      finalApprovedDate,
+      finalApproverName,
+      finalText,
+    };
+    if (Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) {
+      updateData.officeText = comment;
+    } else if (Roles.userIsInRole(Meteor.userId(), [ROLE.PIPE_APPROVER])) {
+      updateData.pipeText = comment;
+    } else if (Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER])) {
+      updateData.finalText = comment;
+    }
+    updateMethod.callPromise(({ collectionName, updateData }))
+      .catch((err) => swal('Error', err.message, 'error'))
+      .then(() => swal('Success', 'Comment created successfully', 'success'));
   };
   let fRef = null;
-  return (
+  return ready ? (
     <Container id={PAGE_IDS.CREATE_COMMENTS}>
-      <Row className="justify-content-center d-flex align-content-center">
-        <Col>
-          <Form>
-            <Card style={{ maxHeight: '90vh' }}>
-              <Card.Header className="text-center">Title of Bill #1</Card.Header>
-              <Card.Body className="overflow-auto">
-                {fileContent.map((line, index) => (
-                  <Form.Check
-                    label={`${index + 1}. ${line}`}
-                    name={`line-${index}`}
-                    type="checkbox"
-                    key={index}
-                    onClick={(event) => { handleLineChange(event, index); }}
-                  />
-                ))}
-              </Card.Body>
-            </Card>
-          </Form>
-        </Col>
-        <Col>
-          <AutoForm ref={ref => { fRef = ref; }} schema={bridge} onSubmit={data => submit(data, fRef)}>
-            <Card>
-              <Card.Body>
-                <LongTextField id={COMPONENT_IDS.CREATE_COMMENTS_FORM_COMMENT} name="comment" placeholder="Comment" />
-                <TextField disabled id={COMPONENT_IDS.CREATE_COMMENTS_LINE} name="line_number" placeholder="Line Number" value={lineNumber.join(', ')} />
-                <ErrorsField />
-                <SubmitField id={COMPONENT_IDS.CREATE_COMMENTS_SUBMIT} />
-              </Card.Body>
-            </Card>
-          </AutoForm>
-        </Col>
-        {error === '' ? (
-          ''
-        ) : (
-          <Alert variant="danger">
-            <Alert.Heading>Error Creating Comment</Alert.Heading>
-            {error}
-          </Alert>
-        )}
-      </Row>
+      <AutoForm ref={ref => { fRef = ref; }} schema={bridge} onSubmit={data => submit(data, fRef)}>
+        <Card>
+          <Card.Body>
+            <LongTextField id={COMPONENT_IDS.CREATE_COMMENTS_FORM_COMMENT} name="comment" placeholder="Comments for the writer to improve their draft testimony" />
+            <ErrorsField />
+            <SubmitField id={COMPONENT_IDS.CREATE_COMMENTS_SUBMIT} />
+          </Card.Body>
+        </Card>
+      </AutoForm>
+      {error === '' ? (
+        ''
+      ) : (
+        <Alert variant="danger">
+          <Alert.Heading>Error Creating Comment</Alert.Heading>
+          {error}
+        </Alert>
+      )}
     </Container>
-  );
+  ) : <LoadingSpinner />;
 };
 
 export default CreateComment;
