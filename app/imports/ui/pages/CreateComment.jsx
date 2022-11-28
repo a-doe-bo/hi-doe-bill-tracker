@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import SimpleSchema from 'simpl-schema';
-import { Alert, Card, Container } from 'react-bootstrap';
+import { Alert, Button, Card, Container } from 'react-bootstrap';
 import { AutoForm, ErrorsField, LongTextField, SubmitField } from 'uniforms-bootstrap5';
 import { Meteor } from 'meteor/meteor';
 import { useParams } from 'react-router';
@@ -81,6 +81,8 @@ const CreateComment = () => {
   let fRef = null;
   return ready ? (
     <Container id={PAGE_IDS.CREATE_COMMENTS}>
+      {/* eslint-disable-next-line no-restricted-globals */}
+      <Button className="my-3" onClick={() => (history.back())}>Go Back</Button>
       <AutoForm ref={ref => { fRef = ref; }} schema={bridge} onSubmit={data => submit(data, fRef)}>
         <Card>
           <Card.Body>
