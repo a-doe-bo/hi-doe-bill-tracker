@@ -17,16 +17,30 @@ import { updateMethod } from '../../api/base/BaseCollection.methods';
 
 const EditComment = () => {
   const { _id } = useParams();
-  const { ready, reviewInformation } = useTracker(() => {
+  const { ready, reviewInformation, commentData } = useTracker(() => {
     const subscription = ApproverFlows.subscribeApproverFlow();
     const rdy = subscription.ready();
     const document = ApproverFlows.findDoc(_id);
+    // eslint-disable-next-line no-shadow
+    const commentData = {
+      comment: (() => {
+        if (Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) {
+          return document.officeText;
+        } if (Roles.userIsInRole(Meteor.userId(), [ROLE.PIPE_APPROVER])) {
+          return document.pipeText;
+        } if (Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER])) {
+          return document.finalText;
+        }
+        return '';
+      })(),
+    };
     return {
       reviewInformation: document,
       ready: rdy,
+      commentData,
     };
   }, [_id]);
-    // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState('');
   const schema = new SimpleSchema({
     comment: String,
@@ -83,7 +97,7 @@ const EditComment = () => {
     <Container id={PAGE_IDS.CREATE_COMMENTS}>
       {/* eslint-disable-next-line no-restricted-globals */}
       <Button className="my-3" onClick={() => (history.back())}>Go Back</Button>
-      <AutoForm ref={ref => { fRef = ref; }} schema={bridge} onSubmit={data => submit(data, fRef)}>
+      <AutoForm ref={ref => { fRef = ref; }} schema={bridge} onSubmit={data => submit(data, fRef)} model={commentData}>
         <Card>
           <Card.Body>
             <LongTextField id={COMPONENT_IDS.CREATE_COMMENTS_FORM_COMMENT} name="comment" placeholder="Comments for the writer to improve their draft testimony" />
