@@ -25,6 +25,7 @@ import RequestAccounts from '../pages/RequestAccounts';
 import DraftTestimony from '../pages/DraftTestimony';
 import AssignedBills from '../pages/AssignedBills';
 import Pdf from '../pages/Pdf';
+import EditComment from '../pages/EditComment';
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
 const App = () => (
@@ -47,6 +48,7 @@ const App = () => (
         <Route path="/edit/:_id" element={<ProtectedRoute><EditStuff /></ProtectedRoute>} />
         <Route path="/bill/:_id" element={<ProtectedRoute><BillDetails /></ProtectedRoute>} />
         <Route path="/createComment/:_id" element={<ProtectedRoute><CreateComment /></ProtectedRoute>} />
+        <Route path="/editComment/:_id" element={<ProtectedRoute><EditComment /></ProtectedRoute>} />
         <Route path="/createAccount" element={<AdminProtectedRoute><CreateUserAccount /></AdminProtectedRoute>} />
         <Route path="/requestedAccounts" element={<AdminProtectedRoute><RequestedAccounts /></AdminProtectedRoute>} />
         <Route path="/admin" element={<AdminProtectedRoute><ListAccounts /></AdminProtectedRoute>} />
