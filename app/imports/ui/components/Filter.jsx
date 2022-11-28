@@ -224,10 +224,20 @@ BillFilter.propTypes = {
     bill_status: PropTypes.string,
     bill_hearing: PropTypes.number,
     bill_number: PropTypes.number,
+    bill_code: PropTypes.string,
     bill_updated: PropTypes.number,
     bill_committee: PropTypes.string,
-    measureTypes: PropTypes.string,
-    office: PropTypes.string,
+    measureType: PropTypes.string,
+    primaryOffice: PropTypes.arrayOf(PropTypes.shape({
+      label: PropTypes.string,
+      value: PropTypes.string,
+    })),
+    primaryOfficeId: PropTypes.string,
+    secondaryOffice: PropTypes.arrayOf(PropTypes.shape({
+      label: PropTypes.string,
+      value: PropTypes.string,
+    })),
+    secondaryOfficeId: PropTypes.string,
   })).isRequired,
 };
 

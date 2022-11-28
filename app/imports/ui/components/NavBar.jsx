@@ -7,12 +7,33 @@ import { Container, Navbar, Nav, NavDropdown, Image } from 'react-bootstrap';
 import { CloudDownload, Person, PersonPlus, PersonCheck, BoxArrowRight } from 'react-bootstrap-icons';
 import { ROLE } from '../../api/role/Role';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
+import { UserProfiles } from '../../api/user/UserProfileCollection';
+
+function isEmpty(obj) {
+  return Object.keys(obj).length === 0;
+}
 
 const NavBar = () => {
   // useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
   const { currentUser } = useTracker(() => ({
     currentUser: Meteor.user() ? Meteor.user().username : '',
   }), []);
+
+  const _id = Meteor.userId();
+  const { isAdmin } = useTracker(() => {
+    // Get access to Stuff documents.
+    const subscription = UserProfiles.subscribeUser();
+    // Determine if the subscription is ready
+    const rdy = subscription.ready();
+    // Get the document
+    const profileItem = UserProfiles.find({ userID: _id }, {}).fetch();
+    const noData = isEmpty(profileItem);
+
+    return {
+      isAdmin: noData,
+      ready: rdy,
+    };
+  });
   const menuStyle = { marginBottom: '10px' };
   return (
     <Navbar bg="light" expand="lg" style={menuStyle}>
@@ -60,7 +81,10 @@ const NavBar = () => {
               <Nav.Link id={COMPONENT_IDS.NAVBAR_LOGIN_DROPDOWN_SIGN_IN} as={NavLink} to="/signin">Login</Nav.Link>
             ) : (
               <NavDropdown id={COMPONENT_IDS.NAVBAR_CURRENT_USER} title={currentUser}>
-                <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_USER_PAGE} as={NavLink} to="/userPage"><BoxArrowRight /> Profile</NavDropdown.Item>
+                {isAdmin === false ? (
+                  <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_USER_PAGE} as={NavLink} to="/userPage"><BoxArrowRight /> Profile</NavDropdown.Item>
+                ) : (<NavDropdown.Item> Admin Status </NavDropdown.Item>) }
+
                 <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_SIGN_OUT} as={NavLink} to="/signout"><BoxArrowRight /> Sign out</NavDropdown.Item>
               </NavDropdown>
             )}
@@ -70,5 +94,7 @@ const NavBar = () => {
     </Navbar>
   );
 };
+
+
 
 export default NavBar;

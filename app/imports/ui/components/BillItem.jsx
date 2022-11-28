@@ -15,7 +15,7 @@ import HearingBillData from './HearingBillData';
 import { Saved } from '../../api/save/SavedBillCollection';
 import { defineMethod, removeItMethod } from '../../api/base/BaseCollection.methods';
 
-const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_status, bill_hearing, bill_number, _id } }) => {
+const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_status, bill_hearing, bill_number, bill_code, primaryOffice, secondaryOffice, primaryOfficeId, secondaryOfficeId, _id } }) => {
   const collectionName = Saved.getCollectionName();
   const save = () => {
     // insert the data into the collection
@@ -26,6 +26,13 @@ const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_stat
       .catch(error => swal('Error', error.message, 'error'))
       .then(() => {
         swal('Success', 'Bookmarked Successfully', 'success');
+        Meteor.call('sendEmail', owner, bill_number, (verficationError) => {
+          if (verficationError) {
+            alert('Could not Send Email');
+          } else {
+            alert(`Email sent to ${owner}`);
+          }
+        });
       });
   };
   const unsaved = () => {
@@ -49,6 +56,12 @@ const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_stat
     }
   }, [savedBillData]);
 
+  const convertOfficeToString = (offices) => {
+    let officeStrings = [];
+    officeStrings = offices.map((office) => office.label);
+    return officeStrings.join(', ');
+  };
+
   const handleSave = (state, setState) => () => {
     setState(!state);
     if (!state) {
@@ -56,6 +69,28 @@ const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_stat
     } else {
       save();
     }
+  };
+  const displayOffice = (type) => {
+    if (Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) {
+      return '';
+    }
+    if (type === 'PrimaryOffice') {
+      if (primaryOffice.length > 0) {
+        return (
+          <td>{convertOfficeToString(primaryOffice)}</td>
+        );
+      }
+    }
+    if (type === 'SecondaryOffice') {
+      if (secondaryOffice.length > 0) {
+        return (
+          <td>{convertOfficeToString(secondaryOffice)}</td>
+        );
+      }
+    }
+    return (
+      <td>N/A</td>
+    );
   };
   return (
     <>
@@ -89,14 +124,16 @@ const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_stat
         )}
         {(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) ? (
           <td style={{ width: '150px' }}>
-            <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, _id, office_primary: true }} />
+            <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, bill_code, _id, primaryOfficeId, primaryOffice }} officeType="Primary" />
           </td>
-        ) : <td>N/A</td>}
+        ) : ''}
         {(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) ? (
           <td style={{ width: '150px' }}>
-            <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, _id, office_primary: false }} />
+            <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, bill_code, _id, secondaryOfficeId, secondaryOffice }} officeType="Secondary" />
           </td>
-        ) : <td>N/A</td>}
+        ) : ''}
+        {displayOffice('PrimaryOffice')}
+        {displayOffice('SecondaryOffice')}
       </tr>
       <tr>
         <td style={{ padding: 0 }} colSpan={10}>
@@ -130,12 +167,22 @@ BillItem.propTypes = {
     _id: PropTypes.string,
     bill_name: PropTypes.string,
     bill_status: PropTypes.string,
-    bill_hearing: PropTypes.string,
+    bill_hearing: PropTypes.number,
     bill_number: PropTypes.number,
+    bill_code: PropTypes.string,
     bill_updated: PropTypes.number,
     bill_committee: PropTypes.string,
     measureType: PropTypes.string,
-    office: PropTypes.string,
+    primaryOffice: PropTypes.arrayOf(PropTypes.shape({
+      label: PropTypes.string,
+      value: PropTypes.string,
+    })),
+    primaryOfficeId: PropTypes.string,
+    secondaryOffice: PropTypes.arrayOf(PropTypes.shape({
+      label: PropTypes.string,
+      value: PropTypes.string,
+    })),
+    secondaryOfficeId: PropTypes.string,
   }).isRequired,
   hearingData: PropTypes.arrayOf(PropTypes.shape({
     hearingLocation: PropTypes.string,

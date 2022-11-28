@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Footer from '../components/Footer';
 import Landing from '../pages/Landing';
 import ListBill from '../pages/ListBill';
 import CreateUserAccount from '../pages/CreateUserAccount';
@@ -26,6 +25,7 @@ import RequestAccounts from '../pages/RequestAccounts';
 import DraftTestimony from '../pages/DraftTestimony';
 import AssignedBills from '../pages/AssignedBills';
 import Pdf from '../pages/Pdf';
+import EditComment from '../pages/EditComment';
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
 const App = () => (
@@ -48,6 +48,7 @@ const App = () => (
         <Route path="/edit/:_id" element={<ProtectedRoute><EditStuff /></ProtectedRoute>} />
         <Route path="/bill/:_id" element={<ProtectedRoute><BillDetails /></ProtectedRoute>} />
         <Route path="/createComment/:_id" element={<ProtectedRoute><CreateComment /></ProtectedRoute>} />
+        <Route path="/editComment/:_id" element={<ProtectedRoute><EditComment /></ProtectedRoute>} />
         <Route path="/createAccount" element={<AdminProtectedRoute><CreateUserAccount /></AdminProtectedRoute>} />
         <Route path="/requestedAccounts" element={<AdminProtectedRoute><RequestedAccounts /></AdminProtectedRoute>} />
         <Route path="/admin" element={<AdminProtectedRoute><ListAccounts /></AdminProtectedRoute>} />
@@ -55,7 +56,6 @@ const App = () => (
         <Route path="/pdf" element={<Pdf />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-      <Footer />
     </div>
   </Router>
 );
