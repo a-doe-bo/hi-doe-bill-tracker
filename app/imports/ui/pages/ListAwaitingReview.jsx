@@ -1,52 +1,73 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Col, Container, InputGroup, Row, Form, Tabs, Tab, Table } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
-import { Stuffs } from '../../api/stuff/StuffCollection';
+import { Roles } from 'meteor/alanning:roles';
+import _ from 'underscore';
+import { Meteor } from 'meteor/meteor';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import AwaitingReviewsItem from '../components/AwaitingReviewsItem';
+import { ApproverFlows } from '../../api/approverflow/approverflow';
+import { Measures } from '../../api/measure/MeasureCollection';
+import { ROLE } from '../../api/role/Role';
 
 const ListAwaitingReviews = () => {
-  const { ready, stuffs } = useTracker(() => {
-    const subscription = Stuffs.subscribeStuff();
-    const rdy = subscription.ready();
-    const stuffItems = Stuffs.find({}, { sort: { name: 1 } }).fetch();
+  const { ready, approverFlow, measure } = useTracker(() => {
+    const subscription = ApproverFlows.subscribeApproverFlow();
+    const measureSubscription = Measures.subscribeMeasures();
+    const rdy = subscription.ready() && measureSubscription.ready();
+    const ApproverFlowsItems = ApproverFlows.find({}, {}).fetch();
+    const measureItems = Measures.find({}, {}).fetch();
+    const mapWithValues = ApproverFlowsItems.map((d) => ({ billNumber: d.billNumber, billStatus: d.billStatus }));
+    const filterMeasureData = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const T of measureItems) {
+      const s = {};
+      s.billNumber = T.measureNumber;
+      s.billStatus = T.status;
+      // eslint-disable-next-line no-restricted-syntax
+      for (const m of mapWithValues) {
+        if (_.isEqual(s, m)) {
+          filterMeasureData.push(T);
+        }
+      }
+    }
     return {
-      stuffs: stuffItems,
+      approverFlow: ApproverFlowsItems,
+      measure: filterMeasureData,
       ready: rdy,
     };
   }, []);
   const [searchInput, setSearchInput] = useState('');
+  const [submittedReviews, setSubmittedReviews] = useState([]);
+  const [awaitingReviews, setAwaitingReviews] = useState([]);
   const handleSearchInput = (e) => {
     const { value } = e.target;
     setSearchInput(value);
   };
-  const DraftsAwaitingReviews = stuffs.map((stuff, index) => ({
-    _id: stuff._id,
-    bill_name: `Bill ${index}`,
-    bill_number: index,
-    // TODO: this should be a MongoDB id for the Bill collection
-    bill_id: '12123123123',
-    office: 'OCF',
-    drafter_name: 'Hugh Janas',
-    drafter_submitted_date: new Date().toLocaleDateString(),
-    // TODO: this should be a MongoDB id for the Comments collection
-    commentsOnBill: '12123123123',
-    submitted_review: false,
-  }));
-  const SubmittedReviews = stuffs.map((stuff, index) => ({
-    _id: stuff._id,
-    bill_name: `Bill ${index}`,
-    bill_number: index,
-    // TODO: this should be a MongoDB id for the Bill collection
-    bill_id: '12123123123',
-    office: 'OCF',
-    drafter_name: 'Hugh Janas',
-    drafter_submitted_date: new Date().toLocaleDateString(),
-    // TODO: this should be a MongoDB id for the Comments collection
-    comments_on_bill: '12123123123',
-    submitted_review: false,
-  }));
+  useEffect(() => {
+    let filteredSubmittedReviews = [];
+    let filteredAwaitingReviews = [];
+    if (Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) {
+      filteredSubmittedReviews = approverFlow.filter((bill) => bill.officeApproved === true);
+      filteredAwaitingReviews = approverFlow.filter((bill) => (bill.officeApproved == null && bill.writerSubmission === true));
+      setSubmittedReviews(filteredSubmittedReviews);
+      setAwaitingReviews(filteredAwaitingReviews);
+    }
+    if (Roles.userIsInRole(Meteor.userId(), [ROLE.PIPE_APPROVER])) {
+      filteredSubmittedReviews = approverFlow.filter((bill) => bill.pipeApproved === true);
+      filteredAwaitingReviews = approverFlow.filter((bill) => ((bill.pipeApproved == null && bill.officeApproved && bill.writerSubmission === true)));
+      setSubmittedReviews(filteredSubmittedReviews);
+      setAwaitingReviews(filteredAwaitingReviews);
+    }
+    if (Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER])) {
+      filteredSubmittedReviews = approverFlow.filter((bill) => bill.finalApproved === true);
+      filteredAwaitingReviews = approverFlow.filter((bill) => ((bill.finalApproved == null && bill.officeApproved && bill.pipeApproved && bill.writerSubmission === true)));
+      setSubmittedReviews(filteredSubmittedReviews);
+      setAwaitingReviews(filteredAwaitingReviews);
+    }
+  }, [approverFlow, measure, ready]);
+
   return (ready ? (
     <Container id={PAGE_IDS.AWAITING_REVIEWS} className="py-3" style={{ minWidth: '1500px' }}>
       <Row className="justify-content-center">
@@ -81,7 +102,6 @@ const ListAwaitingReviews = () => {
                     <th>Submitted Draft Date</th>
                     <th>Bill Name</th>
                     <th>Bill Number</th>
-                    <th>Office</th>
                     <th>View Bill</th>
                     <th>Create Comment On Testimony</th>
                     {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -91,28 +111,7 @@ const ListAwaitingReviews = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {DraftsAwaitingReviews.map((awaitingReviews) => <AwaitingReviewsItem key={awaitingReviews._id} awaitingReviews={awaitingReviews} createComment accept reject />)}
-                </tbody>
-              </Table>
-            </Tab>
-            <Tab eventKey="reviews-awaiting-response" title="Reviews Submitted With Comments">
-              <Col className="text-center mb-3">
-                <h1>Review submitted comments</h1>
-              </Col>
-              <Table striped bordered hover>
-                <thead>
-                  <tr>
-                    <th>Drafter Name</th>
-                    <th>Submitted Draft Date</th>
-                    <th>Bill Name</th>
-                    <th>Bill Number</th>
-                    <th>Office</th>
-                    <th>View Bill</th>
-                    <th>Edit Comment</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {SubmittedReviews.map((awaitingReviews) => <AwaitingReviewsItem key={awaitingReviews._id} awaitingReviews={awaitingReviews} editComment />)}
+                  {awaitingReviews.map((r) => <AwaitingReviewsItem key={r._id} measureData={measure} awaitingReviews={r} createComment accept reject />)}
                 </tbody>
               </Table>
             </Tab>
@@ -127,13 +126,12 @@ const ListAwaitingReviews = () => {
                     <th>Submitted Draft Date</th>
                     <th>Bill Name</th>
                     <th>Bill Number</th>
-                    <th>Office</th>
                     <th>View Bill</th>
                     <th>Edit Comment</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {SubmittedReviews.map((awaitingReviews) => <AwaitingReviewsItem key={awaitingReviews._id} awaitingReviews={awaitingReviews} editComment />)}
+                  {submittedReviews.map((r) => <AwaitingReviewsItem key={r._id} measureData={measure} awaitingReviews={r} editComment />)}
                 </tbody>
               </Table>
             </Tab>
