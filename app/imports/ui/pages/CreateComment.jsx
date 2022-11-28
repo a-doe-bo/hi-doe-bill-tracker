@@ -16,7 +16,6 @@ import { ROLE } from '../../api/role/Role';
 import { updateMethod } from '../../api/base/BaseCollection.methods';
 
 const CreateComment = () => {
-  // TODO: Implement a userTracker for the bills component it should retrieve the bill info based on the _id
   const { _id } = useParams();
   const { ready, reviewInformation } = useTracker(() => {
     const subscription = ApproverFlows.subscribeApproverFlow();
@@ -73,7 +72,10 @@ const CreateComment = () => {
       updateData.finalText = comment;
     }
     updateMethod.callPromise(({ collectionName, updateData }))
-      .catch((err) => swal('Error', err.message, 'error'))
+      .catch((err) => {
+        setError(err);
+        swal('Error', err.message, 'error');
+      })
       .then(() => swal('Success', 'Comment created successfully', 'success'));
   };
   let fRef = null;
