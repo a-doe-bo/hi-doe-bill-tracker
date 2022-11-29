@@ -111,7 +111,7 @@ const ListAwaitingReviews = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {awaitingReviews.map((r) => <AwaitingReviewsItem key={r._id} measureData={measure} awaitingReviews={r} createComment accept reject />)}
+                  {awaitingReviews.map((r) => <AwaitingReviewsItem key={r._id} measureData={measure} awaitingReviews={r} createComment accept reject download />)}
                 </tbody>
               </Table>
             </Tab>

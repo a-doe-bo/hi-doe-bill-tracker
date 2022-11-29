@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { v4 } from 'uuid';
 import PropTypes from 'prop-types';
 import { Container } from 'react-bootstrap';
-import { ref, uploadBytes } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import swal from 'sweetalert';
 import { AutoForm, SelectField, TextField, ErrorsField, SubmitField } from 'uniforms-bootstrap5';
 import SimpleSchema from 'simpl-schema';
@@ -36,7 +36,7 @@ const SingleFileUpload = ({ currBills, billData }) => {
     if (pdfFile === null) {
       return;
     }
-    const pdfRef = ref(storage, `testimonyPdf/${pdfFile.name + v4()}`);
+    const pdfRef = ref(storage, `testimonyPdf/${pdfFile.name}`);
     uploadBytes(pdfRef, pdfFile).then(() => {
     });
   };
