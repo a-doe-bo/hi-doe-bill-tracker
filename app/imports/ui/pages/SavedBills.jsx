@@ -69,13 +69,13 @@ const SavedBills = () => {
       BillInformation.bill_code = measureData.bill_code;
       BillInformation.measureType = measureData.measureType;
       primaryOffice.forEach((office) => {
-        if (measureData.code === office.code && measureData.measureNumber === office.measureNumber) {
+        if (measureData.bill_code === office.code && measureData.bill_number === office.measureNumber) {
           BillInformation.primaryOffice = office.office;
           BillInformation.primaryOfficeId = office._id;
         }
       });
       secondaryOffice.forEach((office) => {
-        if (measureData.code === office.code && measureData.measureNumber === office.measureNumber) {
+        if (measureData.bill_code === office.code && measureData.bill_number === office.measureNumber) {
           BillInformation.secondaryOffice = office.office;
           BillInformation.secondaryOfficeId = office._id;
         }
@@ -96,6 +96,7 @@ const SavedBills = () => {
   useEffect(() => {
     setData(BillData());
   }, [ready, savedBill]);
+  console.log(data);
   const [currentTab, setCurrentTab] = useState('Upcoming Bills');
   const handleCurrentTab = (tabName) => {
     setCurrentTab(tabName);

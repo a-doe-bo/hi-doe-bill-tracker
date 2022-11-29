@@ -21,11 +21,10 @@ const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_stat
     // insert the data into the collection
     // need to have owner in the collection
     const owner = Meteor.user() ? Meteor.user().username : '';
-    const definitionData = { bill_number, bill_name, bill_status, bill_hearing, owner };
+    const definitionData = { bill_number, bill_name, bill_status, bill_hearing, bill_code, owner };
     defineMethod.callPromise({ collectionName, definitionData })
       .catch(error => swal('Error', error.message, 'error'))
       .then(() => {
-        swal('Success', 'Bookmarked Successfully', 'success');
         Meteor.call('sendEmail', owner, bill_number, (verficationError) => {
           if (verficationError) {
             // console.log('Could not Send Email');
