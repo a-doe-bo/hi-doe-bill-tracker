@@ -13,27 +13,29 @@ class SavedBillCollection extends BaseCollection {
     super('Saved', new SimpleSchema({
       bill_number: Number,
       bill_name: String,
+      bill_code: String,
       bill_status: String,
       bill_hearing: String,
       owner: String,
     }));
   }
 
-  define({ bill_number, bill_name, bill_status, bill_hearing, owner }) {
-    if (this.isDefined({ bill_number, bill_name, bill_status, bill_hearing, owner })) {
+  define({ bill_number, bill_code, bill_name, bill_status, bill_hearing, owner }) {
+    if (this.isDefined({ bill_number, bill_code, bill_name, bill_status, bill_hearing, owner })) {
       return this.findDoc({ bill_number, bill_name, bill_status, bill_hearing, owner })._id;
     }
-    const docID = this._collection.insert({ bill_number, bill_name, bill_status, bill_hearing, owner });
+    const docID = this._collection.insert({ bill_number, bill_code, bill_name, bill_status, bill_hearing, owner });
     return docID;
   }
 
-  update(docID, { bill_number, bill_name, bill_status, bill_hearing }) {
+  update(docID, { bill_number, bill_code, bill_name, bill_status, bill_hearing }) {
     const updateData = {};
 
     if (bill_number) updateData.bill_number = bill_number;
     if (bill_name) updateData.bill_name = bill_name;
     if (bill_status) updateData.bill_status = bill_status;
     if (bill_hearing) updateData.bill_hearing = bill_hearing;
+    if (bill_code) updateData.code = bill_code;
 
     this._collection.update(docID, { $set: updateData });
   }

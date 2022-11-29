@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Accordion, Button, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useTracker } from 'meteor/react-meteor-data';
 import swal from 'sweetalert';
 import { Meteor } from 'meteor/meteor';
+import _ from 'underscore';
 import FormCheck from './FormCheck';
 import { Filters } from '../../api/filter/FilterCollection';
 import { defineMethod, updateMethod } from '../../api/base/BaseCollection.methods';
@@ -35,7 +36,7 @@ const BillFilter = ({ handleDataFiltering, data, tab }) => {
         'Government Operations', 'Human Services', 'Housing', 'Higher Education',
         'Health', 'Hawaiian Affairs', 'Judiciary', 'Labor, Culture and the Arts', 'Public Safety, Intergovernmental, and Military Affairs',
         'Transportation', 'Ways and Means', 'Water And Land'];
-  const measureTypes = ['HB', 'SB', 'HR', 'SR', 'HCR', 'SCR', 'GM'];
+  const measureTypes = ['hb', 'sb', 'hr', 'sr', 'hcr', 'scr', 'gm'];
   const date = ['Last 7 days', 'Last 30 days', 'Last 60 days', 'Last 90 days', 'Last 120 days'];
   const [statusCheckedState, setStatusCheckedState] = useState([]);
   const [officeCheckedState, setOfficeCheckedState] = useState([]);
@@ -55,6 +56,20 @@ const BillFilter = ({ handleDataFiltering, data, tab }) => {
     const differenceInTime = todayInMs - billData;
     return differenceInTime / DAY_IN_MILISECONDS;
   };
+  const dataFilter = () => {
+    const officeCheckedStateData = officeCheckedState.map((officeChecked) => ({ label: officeChecked, value: officeChecked }));
+    const returnMeasures = [];
+    ogData.forEach((measureInfo) => {
+      measureInfo.primaryOffice.forEach((obj) => {
+        officeCheckedStateData.forEach((office) => {
+          if (_.isEqual(obj, office)) {
+            returnMeasures.push(measureInfo);
+          }
+        });
+      });
+    });
+    return returnMeasures;
+  };
   const filterData = () => {
     let filteredData = ogData;
     let filteredOffice = [];
@@ -66,7 +81,7 @@ const BillFilter = ({ handleDataFiltering, data, tab }) => {
 
     if (statusCheckedState.length > 0 || officeCheckedState.length > 0 || houseCommitteeState.length > 0 || senateCommitteeState.length > 0 || measureTypesState.length > 0 || dateState.length > 0) {
       filteredStatus = dataCopy.filter((d) => (statusCheckedState.includes(d.bill_status)));
-      filteredOffice = dataCopy.filter((d) => (officeCheckedState.includes(d.office)));
+      filteredOffice = dataFilter();
       filterCommittee = dataCopy.filter((d) => (houseCommitteeState.includes(d.bill_committee) || senateCommitteeState.includes(d.bill_committee)));
       filteredMeasureType = dataCopy.filter((d) => (measureTypesState.includes(d.measureType)));
       // Date difference
@@ -96,19 +111,17 @@ const BillFilter = ({ handleDataFiltering, data, tab }) => {
 
   // Set our original data on page load
   useEffect(() => {
-    if (data) {
-      setOgData(data);
-    }
+    setOgData(data);
     if (filterOptions) {
       // eslint-disable-next-line no-shadow
       const { statusOptions, officeOptions, measureTypeOptions, dateStateOptions } = filterOptions;
-      if (statusOptions.length !== 0 ||
-          officeOptions.length !== 0 ||
-          measureTypeOptions.length !== 0 ||
-          dateStateOptions.length !== 0
+      if (statusOptions.length > 0 ||
+            officeOptions.length > 0 ||
+            measureTypeOptions.length > 0 ||
+            dateStateOptions.length > 0
       ) {
         setStatusCheckedState(statusOptions);
-        setOfficeCheckedState(officeOptions);
+        setOfficeCheckedState(prevState => [...prevState, ...officeOptions]);
         setMeasureTypes(measureTypeOptions);
         setDateState(dateStateOptions);
         filterData();

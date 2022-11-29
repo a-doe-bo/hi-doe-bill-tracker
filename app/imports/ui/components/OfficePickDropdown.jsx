@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { MultiSelect } from 'react-multi-select-component';
 import swal from 'sweetalert';
-import { defineMethod } from '../../api/base/BaseCollection.methods';
+import { defineMethod, updateMethod } from '../../api/base/BaseCollection.methods';
 import { PrimaryOffice } from '../../api/office/PrimaryOfficeMeasure';
 import { SecondaryOffice } from '../../api/office/SecondaryOfficeMeasure';
 
@@ -14,24 +14,40 @@ const OfficePickDropdown = ({ data, officeType }) => {
     } else {
       setOffice(data.secondaryOffice);
     }
-  }, []);
+  }, [data.primaryOffice, data.secondaryOffice, officeType]);
 
   const defineData = (e) => {
     setOffice(e);
     // if the office is null we can define the office
     const collectionName = officeType === 'Primary' ? PrimaryOffice.getCollectionName() : SecondaryOffice.getCollectionName();
-    const definitionData = {
-      measureNumber: data.bill_number,
-      code: data.bill_code,
-      office: e,
-    };
-    defineMethod.callPromise({ collectionName, definitionData })
-      .catch((error) => {
-        swal('Error', error.message, 'error');
-      })
-      .then(() => {
-        swal('Success', 'Item added successfully', 'success');
-      });
+    const officeId = officeType === 'Primary' ? data.primaryOfficeId : data.secondaryOfficeId;
+    if (officeId) {
+      const updateData = {
+        id: officeId,
+        measureNumber: data.bill_number,
+        code: data.bill_code,
+        office: e,
+      };
+      updateMethod.callPromise({ collectionName, updateData })
+        .catch((error) => {
+          swal('Error', error.message, 'error');
+        })
+        .then(() => {
+        });
+    } else {
+      const definitionData = {
+        measureNumber: data.bill_number,
+        code: data.bill_code,
+        office: e,
+      };
+      defineMethod.callPromise({ collectionName, definitionData })
+        .catch((error) => {
+          swal('Error', error.message, 'error');
+        })
+        .then(() => {
+        });
+    }
+
   };
   const options = ['Deputy', 'OCID', 'OFO', 'OFS', 'OITS', 'OSIP', 'OSSS', 'OTM'].map((officeOptions) => (
     { label: officeOptions, value: officeOptions }

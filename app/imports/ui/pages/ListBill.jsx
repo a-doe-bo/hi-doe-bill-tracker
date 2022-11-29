@@ -21,7 +21,7 @@ import { SecondaryOffice } from '../../api/office/SecondaryOfficeMeasure';
 
 const ListBill = () => {
   const { ready, measures, savedBills, hearings, primaryOffice, secondaryOffice } = useTracker(() => {
-    const owner = Meteor.user().username;
+    const owner = Meteor.user() ? Meteor.user().username : '';
     const subscription = Measures.subscribeMeasures();
     const savedBillsSubscription = Saved.subscribeToSavedBill();
     const hearingBillsSubscription = Hearings.subscribeHearings();
@@ -43,7 +43,6 @@ const ListBill = () => {
     };
   }, []);
   const [currentTab, setCurrentTab] = useState('Upcoming Bills');
-  // TODO: Object with { header: '', component: ''}
   const table_headers = ['Bill Details', 'Save Bill', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Primary Office', 'Secondary Office'];
   const BillData = () => {
     let BillInformation = {};
@@ -110,7 +109,7 @@ const ListBill = () => {
   const [data, setData] = useState([]);
   useEffect(() => {
     setData(BillData());
-  }, [ready]);
+  }, [ready, primaryOffice, secondaryOffice]);
   const handleCurrentTab = (tabName) => {
     setCurrentTab(tabName);
   };
