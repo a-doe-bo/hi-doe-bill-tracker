@@ -47,7 +47,6 @@ const NavBar = () => {
             {currentUser ? ([
               <Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_BILLS} as={NavLink} to="/list" key="list">View Bills</Nav.Link>,
               <Nav.Link id={COMPONENT_IDS.NAVBAR_SAVED_BILLS} as={NavLink} to="/savedBills" key="saved">Saved Bills</Nav.Link>,
-              <Nav.Link id={COMPONENT_IDS.NAVBAR_ASSIGNED_BILLS} as={NavLink} to="/assignedBills" key="assigned">Assigned Bills</Nav.Link>,
             ]) : ''}
             {Roles.userIsInRole(Meteor.userId(), [ROLE.ADMIN]) ? (
               [
@@ -62,15 +61,11 @@ const NavBar = () => {
             {Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER]) || Roles.userIsInRole(Meteor.userId(), [ROLE.PIPE_APPROVER]) || Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER]) ? (
               [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_AWAITING_REVIEWS} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewOfficeApprover">Manage Reviews</Nav.Link>]
             ) : ''}
-            {Roles.userIsInRole(Meteor.userId(), [ROLE.PIPE_APPROVER]) ? (
-              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_AWAITING_REVIEWS} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewPIPEApprover">Awaiting Reviews</Nav.Link>]
-            ) : ''}
-            {Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER]) ? (
-              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_AWAITING_REVIEWS} as={NavLink} to="/listAwaitingReviews" key="awaitingReviewFinalApprover">Awaiting Reviews</Nav.Link>]
-            ) : ''}
             {Roles.userIsInRole(Meteor.userId(), [ROLE.WRITER]) ? (
-              [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_TESTIMONIES} as={NavLink} to="/listTestimonies" key="listWriterTestimonies">Testimonies</Nav.Link>],
-              [<Nav.Link id={COMPONENT_IDS.NAVBAR_DRAFT_TESTIMONY} as={NavLink} to="/draftTestimony" key="draftWriterTestimonies">Draft Testimony</Nav.Link>]
+              [
+                <Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_TESTIMONIES} as={NavLink} to="/listTestimonies" key="listWriterTestimonies">Testimonies</Nav.Link>,
+                <Nav.Link id={COMPONENT_IDS.NAVBAR_DRAFT_TESTIMONY} as={NavLink} to="/draftTestimony" key="draftWriterTestimonies">Draft Testimony</Nav.Link>,
+              ]
             ) : ''}
             {Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY]) ? (
               [<Nav.Link id={COMPONENT_IDS.NAVBAR_REQUEST_NEW_ACCOUNT} as={NavLink} to="/requestNewAccount" key="requestNewAccount">Request New Account</Nav.Link>]
@@ -94,7 +89,5 @@ const NavBar = () => {
     </Navbar>
   );
 };
-
-
 
 export default NavBar;

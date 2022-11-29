@@ -35,7 +35,7 @@ const BillFilter = ({ handleDataFiltering, data, tab }) => {
         'Government Operations', 'Human Services', 'Housing', 'Higher Education',
         'Health', 'Hawaiian Affairs', 'Judiciary', 'Labor, Culture and the Arts', 'Public Safety, Intergovernmental, and Military Affairs',
         'Transportation', 'Ways and Means', 'Water And Land'];
-  const measureTypes = ['HB', 'SB', 'HR', 'SR', 'HCR', 'SCR', 'GM'];
+  const measureTypes = ['hb', 'sb', 'hr', 'sr', 'hcr', 'scr', 'gm'];
   const date = ['Last 7 days', 'Last 30 days', 'Last 60 days', 'Last 90 days', 'Last 120 days'];
   const [statusCheckedState, setStatusCheckedState] = useState([]);
   const [officeCheckedState, setOfficeCheckedState] = useState([]);
@@ -63,6 +63,7 @@ const BillFilter = ({ handleDataFiltering, data, tab }) => {
     let filteredMeasureType = [];
     let filteredDateState = [];
     const dataCopy = ogData;
+    console.log(dataCopy);
 
     if (statusCheckedState.length > 0 || officeCheckedState.length > 0 || houseCommitteeState.length > 0 || senateCommitteeState.length > 0 || measureTypesState.length > 0 || dateState.length > 0) {
       filteredStatus = dataCopy.filter((d) => (statusCheckedState.includes(d.bill_status)));
