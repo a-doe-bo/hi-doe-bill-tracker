@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { Button, Col, Container, InputGroup, Row, Form, Tabs, Tab, Table } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
-import { Stuffs } from '../../api/stuff/StuffCollection';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import AwaitingTestimoniesItem from '../components/AwaitingTestimoniesItem';
+import {Experts} from '../../api/expert/ExpertCollection';
 
 const ListTestimonies = () => {
-  const { ready, stuffs } = useTracker(() => {
-    const subscription = Stuffs.subscribeStuff();
+  const { ready, assignedTestimony } = useTracker(() => {
+    const subscription = Experts.subscribeToExpert();
     const rdy = subscription.ready();
-    const stuffItems = Stuffs.find({}, { sort: { name: 1 } }).fetch();
+    const assignedExpert = Experts.find({ }, {}).fetch();
     return {
-      stuffs: stuffItems,
+      assignedTestimony: assignedExpert,
       ready: rdy,
     };
   }, []);
@@ -21,17 +21,17 @@ const ListTestimonies = () => {
     const { value } = e.target;
     setSearchInput(value);
   };
-  const DraftsAwaitingTestimonies = stuffs.map((stuff, index) => ({
-    _id: stuff._id,
-    bill_name: `Bill ${index}`,
+  const DraftsAwaitingTestimonies = assignedTestimony.map((assignedItemData) => ({
+    _id: assignedItemData._id,
+    bill_name: assignedItemData.bill_name,
     bill_due_date: new Date().toLocaleDateString(),
     // TODO: this should be a MongoDB id for the Bill collection
-    bill_id: '123456',
-    office: 'OCF',
+    bill_id: assignedItemData.bill_id,
+    office: assignedItemData.office,
     submitted_testimony: false,
   }));
-  const SubmittedTestimonies = stuffs.map((stuff, index) => ({
-    _id: stuff._id,
+  const SubmittedTestimonies = assignedTestimony.map((assignedExpert, index) => ({
+    _id: assignedExpert._id,
     bill_name: `Bill ${index}`,
     bill_due_date: new Date().toLocaleDateString(),
     // TODO: this should be a MongoDB id for the Bill collection
@@ -78,7 +78,7 @@ const ListTestimonies = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {DraftsAwaitingTestimonies.map((awaitingTestimonies) => <AwaitingTestimoniesItem awaitingTestimonies={awaitingTestimonies} key={awaitingTestimonies._id} createDraft />)}
+                  {DraftsAwaitingTestimonies.map((awaitingTestimonies) => <AwaitingTestimoniesItem assignedItemData={DraftsAwaitingTestimonies} key={awaitingTestimonies._id} createDraft />)}
                 </tbody>
               </Table>
             </Tab>
