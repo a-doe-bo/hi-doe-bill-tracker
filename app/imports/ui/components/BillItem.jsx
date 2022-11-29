@@ -28,9 +28,9 @@ const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_stat
         swal('Success', 'Bookmarked Successfully', 'success');
         Meteor.call('sendEmail', owner, bill_number, (verficationError) => {
           if (verficationError) {
-            alert('Could not Send Email');
+            // console.log('Could not Send Email');
           } else {
-            alert(`Email sent to ${owner}`);
+            // console.log(`Email sent to ${owner}`);
           }
         });
       });
