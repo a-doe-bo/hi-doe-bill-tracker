@@ -3,7 +3,7 @@ import swal from 'sweetalert';
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import PropTypes from 'prop-types';
-import { getStorage, ref, getDownloadURL, getBytes } from 'firebase/storage';
+import { getStorage, ref, getDownloadURL, getBlob } from 'firebase/storage';
 import { Link, Navigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
@@ -12,7 +12,7 @@ import { updateMethod } from '../../api/base/BaseCollection.methods';
 import { ApproverFlows } from '../../api/approverflow/approverflow';
 
 /** Renders a single row in the List Stuff table. See pages/ListStuff.jsx. */
-const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, editComment, accept, reject }) => {
+const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, editComment, accept, reject, download }) => {
   const collectionName = ApproverFlows.getCollectionName();
   const dataUpdate = (option) => {
     const approverName = Meteor.user().username;
@@ -108,7 +108,7 @@ const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, edit
         // Unknown error occurred, inspect the server response
         break;
       default:
-          // err
+        // err
       }
     });
   };
@@ -158,13 +158,15 @@ const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, edit
           <Button className={COMPONENT_IDS.REJECT_DRAFT} variant="danger" onClick={handleReject}>Reject</Button>
         </td>
       )}
-      <td>
-        <a href={downloadUrl} download={downloadUrl} target={downloadUrl} rel="noopener noreferrer" onClick={handleDownload}>
-          <Button className={COMPONENT_IDS.DOWNLOAD} variant="secondary">
-            Download
-          </Button>
-        </a>
-      </td>
+      {download && (
+        <td>
+          <a href={downloadUrl} rel="noopener noreferrer" target="_blank" onClick={handleDownload}>
+            <Button className={COMPONENT_IDS.DOWNLOAD} variant="secondary" onClick={handleDownload}>
+              Download
+            </Button>
+          </a>
+        </td>
+      )}
     </tr>
   );
 };
@@ -218,6 +220,8 @@ AwaitingReviewsItem.propTypes = {
   accept: PropTypes.bool,
   // eslint-disable-next-line react/require-default-props
   reject: PropTypes.bool,
+  // eslint-disable-next-line react/require-default-props
+  download: PropTypes.bool,
 };
 
 export default AwaitingReviewsItem;
