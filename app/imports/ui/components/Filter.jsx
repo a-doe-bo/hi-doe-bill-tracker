@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { useTracker } from 'meteor/react-meteor-data';
 import swal from 'sweetalert';
 import { Meteor } from 'meteor/meteor';
+import _ from 'underscore';
 import FormCheck from './FormCheck';
 import { Filters } from '../../api/filter/FilterCollection';
 import { defineMethod, updateMethod } from '../../api/base/BaseCollection.methods';
@@ -60,9 +61,11 @@ const BillFilter = ({ handleDataFiltering, data, tab }) => {
     const returnMeasures = [];
     ogData.forEach((measureInfo) => {
       measureInfo.primaryOffice.forEach((obj) => {
-        if (officeCheckedStateData.indexOf(obj)) {
-          returnMeasures.push(measureInfo);
-        }
+        officeCheckedStateData.forEach((office) => {
+          if (_.isEqual(obj, office)) {
+            returnMeasures.push(measureInfo);
+          }
+        });
       });
     });
     return returnMeasures;

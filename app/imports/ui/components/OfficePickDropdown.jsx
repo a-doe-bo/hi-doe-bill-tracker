@@ -14,7 +14,7 @@ const OfficePickDropdown = ({ data, officeType }) => {
     } else {
       setOffice(data.secondaryOffice);
     }
-  }, []);
+  }, [data.primaryOffice, data.secondaryOffice, officeType]);
 
   const defineData = (e) => {
     setOffice(e);

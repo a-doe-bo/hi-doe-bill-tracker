@@ -68,7 +68,10 @@ const NavBar = () => {
               ]
             ) : ''}
             {Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY]) ? (
-              [<Nav.Link id={COMPONENT_IDS.NAVBAR_REQUEST_NEW_ACCOUNT} as={NavLink} to="/requestNewAccount" key="requestNewAccount">Request New Account</Nav.Link>]
+              [
+                <Nav.Link id={COMPONENT_IDS.NAVBAR_ASSIGNED_BILLS} as={NavLink} to="/assignedBills" key="assignedBills">Bills Assigned</Nav.Link>,
+                <Nav.Link id={COMPONENT_IDS.NAVBAR_REQUEST_NEW_ACCOUNT} as={NavLink} to="/requestNewAccount" key="requestNewAccount">Request New Account</Nav.Link>,
+              ]
             ) : ''}
           </Nav>
           <Nav className="justify-content-end">
