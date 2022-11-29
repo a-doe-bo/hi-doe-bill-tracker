@@ -16,16 +16,17 @@ const DraftTestimony = () => {
       ready: rdy,
     };
   }, []);
+
+  const arr = [];
   const assignedBillData = assignedBills.map((bill) => ({
     _id: bill._id,
     bill_number: bill.bill_number,
     bill_hearing: bill.bill_hearing,
     bill_status: bill.bill_status,
   }));
-  const arr = [];
-  assignedBills.map((bill) => {
-    arr.push(bill.bill_number);
-  });
+  assignedBills.map((bill) => (
+    (arr.push(bill.bill_number))
+  ));
   const [billData, setData] = useState([]);
   useEffect(() => {
     setData(assignedBillData);
