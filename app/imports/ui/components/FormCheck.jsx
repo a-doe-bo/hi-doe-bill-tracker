@@ -12,16 +12,18 @@ const FormCheck = ({ options, handleCheckedState, data }) => {
 
   return (
     <Form>
-      {options.map((label, index) => (
-        <Form.Check
-          label={label}
-          onChange={() => {}}
-          checked={data.includes(label)}
-          key={index}
-          value={label}
-          onClick={(e) => (handleCheckChange(e))}
-        />
-      ))}
+      <>
+        {options.map((label, index) => (
+          <Form.Check
+            label={label}
+            onChange={() => {}}
+            checked={data.includes(label)}
+            key={index}
+            value={label}
+            onClick={(e) => (handleCheckChange(e))}
+          />
+        ))}
+      </>
     </Form>
   );
 };

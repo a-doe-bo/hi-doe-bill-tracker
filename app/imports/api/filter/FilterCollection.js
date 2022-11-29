@@ -13,7 +13,7 @@ class FilterCollection extends BaseCollection {
   constructor() {
     super('Filters', new SimpleSchema({
       statusOptions: [{ type: String }],
-      officeOptions: [{ type: String }],
+      officeOptions: [{ type: Object }],
       measureTypeOptions: [{ type: String }],
       dateStateOptions: [{ type: String }],
       owner: String,
