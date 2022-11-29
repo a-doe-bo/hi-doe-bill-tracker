@@ -43,7 +43,6 @@ const ListBill = () => {
     };
   }, []);
   const [currentTab, setCurrentTab] = useState('Upcoming Bills');
-  // TODO: Object with { header: '', component: ''}
   const table_headers = ['Bill Details', 'Save Bill', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Primary Office', 'Secondary Office'];
   const BillData = () => {
     let BillInformation = {};
