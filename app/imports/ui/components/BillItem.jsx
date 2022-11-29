@@ -26,6 +26,13 @@ const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_stat
       .catch(error => swal('Error', error.message, 'error'))
       .then(() => {
         swal('Success', 'Bookmarked Successfully', 'success');
+        Meteor.call('sendEmail', owner, bill_number, (verficationError) => {
+          if (verficationError) {
+            alert('Could not Send Email');
+          } else {
+            alert(`Email sent to ${owner}`);
+          }
+        });
       });
   };
   const unsaved = () => {
@@ -62,6 +69,28 @@ const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_stat
     } else {
       save();
     }
+  };
+  const displayOffice = (type) => {
+    if (Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) {
+      return '';
+    }
+    if (type === 'PrimaryOffice') {
+      if (primaryOffice.length > 0) {
+        return (
+          <td>{convertOfficeToString(primaryOffice)}</td>
+        );
+      }
+    }
+    if (type === 'SecondaryOffice') {
+      if (secondaryOffice.length > 0) {
+        return (
+          <td>{convertOfficeToString(secondaryOffice)}</td>
+        );
+      }
+    }
+    return (
+      <td>N/A</td>
+    );
   };
   return (
     <>
@@ -103,16 +132,8 @@ const BillItem = ({ savedBillData, hearingData, billData: { bill_name, bill_stat
             <OfficePickDropdown data={{ bill_name, bill_status, bill_number, bill_hearing, bill_code, _id, secondaryOfficeId, secondaryOffice }} officeType="Secondary" />
           </td>
         ) : ''}
-        {!(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) && primaryOffice.length > 0 ? (
-          <td style={{ width: '150px' }}>
-            {convertOfficeToString(primaryOffice)}
-          </td>
-        ) : <td>N/A</td>}
-        {!(Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) && secondaryOffice.length > 0 ? (
-          <td style={{ width: '150px' }}>
-            {convertOfficeToString(secondaryOffice)}
-          </td>
-        ) : <td>N/A</td>}
+        {displayOffice('PrimaryOffice')}
+        {displayOffice('SecondaryOffice')}
       </tr>
       <tr>
         <td style={{ padding: 0 }} colSpan={10}>

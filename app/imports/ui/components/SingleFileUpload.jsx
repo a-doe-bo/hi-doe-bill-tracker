@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { v4 } from 'uuid';
 import PropTypes from 'prop-types';
 import { Container } from 'react-bootstrap';
@@ -11,6 +11,7 @@ import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import { storage } from '../../api/firebase/firebase';
 import { DraftATestimony } from '../../api/testimony/DraftTestimonyCollection';
 import { defineMethod } from '../../api/base/BaseCollection.methods';
+import { ApproverFlows } from '../../api/approverflow/approverflow';
 
 const formSchema = new SimpleSchema({
   bill_number: Number,
@@ -29,23 +30,34 @@ const formSchema = new SimpleSchema({
 
 const bridge = new SimpleSchema2Bridge(formSchema);
 
-const SingleFileUpload = ({ currBills }) => {
+const SingleFileUpload = ({ currBills, billData }) => {
   const [pdfFile, setPDF] = useState(null);
-
   const uploadPDF = () => {
     if (pdfFile === null) {
-      alert('NO PDF FILE CHOSEN');
       return;
     }
     const pdfRef = ref(storage, `testimonyPdf/${pdfFile.name + v4()}`);
     uploadBytes(pdfRef, pdfFile).then(() => {
-      alert('PDF file uploaded');
     });
   };
 
   const submit = (data, formRef) => {
     const owner = Meteor.user().username;
     const collectionName = DraftATestimony.getCollectionName();
+    const b = billData.filter((d) => (d.bill_number == data.bill_number));
+    const approverFlowData = {
+      collectionName: ApproverFlows.getCollectionName(),
+      definitionData: {
+        billNumber: parseInt(b[0].bill_number, 10),
+        billHearing: b[0].bill_hearing,
+        billStatus: b[0].bill_status,
+        originalText: data.pdfFile,
+        originalWriteDate: new Date(),
+        writerSubmission: true,
+        writerName: owner,
+      },
+    };
+    defineMethod.callPromise(approverFlowData);
     const definitionData = { ...data, owner };
     defineMethod.callPromise({ collectionName, definitionData })
       .catch(error => swal('Error', error.message, 'error'))
@@ -79,6 +91,11 @@ const SingleFileUpload = ({ currBills }) => {
 };
 
 SingleFileUpload.propTypes = {
+  billData: PropTypes.arrayOf(PropTypes.shape({
+    bill_number: PropTypes.number,
+    bill_hearing: PropTypes.string,
+    bill_status: PropTypes.string,
+  })).isRequired,
   currBills: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 

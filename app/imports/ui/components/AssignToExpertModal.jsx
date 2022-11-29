@@ -11,7 +11,8 @@ const AssignToExpertModal = ({ billData: { bill_number, bill_name, bill_status, 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const submit = () => {
+  const submit = (e) => {
+    e.preventDefault();
     const collectionName = Experts.getCollectionName();
     const recipientsArray = recipients.split(',');
     recipientsArray.forEach((recipient) => {
