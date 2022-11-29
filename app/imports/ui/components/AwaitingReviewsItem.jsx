@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import swal from 'sweetalert';
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { getStorage, ref, getDownloadURL, getBytes } from 'firebase/storage';
+import { Link, Navigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import { ROLE } from '../../api/role/Role';
@@ -79,8 +80,37 @@ const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, edit
   const handleReject = () => {
     dataUpdate(false);
   };
+  const [downloadUrl, setUrl] = useState('');
   const handleDownload = () => {
-    console.log('Downloaded File');
+    // awaitingReviews.originalText.slice(12)
+    const storage = getStorage();
+    const slicedForNameOfPdf = awaitingReviews.originalText.slice(12);
+    const fileRef = ref(storage, `testimonyPdf/${slicedForNameOfPdf}`);
+
+    getDownloadURL(fileRef).then((url) => {
+      // no error
+      setUrl(url);
+    }).catch((err) => {
+      switch (err.code) {
+      case 'storage/object-not-found':
+        // File doesn't exist
+        break;
+      case 'storage/unauthorized':
+        // User doesn't have permission to access the object
+        break;
+      case 'storage/canceled':
+        // User canceled the upload
+        break;
+
+        // ...
+
+      case 'storage/unknown':
+        // Unknown error occurred, inspect the server response
+        break;
+      default:
+          // err
+      }
+    });
   };
   const handleSendToSecretary = () => {
     console.log('Downloaded File');
@@ -90,7 +120,7 @@ const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, edit
     if (measureData.length > 1) {
       measureItem = measureData.filter((m) => awaitingReviews.billStatus === m.status && awaitingReviews.billNumber === m.measureNumber);
     }
-    return measureItem.length > 0 ? measureItem[0] : { measureTitle: 'some title', _id: '111111111111' };
+    return measureItem.length > 0 ? measureItem[0] : { measureTitle: awaitingReviews.billTitle, _id: awaitingReviews._id };
   };
   return (
     <tr>
@@ -129,7 +159,11 @@ const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, edit
         </td>
       )}
       <td>
-        <Button className={COMPONENT_IDS.DOWNLOAD} variant="secondary" onClick={handleDownload}>Download</Button>
+        <a href={downloadUrl} download={downloadUrl} target={downloadUrl} rel="noopener noreferrer" onClick={handleDownload}>
+          <Button className={COMPONENT_IDS.DOWNLOAD} variant="secondary">
+            Download
+          </Button>
+        </a>
       </td>
     </tr>
   );
