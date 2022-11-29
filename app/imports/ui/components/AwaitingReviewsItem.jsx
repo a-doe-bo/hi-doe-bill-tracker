@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import { ROLE } from '../../api/role/Role';
+import GeneratePDF from './GeneratePDF';
 
 /** Renders a single row in the List Stuff table. See pages/ListStuff.jsx. */
 const AwaitingReviewsItem = ({ awaitingReviews: { bill_name, bill_number, drafter_name, drafter_submitted_date, office, _id }, createComment, editComment, accept, reject }) => {
@@ -62,7 +63,7 @@ const AwaitingReviewsItem = ({ awaitingReviews: { bill_name, bill_number, drafte
         )
       }
       <td>
-        <Button className={COMPONENT_IDS.DOWNLOAD} variant="secondary" onClick={handleDownload}>Download</Button>
+        <Button className={COMPONENT_IDS.DOWNLOAD} variant="secondary" onClick={GeneratePDF}>Download</Button>
       </td>
     </tr>
   );
