@@ -17,16 +17,14 @@ import { Measures } from '../../api/measure/MeasureCollection';
 import SavedBill from '../components/SavedBill';
 
 const AssignedBills = () => {
-  const { ready, experts, savedBill, hearings, primaryOffice, secondaryOffice, measure } = useTracker(() => {
+  const { ready, experts, hearings, primaryOffice, secondaryOffice, measure } = useTracker(() => {
     const owner = Meteor.user() ? Meteor.user().username : '';
-    const savedBillsSubscription = Saved.subscribeToSavedBill();
     const hearingBillsSubscription = Hearings.subscribeHearings();
     const measureSubscription = Measures.subscribeMeasures();
     const expertSubscription = Experts.subscribeToExpert();
     const primaryOfficeSubscription = PrimaryOffice.subscribePrimaryOffice();
     const secondaryOfficeSubscription = SecondaryOffice.subscribeSecondaryOffice();
-    const rdy = measureSubscription.ready() && savedBillsSubscription.ready() && hearingBillsSubscription.ready() && expertSubscription.ready() && primaryOfficeSubscription.ready() && secondaryOfficeSubscription.ready();
-    const savedBillItems = Saved.find({ owner }, {}).fetch();
+    const rdy = measureSubscription.ready() && hearingBillsSubscription.ready() && expertSubscription.ready() && primaryOfficeSubscription.ready() && secondaryOfficeSubscription.ready();
     const hearingItems = Hearings.find({}, {}).fetch();
     const expertItems = Experts.find({ secretary: owner }, {}).fetch();
     const measureItems = Measures.find({}, {}).fetch();
@@ -50,9 +48,7 @@ const AssignedBills = () => {
     });
     const primaryOfficeItems = PrimaryOffice.find({}, {}).fetch();
     const secondaryOfficeItems = SecondaryOffice.find({}, {}).fetch();
-    // TODO: configure to show expert collection
     return {
-      savedBill: savedBillItems,
       hearings: hearingItems,
       experts: expertItems,
       primaryOffice: primaryOfficeItems,
@@ -63,7 +59,7 @@ const AssignedBills = () => {
   }, []);
 
   const [currentTab, setCurrentTab] = useState('Assigned Bills');
-  const table_headers = ['', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Primary Office', 'Secondary Office'];
+  const table_headers = ['', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Primary Office', 'Secondary Office', 'Assigned To'];
   const BillData = () => {
     let BillInformation = {};
     const returnArr = [];
@@ -117,6 +113,7 @@ const AssignedBills = () => {
     doeStance: hearingData.description,
     dateTime: hearingData.datetime,
   }));
+  const expertRecipients = experts.map((expert) => (expert.recipient));
   const [data, setData] = useState([]);
   useEffect(() => {
     setData(BillData());
@@ -144,7 +141,7 @@ const AssignedBills = () => {
                 <Col className="text-center">
                   <h2>{tab}</h2>
                 </Col>
-                <SavedBill billData={data} hearingData={HearingData2} tableHeaders={table_headers} assignExpert={false} trash={false} />
+                <SavedBill assignedTo={expertRecipients} billData={data} hearingData={HearingData2} tableHeaders={table_headers} assignExpert={false} trash={false} />
               </Tab>
             ))}
           </Tabs>

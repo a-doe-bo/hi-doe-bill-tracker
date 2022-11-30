@@ -16,7 +16,7 @@ import HearingBillData from './HearingBillData';
 import { Measures } from '../../api/measure/MeasureCollection';
 import LoadingSpinner from './LoadingSpinner';
 
-const SavedBillItem = ({ hearingData, billData: { bill_name, bill_status, bill_number, bill_hearing, primaryOffice, secondaryOffice }, assignExpert, trash }) => {
+const SavedBillItem = ({ assignedTo, hearingData, billData: { bill_name, bill_status, bill_number, bill_hearing, primaryOffice, secondaryOffice }, assignExpert, trash }) => {
   const { ready, savedBill } = useTracker(() => {
     const subscription = Measures.subscribeMeasures();
     const rdy = subscription.ready();
@@ -76,6 +76,11 @@ const SavedBillItem = ({ hearingData, billData: { bill_name, bill_status, bill_n
             {convertOfficeToString(secondaryOffice)}
           </td>
         ) : <td>N/A</td>}
+        { assignedTo.length > 0 && (
+          <td>
+            {assignedTo[0]}
+          </td>
+        )}
         {
           (assignExpert && Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY])) && (
             <td>
@@ -151,6 +156,8 @@ SavedBillItem.propTypes = {
   })).isRequired,
   trash: PropTypes.bool.isRequired,
   assignExpert: PropTypes.bool.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types,react/require-default-props
+  assignedTo: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default SavedBillItem;

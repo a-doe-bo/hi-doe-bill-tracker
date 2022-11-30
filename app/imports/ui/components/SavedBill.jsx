@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Table } from 'react-bootstrap';
 import SavedBillItem from './SavedBillItem';
 
-const SavedBill = ({ billData, tableHeaders, hearingData, assignExpert, trash }) => (
+const SavedBill = ({ billData, tableHeaders, hearingData, assignExpert, trash, assignedTo }) => (
   <Table striped bordered hover>
     <thead>
       <tr>
@@ -13,7 +13,7 @@ const SavedBill = ({ billData, tableHeaders, hearingData, assignExpert, trash })
       </tr>
     </thead>
     <tbody>
-      {billData.map((data, index) => <SavedBillItem assignExpert={assignExpert} trash={trash} key={index} billData={data} hearingData={hearingData.filter((hearing) => (hearing.measureNum === data.bill_number))} />)}
+      {billData.map((data, index) => <SavedBillItem assignedTo={assignedTo} assignExpert={assignExpert} trash={trash} key={index} billData={data} hearingData={hearingData.filter((hearing) => (hearing.measureNum === data.bill_number))} />)}
     </tbody>
   </Table>
 );
@@ -49,6 +49,8 @@ SavedBill.propTypes = {
     doeStance: PropTypes.string,
     dateTime: PropTypes.string,
   })).isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types,react/require-default-props
+  assignedTo: PropTypes.arrayOf(PropTypes.string),
   tableHeaders: PropTypes.arrayOf(PropTypes.string).isRequired,
   assignExpert: PropTypes.bool.isRequired,
   trash: PropTypes.bool.isRequired,
