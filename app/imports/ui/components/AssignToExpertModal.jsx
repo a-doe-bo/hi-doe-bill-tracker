@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import swal from 'sweetalert';
+import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import { defineMethod } from '../../api/base/BaseCollection.methods';
 import { Experts } from '../../api/expert/ExpertCollection';
@@ -13,14 +14,15 @@ const AssignToExpertModal = ({ billData: { bill_number, bill_name, bill_status, 
 
   const submit = (e) => {
     e.preventDefault();
+    const secretary = Meteor.user() ? Meteor.user().username : '';
     const collectionName = Experts.getCollectionName();
     const recipientsArray = recipients.split(',');
     recipientsArray.forEach((recipient) => {
-      const definitionData = { recipient, bill_number, bill_name, bill_status, bill_hearing };
+      const definitionData = { secretary, recipient, bill_number, bill_name, bill_status, bill_hearing };
       defineMethod.callPromise({ collectionName, definitionData })
         .catch(error => swal('Error', error.message, 'error'))
         .then(() => {
-          swal('Success', 'Item added successfully', 'success');
+          swal('Success', `Bill assigned successfully to ${recipient}`, 'success');
         });
     });
   };
