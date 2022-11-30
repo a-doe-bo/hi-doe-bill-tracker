@@ -16,7 +16,7 @@ import HearingBillData from './HearingBillData';
 import { Measures } from '../../api/measure/MeasureCollection';
 import LoadingSpinner from './LoadingSpinner';
 
-const SavedBillItem = ({ hearingData, billData: { bill_name, bill_status, bill_number, bill_hearing, primaryOffice, secondaryOffice }, assignExpert, trash }) => {
+const SavedBillItem = ({ hearingData, billData: { _id, bill_name, bill_status, bill_number, bill_hearing, primaryOffice, secondaryOffice }, assignExpert, trash }) => {
   const { ready, savedBill } = useTracker(() => {
     const subscription = Measures.subscribeMeasures();
     const rdy = subscription.ready();
@@ -30,14 +30,14 @@ const SavedBillItem = ({ hearingData, billData: { bill_name, bill_status, bill_n
   const handleToggle = (state, setState) => () => { setState(!state); };
   const onDelete = () => {
     const collectionName = Saved.getCollectionName();
-    const instance = savedBill._id;
+    const instance = _id;
     removeItMethod.callPromise({ collectionName, instance })
       .then(() => {
-        swal('Success', 'Removed Successfully', 'success');
+
       })
-      .catch((error) => (
-        swal('Error', error.message, 'error')
-      ));
+      .catch((error) => {
+        swal('Error', error.message, 'error');
+      });
   };
   const convertOfficeToString = (offices) => {
     let officeStrings = [];
