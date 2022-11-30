@@ -63,7 +63,7 @@ const AssignedBills = () => {
   }, []);
 
   const [currentTab, setCurrentTab] = useState('Assigned Bills');
-  const table_headers = ['', '', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Primary Office', 'Secondary Office'];
+  const table_headers = ['', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Primary Office', 'Secondary Office'];
   const BillData = () => {
     let BillInformation = {};
     const returnArr = [];
