@@ -39,6 +39,7 @@ const SavedBillItem = ({ assignedTo, hearingData, billData: { bill_name, bill_st
         swal('Error', error.message, 'error')
       ));
   };
+  console.log(assignedTo);
   const convertOfficeToString = (offices) => {
     let officeStrings = [];
     officeStrings = offices.map((office) => office.label);
@@ -76,11 +77,6 @@ const SavedBillItem = ({ assignedTo, hearingData, billData: { bill_name, bill_st
             {convertOfficeToString(secondaryOffice)}
           </td>
         ) : <td>N/A</td>}
-        { assignedTo !== undefined && (
-          <td>
-            {assignedTo[0]}
-          </td>
-        )}
         {
           (assignExpert && Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY])) && (
             <td>
@@ -156,8 +152,6 @@ SavedBillItem.propTypes = {
   })).isRequired,
   trash: PropTypes.bool.isRequired,
   assignExpert: PropTypes.bool.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types,react/require-default-props
-  assignedTo: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default SavedBillItem;

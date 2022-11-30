@@ -49,8 +49,6 @@ SavedBill.propTypes = {
     doeStance: PropTypes.string,
     dateTime: PropTypes.string,
   })).isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types,react/require-default-props
-  assignedTo: PropTypes.arrayOf(PropTypes.string),
   tableHeaders: PropTypes.arrayOf(PropTypes.string).isRequired,
   assignExpert: PropTypes.bool.isRequired,
   trash: PropTypes.bool.isRequired,

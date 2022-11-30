@@ -57,7 +57,7 @@ const AssignedBills = () => {
   }, []);
 
   const [currentTab, setCurrentTab] = useState('Assigned Bills');
-  const table_headers = ['', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Primary Office', 'Secondary Office', 'Assigned To'];
+  const table_headers = ['', 'Bill Number', 'Bill Name', 'Bill Status', 'Hearing Date', 'View Bill', 'Primary Office', 'Secondary Office'];
   const BillData = () => {
     let BillInformation = {};
     const returnArr = [];
@@ -111,7 +111,6 @@ const AssignedBills = () => {
     doeStance: hearingData.description,
     dateTime: hearingData.datetime,
   }));
-  const expertRecipients = experts.map((expert) => (expert.recipient));
   const [data, setData] = useState([]);
   useEffect(() => {
     setData(BillData());
@@ -139,7 +138,7 @@ const AssignedBills = () => {
                 <Col className="text-center">
                   <h2>{tab}</h2>
                 </Col>
-                <SavedBill assignedTo={expertRecipients} billData={data} hearingData={HearingData2} tableHeaders={table_headers} assignExpert={false} trash={false} />
+                <SavedBill billData={data} hearingData={HearingData2} tableHeaders={table_headers} assignExpert={false} trash={false} />
               </Tab>
             ))}
           </Tabs>
