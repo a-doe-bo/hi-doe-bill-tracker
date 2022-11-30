@@ -23,6 +23,7 @@ TestimonyItem.propTypes = {
     body: PropTypes.string,
     status: PropTypes.string,
     _id: PropTypes.string,
+    measureNumber: PropTypes.number,
   }).isRequired,
 };
 
