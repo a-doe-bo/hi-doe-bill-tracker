@@ -21,6 +21,7 @@ export const listBillsPage = new SimplePage(PAGE_IDS.LIST_BILLS);
 export const listSavedBillsPage = new SimplePage(PAGE_IDS.SAVED_BILLS);
 export const assignedBillsPage = new SimplePage(PAGE_IDS.ASSIGNED_BILLS);
 export const requestAccountPage = new SimplePage(PAGE_IDS.REQUESTED_ACCOUNTS_FORM);
+export const listTestimonyPage = new SimplePage(PAGE_IDS.AWAITING_REVIEWS);
 export const manageUserAccounts = new SimplePage(PAGE_IDS.MANAGE_ACCOUNTS);
 export const manageDatabasePage = new SimplePage(PAGE_IDS.MANAGE_DATABASE);
 export const createAccount = new SimplePage(PAGE_IDS.SIGN_UP);

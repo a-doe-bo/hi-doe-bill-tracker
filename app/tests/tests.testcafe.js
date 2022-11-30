@@ -7,7 +7,7 @@ import {
   // manageDatabasePage,
   manageUserAccounts,
   createAccount,
-  requestedAccounts, assignedBillsPage, requestAccountPage,
+  requestedAccounts, assignedBillsPage, requestAccountPage, listTestimonyPage,
 } from './simple.page';
 import { landingPage } from './landing.page';
 import { signInPage } from './signin.page';
@@ -18,6 +18,7 @@ import { COMPONENT_IDS } from '../imports/ui/utilities/ComponentIDs';
 
 /** Credentials for one of the sample users defined in settings.development.json. */
 const credentials = { username: 'john@foo.com', password: 'changeme' };
+const writer = { username: 'writer@foo.com', password: 'changeme' };
 const adminCredentials = { username: 'admin@foo.com', password: 'changeme' };
 
 fixture('meteor-application-template-production localhost test with default db')
@@ -77,6 +78,17 @@ test('Test that request-accounts pages show up', async () => {
   await navBar.isLoggedIn(credentials.username);
   await navBar.gotoRequestAccountsPage();
   await requestAccountPage.isDisplayed();
+  // want to see if we can get to the editStuffPage
+  await navBar.logout();
+  await signOutPage.isDisplayed();
+});
+
+test.only('Test that list-testimony pages show up', async () => {
+  await navBar.gotoSignInPage();
+  await signInPage.signin(writer.username, writer.password);
+  await navBar.isLoggedIn(writer.username);
+  await navBar.gotoTestimonyPage();
+  await listTestimonyPage.isDisplayed();
   // want to see if we can get to the editStuffPage
   await navBar.logout();
   await signOutPage.isDisplayed();
