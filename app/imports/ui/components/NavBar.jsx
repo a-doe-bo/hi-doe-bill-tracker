@@ -51,7 +51,6 @@ const NavBar = () => {
             {Roles.userIsInRole(Meteor.userId(), [ROLE.ADMIN]) ? (
               [
                 <NavDropdown id={COMPONENT_IDS.NAVBAR_MANAGE_DROPDOWN} title="Manage" key="manage-dropdown">
-                  <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_MANAGE_DROPDOWN_DATABASE} key="manage-database" as={NavLink} to="/manageDatabase"><CloudDownload /> Database</NavDropdown.Item>
                   <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_MANAGE_DROPDOWN_ACCOUNTS} key="manage-accounts" as={NavLink} to="/admin"><Person /> User Accounts</NavDropdown.Item>
                   <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_MANAGE_DROPDOWN_CREATE_ACCOUNT} key="manage-create-account" as={NavLink} to="/createAccount"><PersonPlus /> Create User Account</NavDropdown.Item>
                   <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_MANAGE_DROPDOWN_REQUESTED_ACCOUNTS} key="manage-requested-accounts" as={NavLink} to="/requestedAccounts"><PersonCheck /> Requested Accounts</NavDropdown.Item>
@@ -81,7 +80,7 @@ const NavBar = () => {
               <NavDropdown id={COMPONENT_IDS.NAVBAR_CURRENT_USER} title={currentUser}>
                 {isAdmin === false ? (
                   <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_USER_PAGE} as={NavLink} to="/userPage"><BoxArrowRight /> Profile</NavDropdown.Item>
-                ) : (<NavDropdown.Item> Admin Status </NavDropdown.Item>) }
+                ) : '' }
 
                 <NavDropdown.Item id={COMPONENT_IDS.NAVBAR_SIGN_OUT} as={NavLink} to="/signout"><BoxArrowRight /> Sign out</NavDropdown.Item>
               </NavDropdown>
