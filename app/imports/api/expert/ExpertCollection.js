@@ -11,6 +11,7 @@ class ExpertCollection extends BaseCollection {
   constructor() {
     super('Experts', new SimpleSchema({
       recipient: String,
+      secretary: String,
       bill_name: String,
       bill_number: Number,
       bill_status: String,
@@ -18,18 +19,21 @@ class ExpertCollection extends BaseCollection {
     }));
   }
 
-  define({ recipient, bill_number, bill_name, bill_status, bill_hearing }) {
-    if (this.isDefined({ recipient, bill_number, bill_name, bill_status, bill_hearing })) {
-      return this.findDoc({ recipient, bill_number, bill_name, bill_status, bill_hearing })._id;
+  define({ secretary, recipient, bill_number, bill_name, bill_status, bill_hearing }) {
+    if (this.isDefined({ secretary, recipient, bill_number, bill_name, bill_status, bill_hearing })) {
+      return this.findDoc({ secretary, recipient, bill_number, bill_name, bill_status, bill_hearing })._id;
     }
 
-    const docID = this._collection.insert({ recipient, bill_number, bill_name, bill_status, bill_hearing });
+    const docID = this._collection.insert({ secretary, recipient, bill_number, bill_name, bill_status, bill_hearing });
     return docID;
 
   }
 
-  update(docID, { recipient, bill_number, bill_name, bill_status, bill_hearing }) {
+  update(docID, { secretary, recipient, bill_number, bill_name, bill_status, bill_hearing }) {
     const updateData = {};
+    if (secretary) {
+      updateData.secretary = secretary;
+    }
     if (recipient) {
       updateData.recipient = recipient;
     }
