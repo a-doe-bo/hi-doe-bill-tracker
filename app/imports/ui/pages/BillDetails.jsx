@@ -77,7 +77,7 @@ const BillDetails = () => {
       </h2>
       <div style={{ backgroundColor: '#F5F5F5', borderRadius: '30px', padding: '20px' }}>
         <Row className="justify-content-center">
-          <a style={{ marginBottom: '20px' }} href="https://www.google.com">Latest version of bill</a>
+          <a style={{ marginBottom: '20px' }} href={measure.measurePdfUrl}>Latest version of bill</a>
         </Row>
         <Row className="pt-lg-0">
           <Col xs={2}>

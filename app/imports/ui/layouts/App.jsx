@@ -55,6 +55,7 @@ const App = () => (
         <Route path="/notauthorized" element={<NotAuthorized />} />
         <Route path="/pdf" element={<Pdf />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/draftTestimony/:_id" element={<ProtectedRoute><DraftTestimony /></ProtectedRoute>} />
       </Routes>
     </div>
   </Router>

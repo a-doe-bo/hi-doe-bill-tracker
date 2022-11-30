@@ -54,4 +54,5 @@ export const COMPONENT_IDS = {
   NAVBAR_DRAFT_TESTIMONY: 'navbar-draft-testimony',
   NAVBAR_ASSIGNED_BILLS: 'navbar-assigned-bills',
   DRAFT_TESTIMONY_FILE_UPLOAD: 'draft-testimony-file-upload',
+  VIEW_DRAFT: 'view-draft',
 };
