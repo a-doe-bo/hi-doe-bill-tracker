@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import { Button, Col, Container, InputGroup, Row, Form, Tabs, Tab, Table } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
-import { Stuffs } from '../../api/stuff/StuffCollection';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import AwaitingTestimoniesItem from '../components/AwaitingTestimoniesItem';
+import { Measures } from '../../api/measure/MeasureCollection';
+import { ApproverFlows } from '../../api/approverflow/approverflow';
 
 const ListTestimonies = () => {
-  const { ready, stuffs } = useTracker(() => {
-    const subscription = Stuffs.subscribeStuff();
+  const { ready, measures } = useTracker(() => {
+    const subscription = measures.subscribeMeasures();
     const rdy = subscription.ready();
-    const stuffItems = Stuffs.find({}, { sort: { name: 1 } }).fetch();
+    const measureItems = Measures.find({}, { sort: { name: 1 } }).fetch();
     return {
-      stuffs: stuffItems,
+      measures: measureItems,
       ready: rdy,
     };
   }, []);
@@ -21,8 +22,8 @@ const ListTestimonies = () => {
     const { value } = e.target;
     setSearchInput(value);
   };
-  const DraftsAwaitingTestimonies = stuffs.map((stuff, index) => ({
-    _id: stuff._id,
+  const DraftsAwaitingTestimonies = measures.map((measures, index) => ({
+    _id: measures._id,
     bill_name: `Bill ${index}`,
     bill_due_date: new Date().toLocaleDateString(),
     // TODO: this should be a MongoDB id for the Bill collection
