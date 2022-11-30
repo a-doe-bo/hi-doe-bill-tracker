@@ -48,6 +48,13 @@ const RequestedProfileData = ({ requestedProfile: { email, firstName, lastName, 
       <td className="text-center">
         <Button
           variant="danger"
+          onClick={() => { handleAccept(); }}
+        >Accept
+        </Button>
+      </td>
+      <td className="text-center">
+        <Button
+          variant="danger"
           onClick={() => { handleRemove(); }}
         >Remove
         </Button>
