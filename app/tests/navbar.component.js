@@ -90,6 +90,14 @@ class NavBar {
     }
   }
 
+  /* Go to saved bills page */
+  async gotoDraftTestimonyPage() {
+    const loggedInUser = await Selector(`#${COMPONENT_IDS.NAVBAR_CURRENT_USER}`).exists;
+    if (loggedInUser) {
+      await t.click(`#${COMPONENT_IDS.NAVBAR_DRAFT_TESTIMONY}`);
+    }
+  }
+
   /* Go to the list stuff admin page. */
   /* Replace this test with the new buttons (accounts, createAccount, requestedAccounts) */
   /* async gotoListStuffAdminPage() {

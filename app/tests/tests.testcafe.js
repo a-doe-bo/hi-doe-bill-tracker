@@ -7,7 +7,7 @@ import {
   // manageDatabasePage,
   manageUserAccounts,
   createAccount,
-  requestedAccounts, assignedBillsPage, requestAccountPage, listTestimonyPage,
+  requestedAccounts, assignedBillsPage, requestAccountPage, listTestimonyPage, draftTestimonyPage,
 } from './simple.page';
 import { landingPage } from './landing.page';
 import { signInPage } from './signin.page';
@@ -83,12 +83,23 @@ test('Test that request-accounts pages show up', async () => {
   await signOutPage.isDisplayed();
 });
 
-test.only('Test that list-testimony pages show up', async () => {
+test('Test that list-testimony pages show up', async () => {
   await navBar.gotoSignInPage();
   await signInPage.signin(writer.username, writer.password);
   await navBar.isLoggedIn(writer.username);
   await navBar.gotoTestimonyPage();
   await listTestimonyPage.isDisplayed();
+  // want to see if we can get to the editStuffPage
+  await navBar.logout();
+  await signOutPage.isDisplayed();
+});
+
+test('Test that draft-testimonies pages show up', async () => {
+  await navBar.gotoSignInPage();
+  await signInPage.signin(writer.username, writer.password);
+  await navBar.isLoggedIn(writer.username);
+  await navBar.gotoDraftTestimonyPage();
+  await draftTestimonyPage.isDisplayed();
   // want to see if we can get to the editStuffPage
   await navBar.logout();
   await signOutPage.isDisplayed();
