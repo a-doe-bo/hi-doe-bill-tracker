@@ -7,7 +7,7 @@ import {
   // manageDatabasePage,
   manageUserAccounts,
   createAccount,
-  requestedAccounts, assignedBillsPage,
+  requestedAccounts, assignedBillsPage, requestAccountPage,
 } from './simple.page';
 import { landingPage } from './landing.page';
 import { signInPage } from './signin.page';
@@ -66,6 +66,17 @@ test('Test that assigned bills pages show up', async () => {
   await navBar.isLoggedIn(credentials.username);
   await navBar.gotoAssignedBillsPage();
   await assignedBillsPage.isDisplayed();
+  // want to see if we can get to the editStuffPage
+  await navBar.logout();
+  await signOutPage.isDisplayed();
+});
+
+test('Test that request-accounts pages show up', async () => {
+  await navBar.gotoSignInPage();
+  await signInPage.signin(credentials.username, credentials.password);
+  await navBar.isLoggedIn(credentials.username);
+  await navBar.gotoRequestAccountsPage();
+  await requestAccountPage.isDisplayed();
   // want to see if we can get to the editStuffPage
   await navBar.logout();
   await signOutPage.isDisplayed();
