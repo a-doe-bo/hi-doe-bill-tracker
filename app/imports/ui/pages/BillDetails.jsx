@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Button, Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
 import PropTypes from 'prop-types';

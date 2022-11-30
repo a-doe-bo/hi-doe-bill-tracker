@@ -3,8 +3,8 @@ import swal from 'sweetalert';
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import PropTypes from 'prop-types';
-import { getStorage, ref, getDownloadURL, getBlob } from 'firebase/storage';
-import { Link, Navigate } from 'react-router-dom';
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import { ROLE } from '../../api/role/Role';
@@ -112,9 +112,10 @@ const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, edit
       }
     });
   };
+  /**
   const handleSendToSecretary = () => {
     console.log('Downloaded File');
-  };
+  }; */
   const matchMeasureTitle = () => {
     let measureItem = {};
     if (measureData.length > 1) {
