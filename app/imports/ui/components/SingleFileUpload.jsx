@@ -1,9 +1,8 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useState, useEffect } from 'react';
-import { v4 } from 'uuid';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Container } from 'react-bootstrap';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes } from 'firebase/storage';
 import swal from 'sweetalert';
 import { AutoForm, SelectField, TextField, ErrorsField, SubmitField } from 'uniforms-bootstrap5';
 import SimpleSchema from 'simpl-schema';
@@ -44,7 +43,7 @@ const SingleFileUpload = ({ currBills, billData }) => {
   const submit = (data, formRef) => {
     const owner = Meteor.user().username;
     const collectionName = DraftATestimony.getCollectionName();
-    const b = billData.filter((d) => (d.bill_number == data.bill_number));
+    const b = billData.filter((d) => (d.bill_number === data.bill_number));
     const approverFlowData = {
       collectionName: ApproverFlows.getCollectionName(),
       definitionData: {
