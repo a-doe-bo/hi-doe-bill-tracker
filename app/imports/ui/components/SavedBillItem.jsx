@@ -76,7 +76,7 @@ const SavedBillItem = ({ assignedTo, hearingData, billData: { bill_name, bill_st
             {convertOfficeToString(secondaryOffice)}
           </td>
         ) : <td>N/A</td>}
-        { assignedTo.length > 0 && (
+        { assignedTo !== undefined && (
           <td>
             {assignedTo[0]}
           </td>

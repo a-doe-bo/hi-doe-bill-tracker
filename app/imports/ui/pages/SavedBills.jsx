@@ -16,12 +16,12 @@ import { SecondaryOffice } from '../../api/office/SecondaryOfficeMeasure';
 
 const SavedBills = () => {
   const { ready, savedBill, hearings, primaryOffice, secondaryOffice } = useTracker(() => {
+    const owner = Meteor.user() ? Meteor.user().username : '';
     const subscription = Saved.subscribeToSavedBill();
     const hearingBillsSubscription = Hearings.subscribeHearings();
     const primaryOfficeSubscription = PrimaryOffice.subscribePrimaryOffice();
     const secondaryOfficeSubscription = SecondaryOffice.subscribeSecondaryOffice();
     const rdy = subscription.ready() && hearingBillsSubscription.ready() && primaryOfficeSubscription.ready() && secondaryOfficeSubscription.ready();
-    const owner = Meteor.user().username;
     const savedBillItem = Saved.find({ owner }, {}).fetch();
     const hearingItems = Hearings.find({}).fetch();
     const primaryOfficeItems = PrimaryOffice.find({}, {}).fetch();
