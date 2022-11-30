@@ -15,7 +15,7 @@ import { SecondaryOffice } from '../../api/office/SecondaryOfficeMeasure';
 
 const AssignedBills = () => {
   const { ready, experts, savedBill, hearings, primaryOffice, secondaryOffice } = useTracker(() => {
-    const owner = Meteor.user().username;
+    const owner = Meteor.user() ? Meteor.user().username : '';
     const savedBillsSubscription = Saved.subscribeToSavedBill();
     const hearingBillsSubscription = Hearings.subscribeHearings();
     const expertSubscription = Experts.subscribeToExpert();
