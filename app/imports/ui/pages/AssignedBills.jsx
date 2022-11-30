@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Col, Container, Row, Tabs, Tab } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
+import { _ } from 'meteor/underscore';
 import BillTable from '../components/BillTable';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
@@ -12,19 +13,41 @@ import { Hearings } from '../../api/hearing/HearingCollection';
 import { Experts } from '../../api/expert/ExpertCollection';
 import { PrimaryOffice } from '../../api/office/PrimaryOfficeMeasure';
 import { SecondaryOffice } from '../../api/office/SecondaryOfficeMeasure';
+import { Measures } from '../../api/measure/MeasureCollection';
+import SavedBill from '../components/SavedBill';
 
 const AssignedBills = () => {
-  const { ready, experts, savedBill, hearings, primaryOffice, secondaryOffice } = useTracker(() => {
+  const { ready, experts, savedBill, hearings, primaryOffice, secondaryOffice, measure } = useTracker(() => {
     const owner = Meteor.user() ? Meteor.user().username : '';
     const savedBillsSubscription = Saved.subscribeToSavedBill();
     const hearingBillsSubscription = Hearings.subscribeHearings();
+    const measureSubscription = Measures.subscribeMeasures();
     const expertSubscription = Experts.subscribeToExpert();
     const primaryOfficeSubscription = PrimaryOffice.subscribePrimaryOffice();
     const secondaryOfficeSubscription = SecondaryOffice.subscribeSecondaryOffice();
-    const rdy = savedBillsSubscription.ready() && hearingBillsSubscription.ready() && expertSubscription.ready() && primaryOfficeSubscription.ready() && secondaryOfficeSubscription.ready();
+    const rdy = measureSubscription.ready() && savedBillsSubscription.ready() && hearingBillsSubscription.ready() && expertSubscription.ready() && primaryOfficeSubscription.ready() && secondaryOfficeSubscription.ready();
     const savedBillItems = Saved.find({ owner }, {}).fetch();
-    const hearingItems = Hearings.find({}).fetch();
-    const expertItems = Experts.find({ owner }, {}).fetch();
+    const hearingItems = Hearings.find({}, {}).fetch();
+    const expertItems = Experts.find({ secretary: owner }, {}).fetch();
+    const measureItems = Measures.find({}, {}).fetch();
+    const returnData = [];
+    measureItems.forEach((item) => {
+      expertItems.forEach((expert) => {
+        const measureData = {
+          measureNumber: item.measureNumber,
+          measureTitle: item.measureTitle,
+          status: item.status,
+        };
+        const expertMeasureData = {
+          measureNumber: expert.bill_number,
+          measureTitle: expert.bill_name,
+          status: expert.bill_status,
+        };
+        if (_.isEqual(measureData, expertMeasureData)) {
+          returnData.push(item);
+        }
+      });
+    });
     const primaryOfficeItems = PrimaryOffice.find({}, {}).fetch();
     const secondaryOfficeItems = SecondaryOffice.find({}, {}).fetch();
     // TODO: configure to show expert collection
@@ -34,6 +57,7 @@ const AssignedBills = () => {
       experts: expertItems,
       primaryOffice: primaryOfficeItems,
       secondaryOffice: secondaryOfficeItems,
+      measure: returnData,
       ready: rdy,
     };
   }, []);
@@ -43,7 +67,7 @@ const AssignedBills = () => {
   const BillData = () => {
     let BillInformation = {};
     const returnArr = [];
-    savedBill.forEach((measureData) => {
+    measure.forEach((measureData) => {
       BillInformation = {
         _id: '',
         bill_name: '',
@@ -60,13 +84,13 @@ const AssignedBills = () => {
         secondaryOfficeId: '',
       };
       BillInformation._id = measureData._id;
-      BillInformation.bill_name = measureData.bill_name;
-      BillInformation.bill_status = measureData.bill_status;
-      BillInformation.bill_hearing = measureData.bill_hearing;
-      BillInformation.bill_number = measureData.bill_number;
-      BillInformation.bill_updated = measureData.bill_updated;
-      BillInformation.bill_committee = measureData.bill_committee;
-      BillInformation.bill_code = measureData.bill_code;
+      BillInformation.bill_name = measureData.measureTitle;
+      BillInformation.bill_status = measureData.status;
+      BillInformation.bill_hearing = measureData.year;
+      BillInformation.bill_number = measureData.measureNumber;
+      BillInformation.bill_updated = measureData.lastUpdated;
+      BillInformation.bill_committee = measureData.committeeHearing;
+      BillInformation.bill_code = measureData.code;
       BillInformation.measureType = measureData.measureType;
       primaryOffice.forEach((office) => {
         if (measureData.code === office.code && measureData.measureNumber === office.measureNumber) {
@@ -93,16 +117,7 @@ const AssignedBills = () => {
     doeStance: hearingData.description,
     dateTime: hearingData.datetime,
   }));
-  const SavedData = savedBill.map((save) => ({
-    _id: save._id,
-    billNumber: save.bill_number,
-    billTitle: save.bill_name,
-    billStatus: save.bill_status,
-    billHearing: save.bill_hearing,
-    owner: save.owner,
-  }));
   const [data, setData] = useState([]);
-  // TODO: Remove this once we have our API set up and split the Bill data into (upcoming bills, dead bills, bills)
   useEffect(() => {
     setData(BillData());
   }, [ready, experts]);
@@ -129,7 +144,7 @@ const AssignedBills = () => {
                 <Col className="text-center">
                   <h2>{tab}</h2>
                 </Col>
-                <BillTable billData={data} savedBillData={SavedData} hearingData={HearingData2} tableHeaders={table_headers} />
+                <SavedBill billData={data} hearingData={HearingData2} tableHeaders={table_headers} assignExpert={false} trash={false} />
               </Tab>
             ))}
           </Tabs>

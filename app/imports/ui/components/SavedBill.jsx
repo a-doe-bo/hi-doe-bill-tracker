@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Table } from 'react-bootstrap';
 import SavedBillItem from './SavedBillItem';
 
-const SavedBill = ({ billData, tableHeaders, hearingData }) => (
+const SavedBill = ({ billData, tableHeaders, hearingData, assignExpert, trash }) => (
   <Table striped bordered hover>
     <thead>
       <tr>
@@ -13,7 +13,7 @@ const SavedBill = ({ billData, tableHeaders, hearingData }) => (
       </tr>
     </thead>
     <tbody>
-      {billData.map((data, index) => <SavedBillItem key={index} billData={data} hearingData={hearingData.filter((hearing) => (hearing.measureNum === data.bill_number))} />)}
+      {billData.map((data, index) => <SavedBillItem assignExpert={assignExpert} trash={trash} key={index} billData={data} hearingData={hearingData.filter((hearing) => (hearing.measureNum === data.bill_number))} />)}
     </tbody>
   </Table>
 );
@@ -50,6 +50,8 @@ SavedBill.propTypes = {
     dateTime: PropTypes.string,
   })).isRequired,
   tableHeaders: PropTypes.arrayOf(PropTypes.string).isRequired,
+  assignExpert: PropTypes.bool.isRequired,
+  trash: PropTypes.bool.isRequired,
 };
 
 export default SavedBill;

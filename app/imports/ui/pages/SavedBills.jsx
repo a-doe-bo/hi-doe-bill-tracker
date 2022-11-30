@@ -118,19 +118,19 @@ const SavedBills = () => {
               <Col className="text-center">
                 <h2>Upcoming Bills</h2>
               </Col>
-              <SavedBill billData={data} hearingData={HearingData2} tableHeaders={table_headers} />
+              <SavedBill billData={data} hearingData={HearingData2} tableHeaders={table_headers} assignExpert trash />
             </Tab>
             <Tab eventKey="bills" title="Bills">
               <Col className="text-center">
                 <h2>Bills</h2>
               </Col>
-              <SavedBill billData={data} hearingData={HearingData2} tableHeaders={table_headers} />
+              <SavedBill billData={data} hearingData={HearingData2} tableHeaders={table_headers} assignExpert trash />
             </Tab>
             <Tab eventKey="dead-bills" title="Dead Bills">
               <Col className="text-center">
                 <h2>Dead Bills</h2>
               </Col>
-              <SavedBill billData={data} hearingData={HearingData2} tableHeaders={table_headers} />
+              <SavedBill billData={data} hearingData={HearingData2} tableHeaders={table_headers} assignExpert trash />
             </Tab>
           </Tabs>
         </Col>

@@ -16,7 +16,7 @@ import HearingBillData from './HearingBillData';
 import { Measures } from '../../api/measure/MeasureCollection';
 import LoadingSpinner from './LoadingSpinner';
 
-const SavedBillItem = ({ hearingData, billData: { bill_name, bill_status, bill_number, bill_hearing, primaryOffice, secondaryOffice } }) => {
+const SavedBillItem = ({ hearingData, billData: { bill_name, bill_status, bill_number, bill_hearing, primaryOffice, secondaryOffice }, assignExpert, trash }) => {
   const { ready, savedBill } = useTracker(() => {
     const subscription = Measures.subscribeMeasures();
     const rdy = subscription.ready();
@@ -77,15 +77,19 @@ const SavedBillItem = ({ hearingData, billData: { bill_name, bill_status, bill_n
           </td>
         ) : <td>N/A</td>}
         {
-          Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY]) && (
+          (assignExpert && Roles.userIsInRole(Meteor.userId(), [ROLE.SECRETARY])) && (
             <td>
               <AssignToExpertModal billData={{ bill_number, bill_name, bill_hearing, bill_status }} />
             </td>
           )
         }
-        <td className="text-center">
-          <Button variant="danger" onClick={() => (onDelete())}><TrashFill size={20} /></Button>
-        </td>
+        {
+          (trash && (
+            <td className="text-center">
+              <Button variant="danger" onClick={() => (onDelete())}><TrashFill size={20} /></Button>
+            </td>
+          ))
+        }
       </tr>
       <tr>
         <td style={{ padding: 0 }} colSpan={10}>
@@ -145,6 +149,8 @@ SavedBillItem.propTypes = {
     doeStance: PropTypes.string,
     dateTime: PropTypes.string,
   })).isRequired,
+  trash: PropTypes.bool.isRequired,
+  assignExpert: PropTypes.bool.isRequired,
 };
 
 export default SavedBillItem;
