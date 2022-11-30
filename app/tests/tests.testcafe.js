@@ -60,7 +60,7 @@ test('Test that saved bills pages show up', async () => {
   await signOutPage.isDisplayed();
 });
 
-test.only('Test that assigned bills pages show up', async () => {
+test('Test that assigned bills pages show up', async () => {
   await navBar.gotoSignInPage();
   await signInPage.signin(credentials.username, credentials.password);
   await navBar.isLoggedIn(credentials.username);
