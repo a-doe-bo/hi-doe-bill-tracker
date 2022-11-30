@@ -16,7 +16,7 @@ import HearingBillData from './HearingBillData';
 import { Measures } from '../../api/measure/MeasureCollection';
 import LoadingSpinner from './LoadingSpinner';
 
-const SavedBillItem = ({ assignedTo, hearingData, billData: { bill_name, bill_status, bill_number, bill_hearing, primaryOffice, secondaryOffice }, assignExpert, trash }) => {
+const SavedBillItem = ({ hearingData, billData: { bill_name, bill_status, bill_number, bill_hearing, primaryOffice, secondaryOffice }, assignExpert, trash }) => {
   const { ready, savedBill } = useTracker(() => {
     const subscription = Measures.subscribeMeasures();
     const rdy = subscription.ready();
@@ -39,7 +39,6 @@ const SavedBillItem = ({ assignedTo, hearingData, billData: { bill_name, bill_st
         swal('Error', error.message, 'error')
       ));
   };
-  console.log(assignedTo);
   const convertOfficeToString = (offices) => {
     let officeStrings = [];
     officeStrings = offices.map((office) => office.label);
