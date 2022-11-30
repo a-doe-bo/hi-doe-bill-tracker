@@ -15,7 +15,7 @@ const AwaitingTestimoniesItem = ({ awaitingTestimonies: { bill_name, bill_due_da
       </td>
       {createDraft && (
         <td>
-          <Link className={COMPONENT_IDS.CREATE_DRAFT} to={`/createDraft/${_id}`}>Create Draft</Link>
+          <Link className={COMPONENT_IDS.CREATE_DRAFT} to={`/draftTestimony/${_id}`}>Create Draft</Link>
         </td>
       )}
     </tr>
