@@ -23,4 +23,5 @@ export const PAGE_IDS = {
   DRAFT_TESTIMONY: 'draft-testimony',
   ASSIGNED_BILLS: 'assigned-bills',
   LIST_TESTIMONY: 'list-testimony',
+  VIEW_TESTIMONY: 'view-testimony',
 };

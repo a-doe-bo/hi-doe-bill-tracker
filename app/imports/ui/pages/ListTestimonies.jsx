@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { Button, Col, Container, InputGroup, Row, Form, Tabs, Tab, Table } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
-import { Stuffs } from '../../api/stuff/StuffCollection';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import AwaitingTestimoniesItem from '../components/AwaitingTestimoniesItem';
+import { Measures } from '../../api/measure/MeasureCollection';
 
 const ListTestimonies = () => {
-  const { ready, stuffs } = useTracker(() => {
-    const subscription = Stuffs.subscribeStuff();
-    const rdy = subscription.ready();
-    const stuffItems = Stuffs.find({}, { sort: { name: 1 } }).fetch();
+  const { ready, measures } = useTracker(() => {
+    const measureSubscription = Measures.subscribeMeasures();
+    const rdy = measureSubscription.ready();
+    const measuresItems = Measures.find({}, {}).fetch();
     return {
-      stuffs: stuffItems,
+      measures: measuresItems,
       ready: rdy,
     };
   }, []);
@@ -21,22 +21,20 @@ const ListTestimonies = () => {
     const { value } = e.target;
     setSearchInput(value);
   };
-  const DraftsAwaitingTestimonies = stuffs.map((stuff, index) => ({
-    _id: stuff._id,
-    bill_name: `Bill ${index}`,
-    bill_due_date: new Date().toLocaleDateString(),
-    // TODO: this should be a MongoDB id for the Bill collection
-    bill_id: '123456',
-    office: 'OCF',
+  const DraftsAwaitingTestimonies = measures.map((measure) => ({
+    _id: measure._id,
+    bill_name: measure.measureTitle,
+    bill_due_date: measure.year,
+    bill_id: measure.bill_number,
+    office: measure.currentReferral,
     submitted_testimony: false,
   }));
-  const SubmittedTestimonies = stuffs.map((stuff, index) => ({
-    _id: stuff._id,
-    bill_name: `Bill ${index}`,
-    bill_due_date: new Date().toLocaleDateString(),
-    // TODO: this should be a MongoDB id for the Bill collection
-    bill_id: '123456',
-    office: 'OCF',
+  const SubmittedTestimonies = measures.map((measure) => ({
+    _id: measure._id,
+    bill_name: measure.measureTitle,
+    bill_due_date: measure.year,
+    bill_id: measure.bill_number,
+    office: measure.currentReferral,
     submitted_testimony: false,
   }));
 
@@ -73,7 +71,6 @@ const ListTestimonies = () => {
                     <th>Bill Name</th>
                     <th>Bill Due Date</th>
                     <th>Office</th>
-                    <th>View Bill</th>
                     <th>Create Draft</th>
                   </tr>
                 </thead>
@@ -92,12 +89,11 @@ const ListTestimonies = () => {
                     <th>Bill Name</th>
                     <th>Bill Due Date</th>
                     <th>Office</th>
-                    <th>View Bill</th>
-                    <th>Create Draft</th>
+                    <th>View Testimony</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {SubmittedTestimonies.map((awaitingTestimonies) => <AwaitingTestimoniesItem key={awaitingTestimonies._id} awaitingTestimonies={awaitingTestimonies} createDraft />)}
+                  {SubmittedTestimonies.map((awaitingTestimonies) => <AwaitingTestimoniesItem key={awaitingTestimonies._id} awaitingTestimonies={awaitingTestimonies} viewTestimony />)}
                 </tbody>
               </Table>
             </Tab>
