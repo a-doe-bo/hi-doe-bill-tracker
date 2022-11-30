@@ -24,6 +24,7 @@ export const COMPONENT_IDS = {
   NAVBAR_MANAGE_DROPDOWN_ACCOUNTS: 'navbar-manage-dropdown-accounts',
   NAVBAR_MANAGE_DROPDOWN_CREATE_ACCOUNT: 'navbar-manage-dropdown-create-account',
   NAVBAR_MANAGE_DROPDOWN_REQUESTED_ACCOUNTS: 'navbar-manage-dropdown-requested-accounts',
+  REQUESTED_ACCOUNTS_FORM: 'requested-accounts-form',
   NAVBAR_SIGN_OUT: 'navbar-sign-out',
   SIGN_IN_FORM_EMAIL: 'sign-in-form-email',
   SIGN_IN_FORM_PASSWORD: 'sign-in-form-password',

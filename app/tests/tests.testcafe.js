@@ -7,7 +7,7 @@ import {
   // manageDatabasePage,
   manageUserAccounts,
   createAccount,
-  requestedAccounts,
+  requestedAccounts, assignedBillsPage, requestAccountPage, listTestimonyPage, draftTestimonyPage,
 } from './simple.page';
 import { landingPage } from './landing.page';
 import { signInPage } from './signin.page';
@@ -18,6 +18,7 @@ import { COMPONENT_IDS } from '../imports/ui/utilities/ComponentIDs';
 
 /** Credentials for one of the sample users defined in settings.development.json. */
 const credentials = { username: 'john@foo.com', password: 'changeme' };
+const writer = { username: 'writer@foo.com', password: 'changeme' };
 const adminCredentials = { username: 'admin@foo.com', password: 'changeme' };
 
 fixture('meteor-application-template-production localhost test with default db')
@@ -45,6 +46,61 @@ test('Test that user pages show up', async () => {
   const viewBill = await Selector(`.${COMPONENT_IDS.VIEW_BILL}`);
   await t.click(viewBill.nth(0));
   await billDetailsPage.isDisplayed();
+  await navBar.logout();
+  await signOutPage.isDisplayed();
+});
+
+test('Test that saved bills pages show up', async () => {
+  await navBar.gotoSignInPage();
+  await signInPage.signin(credentials.username, credentials.password);
+  await navBar.isLoggedIn(credentials.username);
+  await navBar.gotoSavedBillsPage();
+  await listSavedBillsPage.isDisplayed();
+  // want to see if we can get to the editStuffPage
+  await navBar.logout();
+  await signOutPage.isDisplayed();
+});
+
+test('Test that assigned bills pages show up', async () => {
+  await navBar.gotoSignInPage();
+  await signInPage.signin(credentials.username, credentials.password);
+  await navBar.isLoggedIn(credentials.username);
+  await navBar.gotoAssignedBillsPage();
+  await assignedBillsPage.isDisplayed();
+  // want to see if we can get to the editStuffPage
+  await navBar.logout();
+  await signOutPage.isDisplayed();
+});
+
+test('Test that request-accounts pages show up', async () => {
+  await navBar.gotoSignInPage();
+  await signInPage.signin(credentials.username, credentials.password);
+  await navBar.isLoggedIn(credentials.username);
+  await navBar.gotoRequestAccountsPage();
+  await requestAccountPage.isDisplayed();
+  // want to see if we can get to the editStuffPage
+  await navBar.logout();
+  await signOutPage.isDisplayed();
+});
+
+test('Test that list-testimony pages show up', async () => {
+  await navBar.gotoSignInPage();
+  await signInPage.signin(writer.username, writer.password);
+  await navBar.isLoggedIn(writer.username);
+  await navBar.gotoTestimonyPage();
+  await listTestimonyPage.isDisplayed();
+  // want to see if we can get to the editStuffPage
+  await navBar.logout();
+  await signOutPage.isDisplayed();
+});
+
+test('Test that draft-testimonies pages show up', async () => {
+  await navBar.gotoSignInPage();
+  await signInPage.signin(writer.username, writer.password);
+  await navBar.isLoggedIn(writer.username);
+  await navBar.gotoDraftTestimonyPage();
+  await draftTestimonyPage.isDisplayed();
+  // want to see if we can get to the editStuffPage
   await navBar.logout();
   await signOutPage.isDisplayed();
 });

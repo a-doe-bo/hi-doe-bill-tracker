@@ -16,12 +16,12 @@ import { SecondaryOffice } from '../../api/office/SecondaryOfficeMeasure';
 
 const SavedBills = () => {
   const { ready, savedBill, hearings, primaryOffice, secondaryOffice } = useTracker(() => {
+    const owner = Meteor.user() ? Meteor.user().username : '';
     const subscription = Saved.subscribeToSavedBill();
     const hearingBillsSubscription = Hearings.subscribeHearings();
     const primaryOfficeSubscription = PrimaryOffice.subscribePrimaryOffice();
     const secondaryOfficeSubscription = SecondaryOffice.subscribeSecondaryOffice();
     const rdy = subscription.ready() && hearingBillsSubscription.ready() && primaryOfficeSubscription.ready() && secondaryOfficeSubscription.ready();
-    const owner = Meteor.user().username;
     const savedBillItem = Saved.find({ owner }, {}).fetch();
     const hearingItems = Hearings.find({}).fetch();
     const primaryOfficeItems = PrimaryOffice.find({}, {}).fetch();
@@ -96,7 +96,6 @@ const SavedBills = () => {
   useEffect(() => {
     setData(BillData());
   }, [ready, savedBill]);
-  console.log(data);
   const [currentTab, setCurrentTab] = useState('Upcoming Bills');
   const handleCurrentTab = (tabName) => {
     setCurrentTab(tabName);
@@ -119,19 +118,19 @@ const SavedBills = () => {
               <Col className="text-center">
                 <h2>Upcoming Bills</h2>
               </Col>
-              <SavedBill billData={data} hearingData={HearingData2} tableHeaders={table_headers} />
+              <SavedBill billData={data} hearingData={HearingData2} tableHeaders={table_headers} assignExpert trash />
             </Tab>
             <Tab eventKey="bills" title="Bills">
               <Col className="text-center">
                 <h2>Bills</h2>
               </Col>
-              <SavedBill billData={data} hearingData={HearingData2} tableHeaders={table_headers} />
+              <SavedBill billData={data} hearingData={HearingData2} tableHeaders={table_headers} assignExpert trash />
             </Tab>
             <Tab eventKey="dead-bills" title="Dead Bills">
               <Col className="text-center">
                 <h2>Dead Bills</h2>
               </Col>
-              <SavedBill billData={data} hearingData={HearingData2} tableHeaders={table_headers} />
+              <SavedBill billData={data} hearingData={HearingData2} tableHeaders={table_headers} assignExpert trash />
             </Tab>
           </Tabs>
         </Col>
