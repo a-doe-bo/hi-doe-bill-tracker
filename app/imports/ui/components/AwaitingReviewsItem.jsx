@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import swal from 'sweetalert';
 import { Meteor } from 'meteor/meteor';
+import { useTracker } from 'meteor/react-meteor-data';
 import { Roles } from 'meteor/alanning:roles';
 import PropTypes from 'prop-types';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
@@ -10,9 +11,26 @@ import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 import { ROLE } from '../../api/role/Role';
 import { updateMethod } from '../../api/base/BaseCollection.methods';
 import { ApproverFlows } from '../../api/approverflow/approverflow';
+import { UserProfiles } from '../../api/user/UserProfileCollection';
+import LoadingSpinner from './LoadingSpinner';
+
 
 /** Renders a single row in the List Stuff table. See pages/ListStuff.jsx. */
 const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, editComment, accept, reject, download }) => {
+  const { ready, userData } = useTracker(() => {
+    // Get access to Stuff documents.
+    const subscription = UserProfiles.subscribeUser();
+    // Determine if the subscription is ready
+    const rdy = subscription.ready();
+    // Get the document
+    const profileItem = UserProfiles.find({ }, {}).fetch();
+
+    return {
+      userData: profileItem,
+      ready: rdy,
+    };
+  });
+
   const collectionName = ApproverFlows.getCollectionName();
   const dataUpdate = (option) => {
     const approverName = Meteor.user().username;
@@ -48,10 +66,22 @@ const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, edit
         updateData.officeApproved = true;
         updateData.officeApprovedDate = new Date();
         updateData.officeApproverName = approverName;
+        // eslint-disable-next-line eqeqeq
+        const pipe = userData.filter((d) => d.role == ROLE.PIPE_APPROVER);
+        // emails all pipe approvers
+        for (let i = 0; i < pipe.length; i++) {
+          Meteor.call('workflowEmail', pipe[i].email);
+        }
       } else if (Roles.userIsInRole(Meteor.userId(), [ROLE.PIPE_APPROVER])) {
         updateData.pipeApproved = true;
         updateData.pipeApprovedDate = new Date();
         updateData.pipeApproverName = approverName;
+        // eslint-disable-next-line eqeqeq
+        const pipe = userData.filter((d) => d.role == ROLE.FINAL_APPROVER);
+        // emails all final approvers
+        for (let i = 0; i < pipe.length; i++) {
+          Meteor.call('workflowEmail', pipe[i].email);
+        }
       } else if (Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER])) {
         updateData.finalApproved = true;
         updateData.finalApprovedDate = new Date();
@@ -60,10 +90,22 @@ const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, edit
     } else if (Roles.userIsInRole(Meteor.userId(), [ROLE.OFFICE_APPROVER])) {
       updateData.writerSubmission = false;
       updateData.officeApproved = false;
+      // eslint-disable-next-line eqeqeq
+      const pipe = userData.filter((d) => d.role == ROLE.PIPE_APPROVER);
+      // emails all pipe approvers
+      for (let i = 0; i < pipe.length; i++) {
+        Meteor.call('workflowEmail', pipe[i].email);
+      }
     } else if (Roles.userIsInRole(Meteor.userId(), [ROLE.PIPE_APPROVER])) {
       updateData.writerSubmission = false;
       updateData.officeApproved = false;
       updateData.pipeApproved = false;
+      // eslint-disable-next-line eqeqeq
+      const pipe = userData.filter((d) => d.role == ROLE.FINAL_APPROVER);
+      // emails all final approvers
+      for (let i = 0; i < pipe.length; i++) {
+        Meteor.call('workflowEmail', pipe[i].email);
+      }
     } else if (Roles.userIsInRole(Meteor.userId(), [ROLE.FINAL_APPROVER])) {
       updateData.writerSubmission = false;
       updateData.officeApproved = false;
@@ -72,7 +114,9 @@ const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, edit
     }
     updateMethod.callPromise(({ collectionName, updateData }))
       .catch((err) => swal('Error', err.message, 'error'))
-      .then(() => swal('Success', 'Status updated successfully', 'success'));
+      .then(() => {
+        swal('Success', 'Status updated successfully', 'success');
+      });
   };
   const handleAccept = () => {
     dataUpdate(true);
@@ -84,32 +128,10 @@ const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, edit
   const handleDownload = () => {
     // awaitingReviews.originalText.slice(12)
     const storage = getStorage();
-    const slicedForNameOfPdf = awaitingReviews.originalText.slice(12);
-    const fileRef = ref(storage, `testimonyPdf/${slicedForNameOfPdf}`);
+    const fileRef = ref(storage, `testimonyPdf/${awaitingReviews.originalText}`);
 
     getDownloadURL(fileRef).then((url) => {
-      // no error
       setUrl(url);
-    }).catch((err) => {
-      switch (err.code) {
-      case 'storage/object-not-found':
-        // File doesn't exist
-        break;
-      case 'storage/unauthorized':
-        // User doesn't have permission to access the object
-        break;
-      case 'storage/canceled':
-        // User canceled the upload
-        break;
-
-        // ...
-
-      case 'storage/unknown':
-        // Unknown error occurred, inspect the server response
-        break;
-      default:
-        // err
-      }
     });
   };
   /**
@@ -161,7 +183,8 @@ const AwaitingReviewsItem = ({ awaitingReviews, measureData, createComment, edit
       )}
       {download && (
         <td>
-          <a href={downloadUrl} rel="noopener noreferrer" target="_blank" onClick={handleDownload}>
+          {handleDownload()}
+          <a href={downloadUrl} rel="noreferrer noopener" target="_blank" onDoubleClick={handleDownload}>
             <Button className={COMPONENT_IDS.DOWNLOAD} variant="secondary" onClick={handleDownload}>
               Download
             </Button>

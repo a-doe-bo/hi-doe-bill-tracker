@@ -5,7 +5,9 @@ import '/imports/startup/server/Mongo';
 import '../imports/api/base/BaseCollection.methods';
 import '../imports/api/user/UserProfileCollection.methods';
 import { Meteor } from 'meteor/meteor';
+import alert from 'react';
 import nodemailer from 'nodemailer';
+import * as Http from 'http';
 
 // eslint-disable-next-line global-require
 const ck = require('ckey');
@@ -31,14 +33,38 @@ const mailOptions = (recipient, billNumber) => ({ // feed in things from client 
   text: `Saved Bill Number ${billNumber}`,
 });
 
+const workflowOptions = (recipient) => ({
+  from: '"A-DOE-BO" <noreply.adoebo.tracker@gmail.com>',
+  to: 'noreply.adoebo.tracker@gmail.com', // will be a json object of user(s)
+  subject: 'Workflow Notification Updated for Reviews',
+  text: 'You are receiving this email because a bill has ',
+});
+
 Meteor.methods({
   // eslint-disable-next-line meteor/audit-argument-checks,no-unused-vars
   sendEmail(recipient, billNumber) {
     // eslint-disable-next-line consistent-return
     transporter.sendMail(mailOptions(recipient, billNumber), (err) => {
       if (err) {
-        // An error occurred
+        alert(`localhost:3000 sent an email to ${recipient}`);
       }
     });
+  },
+  // eslint-disable-next-line meteor/audit-argument-checks
+  workflowEmail(recipient) {
+    transporter.sendMail(workflowOptions(recipient), (err) => {
+      if (err) {
+        // an error occurred
+        alert(`localhost:3000 sent an email to ${recipient}`);
+      }
+    });
+  },
+  // eslint-disable-next-line meteor/audit-argument-checks
+  downloadFile(url) {
+    try {
+      return Http.get(url);
+    } catch (err) {
+      throw new Meteor.Error('an error occured');
+    }
   },
 });

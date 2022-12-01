@@ -48,6 +48,7 @@ class MATPClass {
       Saved,
       DraftATestimony,
       PrimaryOffice,
+      ApproverFlows,
     ];
 
     /*
