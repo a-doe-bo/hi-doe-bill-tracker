@@ -1,11 +1,11 @@
 import { Meteor } from 'meteor/meteor';
-import { Stuffs } from '../../api/stuff/StuffCollection';
 import { Measures } from '../../api/measure/MeasureCollection';
 import { Saved } from '../../api/save/SavedBillCollection';
 import { Hearings } from '../../api/hearing/HearingCollection';
 /* eslint-disable no-console */
 
 // Initialize the database with a default data document.
+/*
 function addData(data) {
   console.log(`  Adding: ${data.name} (${data.owner})`);
   Stuffs.define(data);
@@ -18,6 +18,7 @@ if (Stuffs.count() === 0) {
     Meteor.settings.defaultData.map(data => addData(data));
   }
 }
+ */
 
 if (Meteor.settings.public.loadMeasures && Measures.count() === 0) {
   if (Meteor.settings.public.measuresFileName) {

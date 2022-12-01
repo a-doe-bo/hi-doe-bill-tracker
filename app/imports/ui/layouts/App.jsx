@@ -6,7 +6,6 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Landing from '../pages/Landing';
 import ListBill from '../pages/ListBill';
 import CreateUserAccount from '../pages/CreateUserAccount';
-import EditStuff from '../pages/EditStuff';
 import NotFound from '../pages/NotFound';
 import NavBar from '../components/NavBar';
 import SignOut from '../pages/SignOut';
@@ -45,7 +44,6 @@ const App = () => (
         <Route path="/listTestimonies" element={<ProtectedRoute> <ListTestimonies /> </ProtectedRoute>} />
         <Route path="/draftTestimony" element={<ProtectedRoute> <DraftTestimony /> </ProtectedRoute>} />
         <Route path="/requestNewAccount" element={<ProtectedRoute> <RequestAccounts /> </ProtectedRoute>} />
-        <Route path="/edit/:_id" element={<ProtectedRoute><EditStuff /></ProtectedRoute>} />
         <Route path="/bill/:_id" element={<ProtectedRoute><BillDetails /></ProtectedRoute>} />
         <Route path="/createComment/:_id" element={<ProtectedRoute><CreateComment /></ProtectedRoute>} />
         <Route path="/editComment/:_id" element={<ProtectedRoute><EditComment /></ProtectedRoute>} />

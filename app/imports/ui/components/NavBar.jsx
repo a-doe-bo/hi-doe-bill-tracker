@@ -5,8 +5,6 @@ import { NavLink } from 'react-router-dom';
 import { Roles } from 'meteor/alanning:roles';
 import { Container, Navbar, Nav, NavDropdown, Image } from 'react-bootstrap';
 import {
-  CloudDownload,
-  Person,
   PersonPlus,
   PersonCheck,
   BoxArrowRight,

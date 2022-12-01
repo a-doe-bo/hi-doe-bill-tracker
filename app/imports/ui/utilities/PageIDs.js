@@ -1,11 +1,9 @@
 /** Define ids for each page. */
 export const PAGE_IDS = {
-  ADD_STUFF: 'add-stuff',
   BILL_DETAILS: 'bill-details',
   LANDING: 'landing',
   LIST_BILLS: 'list-bills',
   EMAIL_FORM: 'email-form',
-  LIST_STUFF_ADMIN: 'list-stuff-admin',
   MANAGE_DATABASE: 'manage-database',
   MANAGE_ACCOUNTS: 'manage-accounts',
   NOT_AUTHORIZED: 'not-authorized',

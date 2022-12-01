@@ -53,12 +53,12 @@ RELATING TO REGENERATIVE TOURISM.
 BE IT ENACTED BY THE LEGISLATURE OF THE STATE OF HAWAII:
 `;
 
-/* Renders the EditStuff page for editing a single document. */
+/* Renders the BillDetails page for editing a single document. */
 const BillDetails = () => {
   // useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
   const { _id } = useParams();
   const { ready, measure } = useTracker(() => {
-    // Get access to Stuff documents.
+    // Get access to Measure documents.
     const subscription = Measures.subscribeMeasures();
     // Determine if the subscription is ready
     const rdy = subscription.ready();
