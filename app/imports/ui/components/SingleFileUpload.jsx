@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Container } from 'react-bootstrap';
-import { ref, uploadBytes } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import swal from 'sweetalert';
 import { AutoForm, SelectField, TextField, ErrorsField, SubmitField } from 'uniforms-bootstrap5';
 import SimpleSchema from 'simpl-schema';
@@ -31,26 +31,31 @@ const bridge = new SimpleSchema2Bridge(formSchema);
 
 const SingleFileUpload = ({ currBills, billData }) => {
   const [pdfFile, setPDF] = useState(null);
+  const [urlLink, setUrl] = useState(null);
   const uploadPDF = () => {
     if (pdfFile === null) {
       return;
     }
     const pdfRef = ref(storage, `testimonyPdf/${pdfFile.name}`);
     uploadBytes(pdfRef, pdfFile).then(() => {
+      getDownloadURL(pdfRef).then((url) => {
+        setUrl(url);
+      });
     });
   };
 
   const submit = (data, formRef) => {
     const owner = Meteor.user().username;
     const collectionName = DraftATestimony.getCollectionName();
-    const b = billData.filter((d) => (d.bill_number === data.bill_number));
+    // eslint-disable-next-line eqeqeq
+    const b = billData.filter((d) => d.bill_number == data.bill_number);
     const approverFlowData = {
       collectionName: ApproverFlows.getCollectionName(),
       definitionData: {
         billNumber: parseInt(b[0].bill_number, 10),
         billHearing: b[0].bill_hearing,
         billStatus: b[0].bill_status,
-        originalText: data.pdfFile,
+        originalText: pdfFile.name,
         originalWriteDate: new Date(),
         writerSubmission: true,
         writerName: owner,
@@ -79,9 +84,12 @@ const SingleFileUpload = ({ currBills, billData }) => {
           name="pdfFile"
           type="file"
           onInput={(event) => {return}}
-          onChangeCapture={(event) => { setPDF(event.target.files[0])}}
+          onChangeCapture={(event) => {
+            setPDF(event.target.files[0])
+            uploadPDF()
+          }}
         />
-        <TextField name="status" hidden={true} />
+        <TextField name="status" hidden={true}/>
         <SubmitField />
         <ErrorsField  />
       </AutoForm>

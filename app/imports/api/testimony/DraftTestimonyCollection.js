@@ -26,8 +26,6 @@ class DraftTestimonyCollection extends BaseCollection {
 
   /**
    * Defines a new testimony item.
-   * @param firstName the first name of the testifier.
-   * @param lastName the last name of the testifier.
    * @param position .
    * @return {String} the docID of the new document.
    */
@@ -45,21 +43,13 @@ class DraftTestimonyCollection extends BaseCollection {
   /**
    * Updates the given document.
    * @param docID the id of the document to update.
-   * @param firstName the first name of the testifier (optional).
-   * @param lastName the last name of the testifier (optional).
    * @param position (optional).
    * @param testimony (optional).
    */
-  update(docID, { bill_number, firstName, lastName, pdfFile }) {
+  update(docID, { bill_number, pdfFile }) {
     const updateData = {};
     if (bill_number) {
       updateData.bill_number = bill_number;
-    }
-    if (firstName) {
-      updateData.firstName = firstName;
-    }
-    if (lastName) {
-      updateData.lastName = lastName;
     }
     if (pdfFile) {
       updateData.pdfFile = pdfFile;
